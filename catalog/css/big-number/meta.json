@@ -1,0 +1,18 @@
+{
+  "kind": "css/big-number",
+  "title": "Big number",
+  "description": "One very large thin number, most of the slide height, rises from behind a mask until it stands on a gold hairline; an outline copy of the same number slips out behind it, and the unit and one line come in beside it. Plain CSS @keyframes, no library. The number does not count: this block is about size and entrance.",
+  "source": {"type": "css", "package": "none (browser CSS + Web Animations API)"},
+  "license": "MIT",
+  "use": "number",
+  "family": "giant-number-ghost",
+  "lead": "type",
+  "props": {
+    "value": "required, the number as you want it shown, 1-4 characters (a real one)",
+    "unit": "1-2 words in gold",
+    "text": "one line: what the number is",
+    "kicker": "small caps above the unit"
+  },
+  "example": {"value": "10", "unit": "lessons", "kicker": "Visual Vibe Coding", "text": "From motion graphics on your own video to 3D."},
+  "dur": 1.8
+}

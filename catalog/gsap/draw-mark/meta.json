@@ -1,0 +1,30 @@
+{
+  "kind": "gsap/draw-mark",
+  "title": "Draw mark",
+  "description": "One sentence rises word by word, then a hand-drawn ring (or an underline) is drawn around the key word and the word turns gold (GSAP DrawSVG).",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "DrawSVGPlugin"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "statement",
+  "family": "hand-mark","lead": "type",
+  "props": {
+    "text": "required, one sentence, up to 12 words",
+    "mark": "the word or two inside the sentence to mark",
+    "style": "ring (default) or underline",
+    "kicker": "small caps above",
+    "by": "small line under it"
+  },
+  "example": {
+    "kicker": "AI Yahakdang",
+    "text": "A free live class, every weeknight at 8 PM.",
+    "mark": "free",
+    "by": "Monday to Friday, for beginners"
+  },
+  "dur": 2.4
+}

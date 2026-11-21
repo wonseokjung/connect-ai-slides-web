@@ -1,0 +1,25 @@
+{
+  "kind": "css/outline-chapter",
+  "title": "Outline chapter",
+  "description": "A very large chapter number drawn only as a gold outline (-webkit-text-stroke) rises from behind a mask; the title slides in beside it and a rule draws under it. Plain CSS @keyframes, no library.",
+  "source": {
+    "type": "css",
+    "package": "none (browser CSS + Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "chapter",
+  "family": "outline-number","lead": "type",
+  "props": {
+    "number": "required, the chapter number as you want it shown, for example 04",
+    "title": "required, 1-4 words",
+    "kicker": "small caps above the title",
+    "sub": "one line under it"
+  },
+  "example": {
+    "number": "04",
+    "kicker": "Lesson 4 and 5",
+    "title": "Slides and web",
+    "sub": "Motion graphics on things that are not video."
+  },
+  "dur": 2
+}

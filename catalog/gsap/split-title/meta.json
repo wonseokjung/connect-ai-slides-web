@@ -1,0 +1,28 @@
+{
+  "kind": "gsap/split-title",
+  "title": "Split title",
+  "description": "The headline rises letter by letter out of a blur (GSAP SplitText), a gold rule draws, one line fades up under it.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "SplitText"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "title",
+  "family": "split-rise",
+  "lead": "type",
+  "props": {
+    "title": "required, 2-7 words",
+    "kicker": "small caps above, 1-4 words",
+    "sub": "one line under it"
+  },
+  "example": {
+    "kicker": "Lessons 4-5",
+    "title": "Slides and web",
+    "sub": "Motion graphics on things that are not video."
+  },
+  "dur": 1.9
+}

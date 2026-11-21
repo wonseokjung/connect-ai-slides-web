@@ -1,0 +1,65 @@
+{
+  "kind": "gsap/pin-showcase",
+  "title": "Pinned showcase",
+  "description": "A large media stage stays in place while three to five pictures or clips change: each step wipes the next one in with a different mask (GSAP clip-path tweens with step labels), the one before sinks back, and the number, title and line beside it change with a progress line. One click per step on a slide; on a web page the screen stays pinned and the scroll moves through the pictures. A video item plays only while it is on show. Nothing is drawn on the pictures.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0"
+  },
+  "license": "GSAP standard license",
+  "use": "media",
+  "lead": "picture",
+  "family": "pinned-showcase",
+  "site": {
+    "mode": "scrub",
+    "len": 3
+  },
+  "props": {
+    "items": "required, 3-5 of {src, title, label, text, poster, alt, face}: src is a picture or a video (mp4/webm); label is a small line above the title; face is [x, y, w, h] when the picture shows a person",
+    "kicker": "small caps above",
+    "title": "one small line under the kicker"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "Open source by CONNECT AI LAB",
+    "items": [
+      {
+        "src": "media/person.mp4",
+        "poster": "media/person.svg",
+        "face": [
+          0.39,
+          0.2,
+          0.22,
+          0.4
+        ],
+        "title": "Motion graphics on your video",
+        "text": "connect-ai-video-motion",
+        "alt": "Stand-in video of a person on camera",
+        "label": "Lesson 2"
+      },
+      {
+        "src": "media/shot-3.svg",
+        "title": "Motion graphics only",
+        "text": "connect-ai-motion",
+        "alt": "Stand-in picture: a type poster",
+        "label": "Lesson 3"
+      },
+      {
+        "src": "media/shot-4.svg",
+        "title": "Slides and web",
+        "text": "connect-ai-slides-web",
+        "alt": "Stand-in picture: a web page in a window",
+        "label": "Lessons 4-5"
+      },
+      {
+        "src": "media/shot-2.svg",
+        "title": "three.js",
+        "text": "connect-ai-three",
+        "alt": "Stand-in picture: a wireframe 3D object",
+        "label": "Lessons 6-7"
+      }
+    ]
+  },
+  "dur": 6.1
+}

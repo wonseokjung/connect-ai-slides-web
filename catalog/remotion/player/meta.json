@@ -1,0 +1,13 @@
+{
+  "kind": "remotion/player",
+  "title": "Remotion player",
+  "description": "Your own Remotion component (the kind lessons 2 and 3 render to video) played inside the page by @remotion/player and seeked frame by frame by the stage. Without a component the kit's own composition plays: a frame ruler that counts its own frames.",
+  "source": {"type": "remotion", "package": "@remotion/player", "version": "4.0.529"},
+  "license": "MIT (component) + Remotion License",
+  "use": "media",
+  "family": "remotion-player","lead": "type",
+  "props": {"component": "your .tsx next to story.json (default export = the component); empty = the built-in frame ruler", "durationInFrames": "length of your composition (default 90)", "fps": "default 30", "width": "default 1920", "height": "default 1080", "props": "input props for your component", "caption": "one line under it", "kicker": "small caps before the caption", "label": "built-in ruler: the small line above the number", "alt": "what the composition shows"},
+  "component": "Comp.tsx", "fps": 30, "durationInFrames": 90, "width": 1920, "height": 760,
+  "example": {"label": "A Remotion composition", "kicker": "Lessons 2 and 3", "caption": "The components you render to video also play on a slide and on a web page."},
+  "dur": 3.0
+}

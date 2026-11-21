@@ -1,0 +1,13 @@
+{
+  "kind": "hyperframes/player",
+  "title": "HyperFrames player",
+  "description": "Your own HyperFrames block (one HTML file: markup, CSS and a paused GSAP timeline in window.__timelines) played as it is inside an iframe; the stage only moves its timeline. Without a file the kit's own card block plays, a good file to copy and change.",
+  "source": {"type": "hyperframes", "package": "gsap", "version": "3.15.0", "uses": [], "note": "blocks from heygen-com/hyperframes (Apache-2.0) and your own .html files; GSAP plugins a block needs must be listed in the story (see README)"},
+  "license": "MIT (block) + GSAP standard license",
+  "use": "media",
+  "family": "hf-player","lead": "type",
+  "props": {"src": "a HyperFrames .html next to story.json (the build puts it into the page); empty = the built-in card", "canvas": "[width, height] the block was designed for (default 1920x1080)", "dur": "seconds to play (stop before the block's own exit)", "text": "{css selector: words} written into the block before its script runs", "title": "built-in card: the large line", "caption": "built-in card: the line under it", "kicker": "built-in card: small caps above", "scale": "0..1 of the frame (default 0.8)"},
+  "data": ["block.html"],
+  "example": {"kicker": "HyperFrames block", "title": "HTML and a timeline", "caption": "This card is one HTML file with a paused GSAP timeline, played as it is."},
+  "dur": 2.2
+}

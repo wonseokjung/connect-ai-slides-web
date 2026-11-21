@@ -1,0 +1,46 @@
+{
+  "kind": "kit/flow-diagram",
+  "title": "Flow diagram",
+  "description": "One to three cards on the left flow into a gold hub in the middle and out to one to four cards on the right. Every curved line draws itself and a small dot rides its tip once (Web Animations API for the cards and lines, a plain function of time for the dots; no library). The diagram fills the slide; on a phone it runs from top to bottom along a trunk on the left.",
+  "source": {
+    "type": "kit",
+    "package": "none (Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "diagram",
+  "family": "flow-through-hub",
+  "lead": "picture",
+  "props": {
+    "hub": "required, the middle: {title, text} or 1-3 words",
+    "to": "required, 1-4 results on the right: {title, text} or strings",
+    "from": "1-3 inputs on the left: {title, text} or strings",
+    "title": "heading, 3-8 words",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "One story, two stages",
+    "title": "A deck and a website from one story.json",
+    "from": [
+      {
+        "title": "story.json",
+        "text": "A list of scenes."
+      }
+    ],
+    "hub": "connect-ai-slides-web",
+    "to": [
+      {
+        "title": "A deck",
+        "text": "One scene, one slide."
+      },
+      {
+        "title": "A website",
+        "text": "One scene, one screen."
+      },
+      {
+        "title": "A check report",
+        "text": "Type size, contrast, words, motion."
+      }
+    ]
+  },
+  "dur": 2.5
+}

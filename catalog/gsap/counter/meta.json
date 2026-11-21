@@ -1,0 +1,28 @@
+{
+  "kind": "gsap/counter",
+  "title": "Counter",
+  "description": "A very large number counts up to its value in tabular figures while a thin ruler slides under it; unit and one line of label follow (GSAP timeline).",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0"
+  },
+  "license": "GSAP standard license",
+  "use": "number",
+  "family": "ruler-count","lead": "type",
+  "props": {
+    "value": "required, the number (a real one)",
+    "unit": "1-2 words after the number",
+    "label": "one line: what the number is",
+    "kicker": "small caps above",
+    "decimals": "digits after the point (default 0)",
+    "from": "start value (default 0)"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "value": 10,
+    "unit": "lessons",
+    "label": "From motion graphics on your own video to 3D."
+  },
+  "dur": 1.9
+}

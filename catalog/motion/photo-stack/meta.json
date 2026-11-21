@@ -1,0 +1,28 @@
+{
+  "kind": "motion/photo-stack",
+  "title": "Photo stack",
+  "description": "Three to five photo cards fly in one by one and settle into a fanned stack (Motion springs with bounce); the last one lands on top, the largest. The stack takes most of the frame and the title stands beside it. Put a photo of a person last so no card covers it.",
+  "source": {"type": "motion", "package": "motion", "version": "14.14.0"},
+  "license": "MIT",
+  "use": "media",
+  "lead": "picture",
+  "family": "photo-stack",
+  "props": {
+    "items": "required, 3-5 of {src, alt, face} (or plain paths): pictures; the last one lands on top. face is [x, y, w, h] when a picture shows a person (put that one last)",
+    "title": "heading beside the stack",
+    "kicker": "small caps above",
+    "text": "one line under it"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "Motion graphics only",
+    "text": "Lesson 3: connect-ai-motion",
+    "items": [
+      {"src": "media/shot-6.svg", "alt": "Stand-in picture: a road on a map"},
+      {"src": "media/shot-5.svg", "alt": "Stand-in picture: a waveform over a timeline"},
+      {"src": "media/shot-1.svg", "alt": "Stand-in picture: a line chart"},
+      {"src": "media/shot-3.svg", "alt": "Stand-in picture: a type poster"}
+    ]
+  },
+  "dur": 2.5
+}

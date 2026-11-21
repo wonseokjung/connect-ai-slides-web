@@ -1,0 +1,30 @@
+{
+  "kind": "motion/number-ring",
+  "title": "Number ring",
+  "description": "A thin gold ring draws up to a share of the circle (Motion animates the stroke) while the number in the middle counts with it; the meaning stands beside it.",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "number",
+  "family": "ring-number","lead": "picture",
+  "props": {
+    "value": "required, 0-100: how much of the ring fills",
+    "show": "the number in the middle if it is not the percent (for example 5)",
+    "unit": "small caps under the number",
+    "label": "what the number means, 3-8 words",
+    "text": "one more line",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "AI Yahakdang",
+    "value": 71.4,
+    "show": 5,
+    "unit": "of 7 nights",
+    "label": "A free live class, Monday to Friday",
+    "text": "Every weeknight at 8 PM. Theory and practice, for beginners."
+  },
+  "dur": 2
+}

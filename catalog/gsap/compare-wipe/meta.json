@@ -1,0 +1,41 @@
+{
+  "kind": "gsap/compare-wipe",
+  "title": "Compare wipe",
+  "description": "Two columns, each a title and two to four points. The left one is there first; a gold line travels across and the right one is revealed behind it (GSAP timeline on a CSS variable + clip-path). On a slide the reveal waits for a click.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0"
+  },
+  "license": "GSAP standard license",
+  "use": "compare",
+  "family": "wipe-compare","lead": "type",
+  "props": {
+    "left": "required, {tag, title, items: 2-4 short lines}",
+    "right": "required, {tag, title, items: 2-4 short lines}",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "One story, two stages",
+    "left": {
+      "tag": "Stage one",
+      "title": "The deck",
+      "items": [
+        "One scene is one slide",
+        "Steps on click",
+        "Notes, PDF, PPTX"
+      ]
+    },
+    "right": {
+      "tag": "Stage two",
+      "title": "The website",
+      "items": [
+        "One scene is one screen",
+        "Plays as you scroll",
+        "A phone layout too"
+      ]
+    }
+  },
+  "dur": 3
+}

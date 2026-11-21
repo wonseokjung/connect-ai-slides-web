@@ -1,0 +1,13 @@
+{
+  "kind": "gsap/pin-steps",
+  "title": "Pinned steps",
+  "description": "A very large step number on one side and the words on the other are swapped step by step while a progress line fills (GSAP timeline with step labels). One click per step on a slide; on a web page the screen stays pinned and the scroll moves through the steps.",
+  "source": {"type": "gsap", "package": "gsap", "version": "3.15.0"},
+  "license": "GSAP standard license",
+  "use": "steps",
+  "family": "big-number-steps","lead": "type",
+  "props": {"steps": "required, 2-6 of {title, text}", "kicker": "small caps above", "title": "one small line under the kicker"},
+  "site": {"mode": "scrub", "len": 2},
+  "example": {"kicker": "connect-ai-slides-web", "title": "From one story to two stages", "steps": [{"title": "Write the story", "text": "One story.json: a list of scenes."}, {"title": "Build both", "text": "A deck and a one-page website come out together."}, {"title": "Check the screen", "text": "Type size, contrast, words and motion are measured."}]},
+  "dur": 4.3
+}

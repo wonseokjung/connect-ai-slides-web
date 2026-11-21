@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- connect-ai-slides-web: a drawn stand-in for "a person on camera". CC0. Face box = [0.39, 0.2, 0.22, 0.4] -->
+  <defs>
+    <radialGradient id="g" cx="62%" cy="38%" r="75%"><stop offset="0" stop-color="#2A2219"/><stop offset="1" stop-color="#0D0B09"/></radialGradient>
+    <linearGradient id="s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9C9A6"/><stop offset="1" stop-color="#C79A72"/></linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g)"/>
+  <g stroke="#3A2F22" stroke-width="2" fill="none" opacity="0.8"><path d="M1240 0v1080M1500 0v1080M1760 0v1080M1120 300h800M1120 620h800"/></g>
+  <circle cx="1380" cy="210" r="46" fill="#F2B45A" opacity="0.5"/><circle cx="1650" cy="470" r="30" fill="#F2B45A" opacity="0.35"/>
+  <path d="M560 1080c20-250 170-360 400-360s380 110 400 360z" fill="#2B2A2E"/>
+  <rect x="900" y="590" width="120" height="170" rx="46" fill="#C79A72"/>
+  <ellipse cx="960" cy="430" rx="170" ry="205" fill="url(#s)"/>
+  <path d="M786 400c-6-150 86-232 180-232s190 76 172 236c-30-86-110-128-190-128s-140 44-162 124z" fill="#1C1814"/>
+</svg>

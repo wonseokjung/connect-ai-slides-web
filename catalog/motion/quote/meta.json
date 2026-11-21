@@ -1,0 +1,25 @@
+{
+  "kind": "motion/quote",
+  "title": "Quote",
+  "description": "A large serif quotation rises line by line from behind a mask (Motion animate + stagger over the lines the browser made), then a gold rule and the name settle under it.",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "quote",
+  "family": "quote-lines",
+  "lead": "type",
+  "props": {
+    "text": "required, the words exactly as they were said, up to 24 words",
+    "by": "who said it",
+    "role": "their role, small"
+  },
+  "example": {
+    "text": "How would I teach AI to the person I love most?",
+    "by": "AI Mentor Jay",
+    "role": "CONNECT AI LAB"
+  },
+  "dur": 2.1
+}

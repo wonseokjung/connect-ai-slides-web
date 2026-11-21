@@ -1,0 +1,24 @@
+{
+  "kind": "anime/letter-wave",
+  "title": "Letter wave",
+  "description": "The letters of one large line rise like a wave from the centre outwards and overshoot a little (anime.js stagger from: 'center', outBack) while the tracking closes in; a rule opens under it.",
+  "source": {
+    "type": "anime",
+    "package": "animejs",
+    "version": "4.5.0"
+  },
+  "license": "MIT",
+  "use": "title",
+  "family": "letter-wave","lead": "type",
+  "props": {
+    "word": "required, 1-3 words",
+    "kicker": "small caps above",
+    "sub": "one line under it"
+  },
+  "example": {
+    "kicker": "Open source by",
+    "word": "CONNECT AI LAB",
+    "sub": "AI education for everyone."
+  },
+  "dur": 1.7
+}

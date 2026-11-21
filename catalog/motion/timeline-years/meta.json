@@ -1,0 +1,43 @@
+{
+  "kind": "motion/timeline-years",
+  "title": "Timeline years",
+  "description": "A line draws across and two to five large year markers spring up on it one after another (Motion spring), each with one line under it. On a slide each click shows the next year; on a phone the line runs down.",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "timeline",
+  "family": "year-line",
+  "lead": "type",
+  "props": {
+    "items": "required, 2-5 items: {when, text}",
+    "title": "heading",
+    "kicker": "small caps above",
+    "click": "false = no click steps on a slide"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "items": [
+      {
+        "when": "02",
+        "text": "Motion graphics on your video."
+      },
+      {
+        "when": "04",
+        "text": "Slides and web."
+      },
+      {
+        "when": "06",
+        "text": "three.js."
+      },
+      {
+        "when": "08",
+        "text": "Blender."
+      }
+    ],
+    "title": "The lesson map"
+  },
+  "dur": 2.6
+}

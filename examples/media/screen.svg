@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" font-family="Inter, -apple-system, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif">
+  <!-- connect-ai-slides-web: a drawn stand-in for "a screenshot of your result". CC0. -->
+  <rect width="1920" height="1080" fill="#100E0B"/>
+  <rect x="0" y="0" width="1920" height="84" fill="#16130F"/>
+  <text x="72" y="52" font-size="20" letter-spacing="7" fill="#F6F3EC">YOUR BRAND</text>
+  <g font-size="20" fill="#B9B0A0"><text x="1380" y="52">Work</text><text x="1492" y="52">About</text></g>
+  <rect x="1620" y="24" width="228" height="40" rx="20" fill="#F2B45A"/><text x="1734" y="51" font-size="19" text-anchor="middle" fill="#14100A">Get in touch</text>
+  <text x="72" y="270" font-size="22" letter-spacing="8" fill="#F2B45A">STAND-IN SCREEN</text>
+  <text x="72" y="410" font-size="128" font-weight="200" letter-spacing="-4" fill="#F6F3EC">Your result</text>
+  <text x="72" y="550" font-size="128" font-weight="200" letter-spacing="-4" fill="#F6F3EC">goes here</text>
+  <rect x="72" y="610" width="230" height="3" fill="#D6892A"/>
+  <text x="72" y="690" font-size="32" font-weight="300" fill="#B9B0A0">Put a screenshot or a screen recording in this window.</text>
+  <g fill="none" stroke="#3A3228" stroke-width="2">
+    <rect x="1120" y="200" width="728" height="460" rx="24"/>
+    <path d="M1120 520 L1330 380 L1500 490 L1640 410 L1848 560"/>
+    <circle cx="1690" cy="300" r="44"/>
+  </g>
+  <g fill="#1A1611" stroke="#3A3228" stroke-width="2">
+    <rect x="72" y="800" width="560" height="200" rx="22"/><rect x="680" y="800" width="560" height="200" rx="22"/><rect x="1288" y="800" width="560" height="200" rx="22"/>
+  </g>
+  <g font-size="20" letter-spacing="5" fill="#F2B45A"><text x="108" y="856">01</text><text x="716" y="856">02</text><text x="1324" y="856">03</text></g>
+  <g fill="#3A3228"><rect x="108" y="900" width="320" height="14" rx="7"/><rect x="108" y="936" width="220" height="14" rx="7"/><rect x="716" y="900" width="320" height="14" rx="7"/><rect x="716" y="936" width="220" height="14" rx="7"/><rect x="1324" y="900" width="320" height="14" rx="7"/><rect x="1324" y="936" width="220" height="14" rx="7"/></g>
+</svg>

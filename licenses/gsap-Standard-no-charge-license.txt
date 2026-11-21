@@ -1,0 +1,25 @@
+GSAP (GreenSock Animation Platform) 3.15.0
+https://gsap.com
+
+GSAP is not under an OSI open-source licence. It is under GreenSock's (Webflow's)
+standard "no charge" license. The full text is not reproduced here. Read it at:
+
+  https://gsap.com/standard-license
+  (the same text is served at https://gsap.com/community/standard-license/)
+
+What the gsap package itself says:
+
+  package.json "license":
+    Standard 'no charge' license: https://gsap.com/standard-license.
+
+  header of every file in gsap/dist:
+    GSAP 3.15.0
+    https://gsap.com
+    @license Copyright 2026, GreenSock. All rights reserved.
+    Subject to the terms at https://gsap.com/standard-license.
+    @author: Jack Doyle, jack@greensock.com
+
+connect-ai-slides-web does not contain GSAP source code. `npm install` downloads the
+gsap package from npm. When a story uses a gsap/* or hyperframes/* block, `build`
+copies gsap.min.js and the plugins that block needs, unchanged and with their
+licence header, into your own out/<stage>/assets/vendor/ folder. Keep that header.

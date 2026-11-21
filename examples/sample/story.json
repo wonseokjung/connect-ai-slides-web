@@ -1,0 +1,211 @@
+{
+  "title": "One story, two stages",
+  "description": "A sample made with connect-ai-slides-web: the same story as a deck and as a one-page website.",
+  "lang": "en",
+  "look": "connect",
+  "brand": {
+    "name": "connect-ai-slides-web",
+    "links": [
+      {
+        "label": "Catalog",
+        "href": "https://github.com/wonseokjung/connect-ai-slides-web#catalog"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/wonseokjung/connect-ai-slides-web"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "open",
+      "kind": "kit/film-hero",
+      "src": "media/person.mp4",
+      "poster": "media/person.svg",
+      "face": [
+        0.39,
+        0.2,
+        0.22,
+        0.4
+      ],
+      "body": [
+        0.27,
+        0.16,
+        0.46,
+        0.84
+      ],
+      "alt": "A drawn stand-in for a person on camera",
+      "kicker": "connect-ai-slides-web",
+      "title": "One story, a deck and a website",
+      "sub": "Motion graphics on slides and on a web page.",
+      "name": "Your name here",
+      "notes": "This sample is the kit explaining itself. The picture is a drawn stand-in: put your own video or photo here and give its face box."
+    },
+    {
+      "id": "flow",
+      "kind": "kit/flow-diagram",
+      "kicker": "One story, two stages",
+      "title": "A deck and a website from one story.json",
+      "from": [
+        {
+          "title": "story.json",
+          "text": "A list of scenes."
+        }
+      ],
+      "hub": "connect-ai-slides-web",
+      "to": [
+        {
+          "title": "A deck",
+          "text": "One scene, one slide."
+        },
+        {
+          "title": "A website",
+          "text": "One scene, one screen."
+        },
+        {
+          "title": "A check report",
+          "text": "Type size, contrast, words, motion."
+        }
+      ],
+      "notes": "One story.json holds the scenes. The build makes a deck and a one-page website from it, and the check measures both."
+    },
+    {
+      "id": "stages",
+      "kind": "kit/split-film",
+      "kicker": "The same scene",
+      "title": "One story, two stages",
+      "left": {
+        "src": "media/shot-3.svg",
+        "label": "On a slide",
+        "text": "The deck: 1920 x 1080",
+        "alt": "Stand-in picture: a type poster"
+      },
+      "right": {
+        "src": "media/shot-4.svg",
+        "label": "On a website",
+        "text": "The page: 1440 wide, 390 on a phone",
+        "alt": "Stand-in picture: a web page in a window"
+      },
+      "notes": "Every block is laid out for a slide, a web page and a phone."
+    },
+    {
+      "id": "sources",
+      "kind": "gsap/kinetic-type",
+      "kicker": "9 motion sources, one contract",
+      "words": [
+        "GSAP",
+        "Motion",
+        "Lottie",
+        "CSS"
+      ],
+      "gold": "CSS",
+      "notes": "GSAP, Motion, anime.js, CSS, Lottie, HyperFrames, Remotion, video clips and the kit's own blocks all become one seekable block."
+    },
+    {
+      "id": "show",
+      "kind": "gsap/pin-showcase",
+      "kicker": "Pictures lead",
+      "title": "Your pictures and clips, one per step",
+      "items": [
+        {
+          "src": "media/shot-1.svg",
+          "label": "Step 1",
+          "title": "A chart",
+          "text": "A picture fills the stage.",
+          "alt": "Stand-in picture: a line chart"
+        },
+        {
+          "src": "media/reel-2.mp4",
+          "poster": "media/shot-4.svg",
+          "label": "Step 2",
+          "title": "A clip",
+          "text": "A clip plays while it is on stage.",
+          "alt": "Stand-in clip: one story file feeds a slide and a web page"
+        },
+        {
+          "src": "media/shot-2.svg",
+          "label": "Step 3",
+          "title": "A 3D still",
+          "text": "One click per picture on a slide.",
+          "alt": "Stand-in picture: a wireframe 3D object"
+        },
+        {
+          "src": "media/shot-6.svg",
+          "label": "Step 4",
+          "title": "A map",
+          "text": "On a web page the scroll moves through them.",
+          "alt": "Stand-in picture: a road on a map"
+        }
+      ],
+      "notes": "One click per picture. On the website this screen stays pinned while you scroll."
+    },
+    {
+      "id": "frames",
+      "kind": "motion/compare-bars",
+      "kicker": "The check",
+      "title": "One block, three frames",
+      "unit": "px wide",
+      "grouping": false,
+      "items": [
+        {
+          "label": "Slide",
+          "value": 1920
+        },
+        {
+          "label": "Web page",
+          "value": 1440
+        },
+        {
+          "label": "Phone",
+          "value": 390
+        }
+      ],
+      "notes": "The check opens every scene at these three sizes."
+    },
+    {
+      "id": "phone",
+      "kind": "kit/device-phone",
+      "src": "media/phone-shot.svg",
+      "kicker": "One block, three frames",
+      "title": "Your page on a phone",
+      "text": "The same story.json, laid out again for a 390 px screen.",
+      "note": "npx connect-ai-slides-web check",
+      "tilt": 4,
+      "alt": "A stand-in for a website on a phone",
+      "notes": "The phone layout is checked too: type size, sideways scroll, tap targets."
+    },
+    {
+      "id": "measures",
+      "kind": "lottie/check-list",
+      "kicker": "What it measures",
+      "title": "The screen, not the code",
+      "items": [
+        "Type size and contrast",
+        "Words on one screen",
+        "Nothing on a face"
+      ],
+      "notes": "The report is written in sentences: what, where, and how to fix it."
+    },
+    {
+      "id": "scene",
+      "kind": "kit/embed-scene",
+      "src": "media/scene.html",
+      "clip": "media/reel-3.mp4",
+      "poster": "media/shot-2.svg",
+      "kicker": "Live",
+      "title": "A live scene in the slide",
+      "caption": "One html file in an iframe, not a screen recording.",
+      "hint": "canvas",
+      "alt": "A stand-in scene: a wireframe solid turning above a floor grid",
+      "notes": "Any one-file html page, for example a three.js scene, runs live in the deck and on the website."
+    },
+    {
+      "id": "end",
+      "kind": "css/light-sweep",
+      "kicker": "Your turn",
+      "word": "Make yours",
+      "sub": "npx connect-ai-slides-web new my-talk",
+      "notes": "The new command writes a three-scene starter."
+    }
+  ]
+}

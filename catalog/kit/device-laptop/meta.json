@@ -1,0 +1,21 @@
+{
+  "kind": "kit/device-laptop",
+  "title": "Long page in a laptop",
+  "description": "A laptop drawn in CSS (no brand) opens its lid, then your long screenshot scrolls from top to bottom inside the screen with a small gold scroll thumb. On a web page the block stays pinned and your own scroll moves the page in the laptop; a video simply plays. The screen is two thirds of the slide width. On a phone it becomes a tall browser window. For screens, not for portraits.",
+  "source": {"type": "kit", "package": "none (Web Animations API)"},
+  "license": "MIT",
+  "use": "media",
+  "lead": "picture",
+  "family": "laptop-scroll",
+  "site": {"mode": "scrub", "len": 2},
+  "props": {
+    "src": "required, one tall picture of the whole page (full-page screenshot), or a video (mp4/webm) of the screen",
+    "caption": "one line under the laptop",
+    "kicker": "small caps before the caption",
+    "seconds": "how long the whole block runs on a slide (default 6)",
+    "poster": "still shown before the video loads",
+    "alt": "what the page shows"
+  },
+  "example": {"src": "media/page-long.svg", "kicker": "Scroll to move the page", "caption": "A website from the same story.json as the deck.", "alt": "A stand-in for a long web page: a hero, three cards, a line chart and an end card"},
+  "dur": 6
+}

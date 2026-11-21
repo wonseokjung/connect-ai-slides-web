@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" font-family="Inter, -apple-system, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif">
+  <!-- connect-ai-slides-web: a drawn stand-in for "a picture of your result" (3 of 6: a big type poster). CC0. -->
+  <rect width="1920" height="1080" fill="#0B0A08"/>
+  <rect width="760" height="1080" fill="#D6892A"/>
+  <circle cx="760" cy="540" r="330" fill="#D07A63"/>
+  <path d="M760 210a330 330 0 0 1 0 660z" fill="#EBE2D2"/>
+  <text x="96" y="720" font-size="560" font-weight="200" letter-spacing="-30" fill="#0B0A08">A</text>
+  <text x="1090" y="720" font-size="560" font-weight="200" letter-spacing="-30" fill="#EBE2D2">a</text>
+  <path d="M1470 250H1848M1470 720H1848" stroke="#F2B45A" stroke-width="4"/>
+  <g fill="#EBE2D2" fill-opacity=".8"><rect x="1470" y="300" width="378" height="18" rx="9"/><rect x="1470" y="346" width="290" height="18" rx="9"/><rect x="1470" y="392" width="336" height="18" rx="9"/></g>
+  <g fill="#EBE2D2" fill-opacity=".3"><rect x="1470" y="770" width="378" height="10" rx="5"/><rect x="1470" y="800" width="240" height="10" rx="5"/><rect x="1470" y="830" width="320" height="10" rx="5"/></g>
+  <g fill="#F2B45A"><circle cx="1470" cy="470" r="5"/><circle cx="1524" cy="470" r="5"/><circle cx="1578" cy="470" r="5"/><circle cx="1632" cy="470" r="5"/><circle cx="1686" cy="470" r="5"/><circle cx="1740" cy="470" r="5"/><circle cx="1794" cy="470" r="5"/><circle cx="1848" cy="470" r="5"/><circle cx="1470" cy="524" r="5"/><circle cx="1524" cy="524" r="5"/><circle cx="1578" cy="524" r="5"/><circle cx="1632" cy="524" r="5"/><circle cx="1686" cy="524" r="5"/><circle cx="1740" cy="524" r="5"/><circle cx="1794" cy="524" r="5"/><circle cx="1848" cy="524" r="5"/><circle cx="1470" cy="578" r="5"/><circle cx="1524" cy="578" r="5"/><circle cx="1578" cy="578" r="5"/><circle cx="1632" cy="578" r="5"/><circle cx="1686" cy="578" r="5"/><circle cx="1740" cy="578" r="5"/><circle cx="1794" cy="578" r="5"/><circle cx="1848" cy="578" r="5"/><circle cx="1470" cy="632" r="5"/><circle cx="1524" cy="632" r="5"/><circle cx="1578" cy="632" r="5"/><circle cx="1632" cy="632" r="5"/><circle cx="1686" cy="632" r="5"/><circle cx="1740" cy="632" r="5"/><circle cx="1794" cy="632" r="5"/><circle cx="1848" cy="632" r="5"/></g>
+  <path d="M96 96H664M96 150H380" stroke="#0B0A08" stroke-width="4"/>
+  <rect x="96" y="800" width="568" height="4" fill="#0B0A08"/>
+  <text x="1848" y="1012" font-size="20" letter-spacing="8" text-anchor="end" fill="#F2B45A">TYPE POSTER</text>
+  <text x="72" y="1012" font-size="20" letter-spacing="8" fill="#0B0A08" fill-opacity=".8">YOUR PICTURE 3</text>
+</svg>

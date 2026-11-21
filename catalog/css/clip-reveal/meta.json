@@ -1,0 +1,36 @@
+{
+  "kind": "css/clip-reveal",
+  "title": "Clip reveal",
+  "description": "A portrait picture opens from a small circle to the full rounded frame (CSS clip-path keyframes) while it settles from a slight zoom; a gold edge draws and the words slide in beside it. No library. Give a face box for a person: the words stay outside the picture.",
+  "source": {
+    "type": "css",
+    "package": "none (browser CSS + Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "media",
+  "family": "clip-portrait","lead": "picture",
+  "props": {
+    "src": "required, image or video (mp4/webm)",
+    "title": "2-8 words beside the picture",
+    "text": "one or two lines",
+    "kicker": "small caps above",
+    "face": "[x, y, w, h] of the face in 0..1 of the picture, if a person is in it",
+    "side": "left (default) or right: where the picture goes",
+    "poster": "still shown before a video loads",
+    "alt": "what the picture shows"
+  },
+  "example": {
+    "src": "media/person.svg",
+    "face": [
+      0.39,
+      0.2,
+      0.22,
+      0.4
+    ],
+    "kicker": "AI Mentor Jay",
+    "title": "The most beautiful way to learn AI",
+    "text": "CONNECT AI LAB: AI education for everyone.",
+    "alt": "AI Mentor Jay at his desk at night"
+  },
+  "dur": 2
+}

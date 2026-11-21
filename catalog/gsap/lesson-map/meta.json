@@ -1,0 +1,32 @@
+{
+  "kind": "gsap/lesson-map",
+  "title": "Lesson map",
+  "description": "A wide road with a gold centre line is drawn across the whole screen (GSAP DrawSVG, a runner on MotionPath) and four to seven stops light up as the line arrives: a picture card, the lesson, its title and its tool. One stop is \"now\" and is gold. On a slide two stops come per click; on a web page the screen stays pinned and the scroll draws the road; on a phone the road runs down the side.",
+  "source": {"type": "gsap", "package": "gsap", "version": "3.15.0", "uses": ["DrawSVGPlugin", "MotionPathPlugin"]},
+  "license": "GSAP standard license",
+  "use": "timeline",
+  "family": "road-map-cards",
+  "lead": "picture",
+  "props": {
+    "stops": "required, 4-7 of {when, title, tool, src, alt}: when = small caps (Lesson 2), tool = small mono line, src = picture of the result (a numbered circle without it)",
+    "now": "which stop is gold, counted from 1",
+    "title": "short heading, 2-5 words",
+    "kicker": "small caps before the heading",
+    "click": "false = the whole road in one go on a slide (default: two stops per click)"
+  },
+  "site": {"mode": "scrub", "len": 3},
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "The lesson map",
+    "now": 3,
+    "stops": [
+      {"when": "Lesson 2", "title": "Motion graphics on your video", "tool": "connect-ai-video-motion", "src": "media/shot-1.svg", "alt": "Lesson 2 result: motion graphics on a video"},
+      {"when": "Lesson 3", "title": "Motion graphics only", "tool": "connect-ai-motion", "src": "media/shot-2.svg", "alt": "Lesson 3 result: motion graphics only"},
+      {"when": "Lessons 4-5", "title": "Slides and web", "tool": "connect-ai-slides-web", "src": "media/shot-3.svg", "alt": "Lessons 4-5 result: a deck and a website"},
+      {"when": "Lessons 6-7", "title": "three.js", "tool": "connect-ai-three", "src": "media/shot-4.svg", "alt": "Lessons 6-7 result: a three.js scene"},
+      {"when": "Lessons 8-9", "title": "Blender", "tool": "connect-ai-blender", "src": "media/shot-5.svg", "alt": "Lessons 8-9 result: a Blender render"},
+      {"when": "Lesson 10", "title": "The library", "tool": "connect-ai-library", "src": "media/shot-6.svg", "alt": "Lesson 10 result: the library"}
+    ]
+  },
+  "dur": 5.8
+}

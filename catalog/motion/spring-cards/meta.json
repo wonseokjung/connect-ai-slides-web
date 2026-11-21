@@ -1,0 +1,38 @@
+{
+  "kind": "motion/spring-cards",
+  "title": "Spring cards",
+  "description": "Three or four numbered cards jump up from below, lean a little and settle upright (Motion spring with bounce, staggered).",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "list",
+  "family": "spring-cards",
+  "lead": "type",
+  "props": {
+    "items": "required, 3-4 items: {title, text} or strings",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "Lessons 2 to 9",
+    "items": [
+      {
+        "title": "Video",
+        "text": "Motion graphics on your own footage."
+      },
+      {
+        "title": "Slides and web",
+        "text": "The same motion, off the timeline."
+      },
+      {
+        "title": "3D",
+        "text": "three.js in the browser, then Blender."
+      }
+    ]
+  },
+  "dur": 2
+}

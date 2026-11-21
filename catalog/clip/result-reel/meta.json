@@ -1,0 +1,23 @@
+{
+  "kind": "clip/result-reel",
+  "title": "Result reel",
+  "description": "A reel of two to four result clips: one plays large (about 70 % of the slide width) while the others wait as stills in small frames beside it, and at every step the large clip and the next one trade places. One click per clip on a slide; on a web page the block stays pinned and the scroll moves through the reel and winds the film to the exact frame. The labels stand under the pictures, nothing is drawn on them.",
+  "source": {"type": "clip", "package": "none (HTML video element)"},
+  "license": "MIT",
+  "use": "media",
+  "lead": "picture",
+  "family": "clip-reel",
+  "site": {"mode": "scrub", "len": 2.5},
+  "props": {
+    "items": "required, 2-4 of {src: mp4/webm (a key frame every half second scrubs smoothly) or a picture, label: small caps (for example the lesson), title: 2-5 words, poster, at: second of the clip to start from, alt}",
+    "seconds": "how long each clip is large before the next step (default 2)"
+  },
+  "example": {
+    "items": [
+      {"src": "media/reel-1.mp4", "label": "Lesson 3", "title": "Motion graphics only", "alt": "Stand-in clip: layered waves under a sun"},
+      {"src": "media/reel-2.mp4", "label": "Lessons 4-5", "title": "Slides and web", "alt": "Stand-in clip: one story file feeds a slide and a web page"},
+      {"src": "media/reel-3.mp4", "label": "Lessons 6-7", "title": "three.js", "alt": "Stand-in clip: a wireframe solid turning above a floor grid"}
+    ]
+  },
+  "dur": 6.2
+}

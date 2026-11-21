@@ -1,0 +1,29 @@
+{
+  "kind": "lottie/stroke-title",
+  "title": "Stroke title",
+  "description": "A large line emblem (two open arcs, five ticks and one marker, a Lottie file played by lottie-web) draws beside a title while the words rise.",
+  "source": {
+    "type": "lottie",
+    "package": "lottie-web",
+    "version": "5.13.0",
+    "note": "anim.json is written by tools/make-lottie.mjs (our own shapes, CC0)"
+  },
+  "license": "MIT",
+  "use": "title",
+  "family": "lottie-emblem",
+  "lead": "type",
+  "props": {
+    "title": "required, 2-6 words",
+    "kicker": "small caps above",
+    "sub": "one line under it"
+  },
+  "data": [
+    "anim.json"
+  ],
+  "example": {
+    "kicker": "CONNECT AI LAB",
+    "title": "Visual Vibe Coding",
+    "sub": "Lessons 2 to 10: video, slides, websites and 3D."
+  },
+  "dur": 2.3
+}

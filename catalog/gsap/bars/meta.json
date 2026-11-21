@@ -1,0 +1,47 @@
+{
+  "kind": "gsap/bars",
+  "title": "Bars",
+  "description": "Two to six horizontal bars grow to their values with a small overshoot (GSAP CustomEase) and the number at the end of each bar counts with it. One bar is gold.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "CustomEase"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "bar-grow","lead": "picture",
+  "props": {
+    "items": "required, 2-6 of {label, value, color: 2 or 3 for a content colour}",
+    "unit": "short unit after each number",
+    "title": "heading",
+    "kicker": "small caps above",
+    "highlight": "which bar is gold, counted from 1 (default: the largest)",
+    "decimals": "digits after the point (default 0)",
+    "note": "one small line under the chart"
+  },
+  "example": {
+    "kicker": "connect-ai-slides-web",
+    "title": "One block, three frames",
+    "unit": "px wide",
+    "items": [
+      {
+        "label": "Slide",
+        "value": 1920
+      },
+      {
+        "label": "Web page",
+        "value": 1440
+      },
+      {
+        "label": "Phone",
+        "value": 390
+      }
+    ],
+    "highlight": 3,
+    "note": "The check opens every scene at all three sizes."
+  },
+  "dur": 2.5
+}

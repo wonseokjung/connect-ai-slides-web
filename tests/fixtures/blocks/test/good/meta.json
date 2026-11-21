@@ -1,0 +1,1 @@
+{"kind": "test/good", "title": "Test good", "description": "A block that is wrong on purpose, for the tests.", "source": {"type": "kit", "package": "none"}, "license": "MIT", "use": "statement", "family": "test-good", "props": {"text": "text"}, "example": {"text": "Hello"}}

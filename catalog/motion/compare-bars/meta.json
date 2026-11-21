@@ -1,0 +1,45 @@
+{
+  "kind": "motion/compare-bars",
+  "title": "Compare bars",
+  "description": "Two to four thick bars grow from one gold axis to their share of the frame width on a spring (Motion). The label sits inside its bar and is uncovered as the bar grows, and the large value rides the tip. A label that does not fit inside a short bar moves to the right of it.",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "chart",
+  "family": "thick-bars-label-inside",
+  "lead": "picture",
+  "props": {
+    "items": "required, 2-4 of {label, value, color: 2 or 3 for a content colour}: real numbers",
+    "unit": "short unit after each value",
+    "title": "heading, 3-7 words",
+    "kicker": "small caps above",
+    "highlight": "which bar is gold, counted from 1 (default: the largest)",
+    "decimals": "digits after the point (default 0)",
+    "grouping": "false = no thousands separator (1920, not 1,920)",
+    "note": "one small line under the bars"
+  },
+  "example": {
+    "kicker": "connect-ai-slides-web",
+    "title": "One block, three frames",
+    "unit": "px wide",
+    "grouping": false,
+    "items": [
+      {
+        "label": "Slide",
+        "value": 1920
+      },
+      {
+        "label": "Web page",
+        "value": 1440
+      },
+      {
+        "label": "Phone",
+        "value": 390
+      }
+    ]
+  },
+  "dur": 2.4
+}

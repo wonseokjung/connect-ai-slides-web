@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" font-family="Inter, -apple-system, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif">
+  <!-- connect-ai-slides-web: a drawn stand-in for "a picture of your result" (1 of 6: a line chart). CC0. -->
+  <defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D6892A" stop-opacity=".46"/><stop offset="1" stop-color="#D6892A" stop-opacity="0"/></linearGradient></defs>
+  <rect width="1920" height="1080" fill="#0B0A08"/>
+  <path d="M0 180H1920M0 380H1920M0 580H1920M0 780H1920M0 980H1920M320 0V1080M640 0V1080M960 0V1080M1280 0V1080M1600 0V1080" stroke="#EBE2D2" stroke-opacity=".1" stroke-width="2"/>
+  <path d="M0 880C80 880 80 850 160 850C240 850 240 790 320 790C400 790 400 800 480 800C560 800 560 700 640 700C720 700 720 640 800 640C880 640 880 660 960 660C1040 660 1040 520 1120 520C1200 520 1200 470 1280 470C1360 470 1360 330 1440 330C1520 330 1520 300 1600 300C1680 300 1680 190 1760 190C1840 190 1840 130 1920 130V1080H0Z" fill="url(#a)"/>
+  <path d="M0 760C120 760 120 780 240 780C360 780 360 690 480 690C600 690 600 720 720 720C840 720 840 600 960 600C1080 600 1080 640 1200 640C1320 640 1320 540 1440 540C1560 540 1560 560 1680 560C1800 560 1800 470 1920 470" fill="none" stroke="#7FB2D0" stroke-width="4" stroke-dasharray="3 16" stroke-linecap="round"/>
+  <path d="M0 880C80 880 80 850 160 850C240 850 240 790 320 790C400 790 400 800 480 800C560 800 560 700 640 700C720 700 720 640 800 640C880 640 880 660 960 660C1040 660 1040 520 1120 520C1200 520 1200 470 1280 470C1360 470 1360 330 1440 330C1520 330 1520 300 1600 300C1680 300 1680 190 1760 190C1840 190 1840 130 1920 130" fill="none" stroke="#F2B45A" stroke-width="6"/>
+  <path d="M1440 330V980" stroke="#EBE2D2" stroke-opacity=".5" stroke-width="2"/>
+  <g fill="#0B0A08" stroke="#F2B45A" stroke-width="5"><circle cx="640" cy="700" r="13"/><circle cx="1120" cy="520" r="13"/><circle cx="1760" cy="190" r="13"/></g>
+  <circle cx="1440" cy="330" r="22" fill="#F2B45A"/>
+  <g fill="#EBE2D2" fill-opacity=".34"><rect x="1476" y="262" width="150" height="12" rx="6"/><rect x="1476" y="290" width="92" height="12" rx="6"/></g>
+  <text x="72" y="132" font-size="20" letter-spacing="8" fill="#EBE2D2" fill-opacity=".62">YOUR PICTURE 1</text>
+</svg>

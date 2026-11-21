@@ -1,0 +1,23 @@
+{
+  "kind": "kit/device-phone",
+  "title": "Site on a phone",
+  "description": "Your website on a phone: a phone drawn in CSS (no brand, no logo) rises from below, turns from a tilt to upright and its screen lights up with your tall screenshot or screen recording. The words stand beside it. The phone is 84 % of the slide height. For screens and results, not for portraits.",
+  "source": {"type": "kit", "package": "none (Web Animations API)"},
+  "license": "MIT",
+  "use": "media",
+  "lead": "picture",
+  "family": "phone-mockup",
+  "props": {
+    "src": "required, a tall picture (about 9:19.5) or a tall video (mp4/webm) of the screen",
+    "title": "2-6 words beside the phone",
+    "kicker": "small caps above",
+    "text": "one line under the title",
+    "note": "small line with a gold rule",
+    "tilt": "how far the phone leans when it has landed, in degrees (-12 to 12, default 0 = upright)",
+    "side": "left (default) or right: where the words go",
+    "poster": "still shown before the video loads",
+    "alt": "what the screen shows"
+  },
+  "example": {"src": "media/phone-shot.svg", "kicker": "One block, three frames", "title": "The demo website on a phone", "text": "The same story.json, laid out again for a 390 px screen.", "note": "npx connect-ai-slides-web demo", "tilt": 4, "alt": "A stand-in for a website on a phone"},
+  "dur": 2.5
+}

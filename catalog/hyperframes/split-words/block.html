@@ -1,0 +1,29 @@
+<!-- connect-ai-slides-web: a HyperFrames-format block (HTML + CSS + paused GSAP timeline). MIT. -->
+<template id="split-words-template">
+  <div data-composition-id="split-words" data-width="1400" data-height="340" data-duration="2">
+    <div class="kicker"></div>
+    <div class="line">Make it with words</div>
+    <style>
+      [data-composition-id="split-words"] { position: relative; width: 100vw; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding-left: 40px; box-sizing: border-box; font-family: "Inter", -apple-system, "Helvetica Neue", "Segoe UI", Arial, sans-serif; }
+      [data-composition-id="split-words"] .kicker { font-size: 30px; letter-spacing: 0.34em; text-transform: uppercase; color: #F2B45A; font-weight: 400; margin: 0 0 14px 6px; white-space: nowrap; }
+      [data-composition-id="split-words"] .kicker:empty { display: none; }
+      [data-composition-id="split-words"] .line { font-size: 140px; font-weight: 200; color: #F6F3EC; letter-spacing: -0.03em; white-space: nowrap; line-height: 1.15; }
+      [data-composition-id="split-words"] .w { display: inline-block; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+    <script>
+      (function () {
+        gsap.registerPlugin(SplitText);
+        var root = '[data-composition-id="split-words"] ';
+        var split = SplitText.create(root + '.line', { type: 'words', wordsClass: 'w', mask: 'words' });
+        split.words[split.words.length - 1].style.color = '#F2B45A';
+        var tl = gsap.timeline({ paused: true });
+        tl.fromTo(root + '.kicker', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, 0);
+        tl.from(split.words, { yPercent: 110, rotate: 4, duration: 0.8, ease: 'expo.out', stagger: 0.12 }, 0.12);
+        window.__timelines = window.__timelines || {};
+        window.__timelines['split-words'] = tl;
+      })();
+    </script>
+  </div>
+</template>

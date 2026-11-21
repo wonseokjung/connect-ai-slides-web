@@ -1,0 +1,42 @@
+{
+  "kind": "clip/scrub-video",
+  "title": "Scrub video",
+  "description": "A video clip you move with the scroll: on a web page it stays pinned while the scroll winds the film forward and back; on a slide it plays once. A time code and a thin gold line follow the picture. Give the face box and the words stay beside the person.",
+  "source": {
+    "type": "clip",
+    "package": "none (HTML video element)"
+  },
+  "license": "MIT",
+  "use": "media",
+  "family": "scrub-film","lead": "picture",
+  "site": {
+    "mode": "scrub",
+    "len": 2
+  },
+  "props": {
+    "src": "required, mp4 or webm (a key frame every second or closer scrubs smoothly)",
+    "title": "heading beside the picture",
+    "kicker": "small caps above",
+    "text": "one or two lines",
+    "seconds": "how much of the clip to use (default: the first 6 s)",
+    "face": "[x, y, w, h] of the face in 0..1 of the picture",
+    "side": "left (default) or right: where the words go",
+    "poster": "still shown before the video loads",
+    "alt": "what the clip shows"
+  },
+  "example": {
+    "src": "media/person.mp4",
+    "face": [
+      0.39,
+      0.2,
+      0.22,
+      0.4
+    ],
+    "seconds": 6,
+    "kicker": "Scroll to play",
+    "title": "Your scroll is the play head",
+    "text": "On a slide the same clip simply plays.",
+    "poster": "media/person.svg"
+  },
+  "dur": 6
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "lottie/check-list",
+  "title": "Check list",
+  "description": "A short list; a gold check (a Lottie file, played by lottie-web) draws in front of each line, one after another. On a slide each click adds the next line.",
+  "source": {"type": "lottie", "package": "lottie-web", "version": "5.13.0", "note": "anim.json is written by tools/make-lottie.mjs (our own shapes, CC0)"},
+  "license": "MIT",
+  "use": "list",
+  "family": "lottie-check","lead": "type",
+  "props": {"items": "required, 2-5 short lines", "title": "heading", "kicker": "small caps above", "click": "false = no click steps on a slide"},
+  "data": ["anim.json"],
+  "example": {"kicker": "What you get", "title": "One story, two stages", "items": ["A deck you present in the browser", "A website that moves as you scroll", "A report that checks both"]},
+  "dur": 2.6
+}

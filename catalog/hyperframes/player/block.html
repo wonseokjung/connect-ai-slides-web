@@ -1,0 +1,36 @@
+<!-- connect-ai-slides-web: a HyperFrames-format block (HTML + CSS + paused GSAP timeline). MIT. Use it as a starting point for your own. -->
+<template id="note-card-template">
+  <div data-composition-id="note-card" data-width="1600" data-height="560" data-duration="3">
+    <div class="tag"><span class="dot"></span><span class="hf-kicker">HYPERFRAMES BLOCK</span></div>
+    <div class="hf-title">HTML and a timeline</div>
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="hf-sub">This block is one HTML file with a paused GSAP timeline.</div>
+    <style>
+      [data-composition-id="note-card"] { position: relative; width: 1600px; height: 560px; overflow: hidden; box-sizing: border-box; padding: 50px 60px; display: flex; flex-direction: column; justify-content: center; gap: 30px; font-family: "Inter", -apple-system, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+        border: 1px solid rgba(235,226,210,0.2); border-radius: 34px; background: rgba(255,255,255,0.04); }
+      [data-composition-id="note-card"] .tag { display: flex; align-items: center; gap: 18px; }
+      [data-composition-id="note-card"] .dot { width: 14px; height: 14px; border-radius: 50%; background: #F2B45A; }
+      [data-composition-id="note-card"] .hf-kicker { font-size: 28px; letter-spacing: 0.34em; text-transform: uppercase; color: #F2B45A; }
+      [data-composition-id="note-card"] .hf-title { font-size: 124px; font-weight: 200; letter-spacing: -0.03em; line-height: 1.04; color: #F6F3EC; white-space: nowrap; }
+      [data-composition-id="note-card"] .bar { display: flex; gap: 14px; }
+      [data-composition-id="note-card"] .bar i { display: block; height: 3px; flex: 1; background: #D6892A; transform-origin: 0 50%; }
+      [data-composition-id="note-card"] .bar i:nth-child(2) { background: rgba(235,226,210,0.5); }
+      [data-composition-id="note-card"] .bar i:nth-child(3) { background: rgba(235,226,210,0.22); }
+      [data-composition-id="note-card"] .hf-sub { font-size: 40px; font-weight: 300; line-height: 1.3; color: rgba(235,226,210,0.8); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        var root = '[data-composition-id="note-card"]';
+        var tl = gsap.timeline({ paused: true });
+        tl.fromTo(root, { clipPath: 'inset(0% 100% 0% 0% round 34px)' }, { clipPath: 'inset(0% 0% 0% 0% round 34px)', duration: 1.0, ease: 'expo.inOut' }, 0);
+        tl.fromTo(root + ' .tag', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' }, 0.55);
+        tl.fromTo(root + ' .hf-title', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, 0.7);
+        tl.fromTo(root + ' .bar i', { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'expo.out', stagger: 0.12 }, 1.0);
+        tl.fromTo(root + ' .hf-sub', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 1.35);
+        window.__timelines = window.__timelines || {};
+        window.__timelines['note-card'] = tl;
+      })();
+    </script>
+  </div>
+</template>

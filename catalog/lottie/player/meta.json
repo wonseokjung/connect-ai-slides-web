@@ -1,0 +1,13 @@
+{
+  "kind": "lottie/player",
+  "title": "Lottie player",
+  "description": "Any Lottie file (After Effects / Bodymovin, LottieFiles) played once by lottie-web beside a title and a caption; the stage seeks it frame by frame. Without a file the kit's own drawing plays: three arcs draw on their orbits and settle.",
+  "source": {"type": "lottie", "package": "lottie-web", "version": "5.13.0", "note": "the built-in anim.json is written by tools/make-lottie.mjs (our own shapes, CC0)"},
+  "license": "MIT",
+  "use": "media",
+  "family": "lottie-stage","lead": "picture",
+  "props": {"src": "a Lottie .json next to story.json (the build puts it into the page); empty = the built-in drawing", "title": "heading", "caption": "one or two lines", "kicker": "small caps above", "loop": "true or a number of turns (default: plays once)", "speed": "1 = the file's own speed", "alt": "what the animation shows"},
+  "data": ["anim.json"],
+  "example": {"kicker": "Lottie", "title": "After Effects files, as they are", "caption": "A Lottie file plays on a slide and on a web page, frame by frame."},
+  "dur": 3.2
+}

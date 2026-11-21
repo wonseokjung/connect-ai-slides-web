@@ -1,0 +1,37 @@
+{
+  "kind": "anime/grid-reveal",
+  "title": "Grid reveal",
+  "description": "A wide picture is covered by a grid of tiles that fold away from the centre outwards (anime.js stagger with grid and from: 'center'); the title and caption come in under it. Every tile is gone at the end, so nothing stays on a face.",
+  "source": {
+    "type": "anime",
+    "package": "animejs",
+    "version": "4.5.0"
+  },
+  "license": "MIT",
+  "use": "media",
+  "family": "tile-reveal",
+  "lead": "picture",
+  "props": {
+    "src": "required, image or video (mp4/webm)",
+    "title": "2-6 words under the picture",
+    "caption": "one or two lines",
+    "kicker": "small caps above the title",
+    "face": "[x, y, w, h] of the face in 0..1 of the picture, if a person is in it",
+    "poster": "still shown before a video loads",
+    "alt": "what the picture shows"
+  },
+  "example": {
+    "src": "media/person.svg",
+    "face": [
+      0.39,
+      0.2,
+      0.22,
+      0.4
+    ],
+    "kicker": "CONNECT AI LAB",
+    "title": "AI education for everyone",
+    "caption": "The most beautiful way to learn AI.",
+    "alt": "AI Mentor Jay at his desk in the evening"
+  },
+  "dur": 1.8
+}

@@ -1,0 +1,1 @@
+{"kind": "test/on-face", "title": "Test on-face", "description": "A block that is wrong on purpose, for the tests.", "source": {"type": "kit", "package": "none"}, "license": "MIT", "use": "statement", "family": "test-on-face", "props": {"text": "text"}, "example": {"text": "Hello"}}

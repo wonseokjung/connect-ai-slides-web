@@ -1,0 +1,35 @@
+{
+  "kind": "gsap/parallax-words",
+  "title": "Parallax words",
+  "description": "Three rows of very large outlined words drift sideways at different speeds (GSAP timeline) behind one clear sentence in the middle. On a web page the scroll moves the rows.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0"
+  },
+  "license": "GSAP standard license",
+  "use": "statement",
+  "family": "outline-parallax",
+  "lead": "type",
+  "props": {
+    "text": "required, one sentence, up to 9 words",
+    "words": "3 single words for the rows behind",
+    "kicker": "small caps above",
+    "sub": "one line under it"
+  },
+  "site": {
+    "mode": "scrub",
+    "len": 1.5
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "text": "Motion graphics on video, slides and websites.",
+    "words": [
+      "Video",
+      "Slides",
+      "Website"
+    ],
+    "sub": "Lessons 2 to 5."
+  },
+  "dur": 4
+}

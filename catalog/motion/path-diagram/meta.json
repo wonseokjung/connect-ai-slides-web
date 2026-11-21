@@ -1,0 +1,51 @@
+{
+  "kind": "motion/path-diagram",
+  "title": "Path diagram",
+  "description": "A hub in the middle and three to six nodes on both sides; each curved line draws out from the hub (Motion animates the stroke) and its node lights up. On a phone it becomes a hub with a list under it.",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "diagram",
+  "family": "hub-lines","lead": "picture",
+  "props": {
+    "hub": "required, 1-3 words in the middle",
+    "nodes": "required, 3-6 items: {title, text} or strings",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "connect-ai-slides-web",
+    "title": "Every motion library, one contract",
+    "hub": "One block",
+    "nodes": [
+      {
+        "title": "GSAP",
+        "text": "timelines and plugins"
+      },
+      {
+        "title": "Motion",
+        "text": "springs"
+      },
+      {
+        "title": "anime.js",
+        "text": "staggers and drawing"
+      },
+      {
+        "title": "Lottie",
+        "text": "After Effects files"
+      },
+      {
+        "title": "CSS",
+        "text": "keyframes, no library"
+      },
+      {
+        "title": "Remotion",
+        "text": "video compositions"
+      }
+    ]
+  },
+  "dur": 2.8
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "remotion/number-roll",
+  "title": "Number roll (Remotion composition)",
+  "description": "Every digit rolls up through 0-9 to its place, one after another (Remotion spring), then the unit, a gold rule and one line follow. A Remotion composition (Comp.tsx) played through @remotion/player and seeked frame by frame.",
+  "source": {"type": "remotion", "package": "@remotion/player", "version": "4.0.529"},
+  "license": "MIT (component) + Remotion License",
+  "use": "number",
+  "family": "remotion-roll","lead": "type",
+  "props": {"value": "required, a number you can prove (digits roll; other characters stay)", "unit": "word after the number", "label": "one line under it", "kicker": "small caps above"},
+  "component": "Comp.tsx", "fps": 30, "durationInFrames": 75, "width": 1920, "height": 1080,
+  "example": {"kicker": "Visual Vibe Coding", "value": 10, "unit": "lessons", "label": "From motion graphics on your own video to 3D."},
+  "dur": 2.5
+}

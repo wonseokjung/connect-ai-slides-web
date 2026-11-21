@@ -1,0 +1,35 @@
+{
+  "kind": "gsap/scramble-tags",
+  "title": "Scramble tags",
+  "description": "A heading, then three to five short tags switch on one by one as rounded chips, each decoding from random letters (GSAP ScrambleText).",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "ScrambleTextPlugin"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "list",
+  "family": "scramble-chips",
+  "lead": "type",
+  "props": {
+    "tags": "required, 3-5 short tags (1-3 words each)",
+    "title": "heading",
+    "kicker": "small caps above",
+    "sub": "one line under the chips"
+  },
+  "example": {
+    "kicker": "CONNECT AI LAB",
+    "title": "Visual Vibe Coding",
+    "tags": [
+      "Video",
+      "Slides",
+      "Websites",
+      "3D"
+    ],
+    "sub": "Lessons 2 to 10."
+  },
+  "dur": 2.9
+}

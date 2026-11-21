@@ -1,0 +1,22 @@
+{
+  "kind": "gsap/video-in-type",
+  "title": "Video in type",
+  "description": "One or two very large words fill the width of the frame and their letters are windows: a clip runs inside the letter shapes. The letters come out of a blur one after another (GSAP stagger from the centre) and one line of text settles under them. For result clips and graphics: do not use a clip that shows a person's face, the letters would cut it up. A bright clip reads best.",
+  "source": {"type": "gsap", "package": "gsap", "version": "3.15.0"},
+  "license": "GSAP standard license",
+  "use": "title",
+  "lead": "picture",
+  "family": "type-window",
+  "props": {
+    "src": "required, a bright clip (mp4/webm) or picture without a person's face",
+    "word": "required, one short word (3-9 letters), or a list of two short words, one per line: [\"SLIDES\", \"AND WEB\"]",
+    "kicker": "small caps above, on the left",
+    "tag": "small caps above, on the right",
+    "sub": "one line under the word",
+    "note": "small caps under the word, on the right",
+    "poster": "still shown before the video loads",
+    "alt": "what the clip shows"
+  },
+  "example": {"src": "media/reel-1.mp4", "word": "MOTION", "kicker": "Lesson 3", "tag": "Visual Vibe Coding", "sub": "Motion graphics only", "note": "connect-ai-motion", "alt": "Stand-in clip: layered waves under a sun"},
+  "dur": 2.6
+}

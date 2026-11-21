@@ -1,0 +1,1 @@
+{"kind": "test/remote-image", "title": "Test remote-image", "description": "A block that is wrong on purpose, for the tests.", "source": {"type": "kit", "package": "none"}, "license": "MIT", "use": "statement", "family": "test-remote-image", "props": {"text": "text"}, "example": {"text": "Hello"}}

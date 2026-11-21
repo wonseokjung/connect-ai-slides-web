@@ -1,0 +1,41 @@
+{
+  "kind": "anime/draw-icons",
+  "title": "Draw icons",
+  "description": "Three or four line icons draw themselves stroke by stroke (anime.js svg.createDrawable), and a label rises under each. Built-in icons: camera, slides, browser, cube, book, mic.",
+  "source": {
+    "type": "anime",
+    "package": "animejs",
+    "version": "4.5.0"
+  },
+  "license": "MIT",
+  "use": "list",
+  "family": "icon-draw","lead": "type",
+  "props": {
+    "items": "required, 3-4 items: {icon, title, text}; icon = camera, slides, browser, cube, book or mic",
+    "title": "heading",
+    "kicker": "small caps above",
+    "click": "true = one icon per click on a slide"
+  },
+  "example": {
+    "kicker": "AI Yahakdang",
+    "title": "A free live class, weeknights at 8 PM",
+    "items": [
+      {
+        "icon": "mic",
+        "title": "Live",
+        "text": "Monday to Friday, 8 PM."
+      },
+      {
+        "icon": "book",
+        "title": "Theory and practice",
+        "text": "Made for beginners."
+      },
+      {
+        "icon": "browser",
+        "title": "Free",
+        "text": "Open to everyone."
+      }
+    ]
+  },
+  "dur": 2.9
+}

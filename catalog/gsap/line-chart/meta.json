@@ -1,0 +1,59 @@
+{
+  "kind": "gsap/line-chart",
+  "title": "Line chart",
+  "description": "A thick gold line is drawn from the left over three or four thin grid lines (GSAP DrawSVG), a dot lands on each of the four to eight values as the line arrives, a pale gold fill follows under it, and the very large number beside the title follows the line and ends on the last value. On a phone the number sits above the chart and the axis labels turn upright.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "DrawSVGPlugin"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "line-draw-chart",
+  "lead": "picture",
+  "props": {
+    "points": "required, 4-8 of {label, value} from left to right (real numbers)",
+    "unit": "1-2 words after the large number",
+    "title": "heading, 3-7 words",
+    "kicker": "small caps above",
+    "note": "one small line under the chart: the source",
+    "decimals": "digits after the point (default 0)",
+    "smooth": "false = straight segments (default: a smooth line that never overshoots a value)"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "Open-source tools, lesson by lesson",
+    "unit": "tools",
+    "points": [
+      {
+        "label": "Lesson 2",
+        "value": 1
+      },
+      {
+        "label": "Lesson 3",
+        "value": 2
+      },
+      {
+        "label": "Lessons 4-5",
+        "value": 3
+      },
+      {
+        "label": "Lessons 6-7",
+        "value": 4
+      },
+      {
+        "label": "Lessons 8-9",
+        "value": 5
+      },
+      {
+        "label": "Lesson 10",
+        "value": 6
+      }
+    ],
+    "note": "Source: the lesson map."
+  },
+  "dur": 3.1
+}

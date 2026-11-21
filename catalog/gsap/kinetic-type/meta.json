@@ -1,0 +1,17 @@
+{
+  "kind": "gsap/kinetic-type",
+  "title": "Kinetic type, full screen",
+  "description": "Three to five words take the whole screen one after another, each sized to fill the frame width (mask rise, wipe, weight and tracking change, drop; GSAP timeline), then all of them settle into one lockup of lines with different sizes and one word turns gold. About three seconds, no clicks. On a phone the lockup becomes a tall poster.",
+  "source": {"type": "gsap", "package": "gsap", "version": "3.15.0"},
+  "license": "GSAP standard license",
+  "use": "statement",
+  "family": "kinetic-lockup",
+  "lead": "type",
+  "props": {
+    "words": "required, 3-5 short words (one or two syllables read best)",
+    "gold": "the word that ends gold: the word itself or its number counted from 1 (default: the last)",
+    "kicker": "small caps in the top corner"
+  },
+  "example": {"kicker": "Visual Vibe Coding", "words": ["Video", "Slides", "Websites", "3D"], "gold": "3D"},
+  "dur": 3
+}

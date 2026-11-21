@@ -1,0 +1,27 @@
+{
+  "kind": "css/type-stack",
+  "title": "Type stack",
+  "description": "Two to four short lines come in from the left and the right in turn and stack like stairs, each on its own thin rule; one line is gold. Plain CSS @keyframes, no library.",
+  "source": {
+    "type": "css",
+    "package": "none (browser CSS + Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "statement",
+  "family": "type-stairs","lead": "type",
+  "props": {
+    "lines": "required, 2-4 short lines (1-4 words each)",
+    "gold": "which line is gold, counted from 1 (default: the last)",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "Motion graphics",
+    "lines": [
+      "On your video.",
+      "On your slides.",
+      "On your website."
+    ],
+    "gold": 3
+  },
+  "dur": 1.6
+}

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stand-in scene: a slow wireframe</title>
+<!-- connect-ai-slides-web: a drawn stand-in for "your one-file three.js scene". Canvas 2D, no library, no request. CC0.
+     It loops every 6 s. sceneDraw(t) draws one exact moment (open scene.html#rec and call it to record a clip). -->
+<style>
+  html, body { margin: 0; height: 100%; background: #0B0A08; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="A gold wireframe solid inside a larger wireframe cage, turning slowly above a floor grid"></canvas>
+<script>
+(function () {
+  'use strict';
+  var cv = document.getElementById('c'), g = cv.getContext('2d'), TAU = Math.PI * 2, LOOP = 6;
+  var GOLD = '214,137,42', GOLD2 = '242,180,90', IVORY = '235,226,210', W = 0, H = 0;
+
+  // ----- shapes (unit icosahedron, and the same solid again, larger, as the outer cage) -----
+  var F = (1 + Math.sqrt(5)) / 2;
+  function unit(p) { var l = Math.hypot(p[0], p[1], p[2]); return [p[0] / l, p[1] / l, p[2] / l]; }
+  var V = [[0, 1, F], [0, -1, F], [0, 1, -F], [0, -1, -F], [1, F, 0], [-1, F, 0], [1, -F, 0], [-1, -F, 0], [F, 0, 1], [F, 0, -1], [-F, 0, 1], [-F, 0, -1]].map(unit);
+  var E = [];
+  for (var i = 0; i < 12; i++) for (var j = i + 1; j < 12; j++) { var d = Math.hypot(V[i][0] - V[j][0], V[i][1] - V[j][1], V[i][2] - V[j][2]); if (d < 1.1) E.push([i, j]); }
+  var T = [];
+  for (var a = 0; a < 12; a++) for (var b = a + 1; b < 12; b++) for (var c = b + 1; c < 12; c++) {
+    var near = function (p, q) { return Math.hypot(V[p][0] - V[q][0], V[p][1] - V[q][1], V[p][2] - V[q][2]) < 1.1; };
+    if (near(a, b) && near(b, c) && near(a, c)) T.push([a, b, c]);
+  }
+  // outer cage: the edges of every face (raise N to cut each face finer)
+  var OUT = [], seen = {};
+  function mix(p, q, r, u, v, w) { return unit([p[0] * u + q[0] * v + r[0] * w, p[1] * u + q[1] * v + r[1] * w, p[2] * u + q[2] * v + r[2] * w]); }
+  function seg(p, q) { var k = [p, q].map(function (x) { return x.map(function (n) { return n.toFixed(3); }).join(','); }).sort().join('|'); if (!seen[k]) { seen[k] = 1; OUT.push([p, q]); } }
+  T.forEach(function (t) {
+    var N = 1, P = {};
+    for (var u = 0; u <= N; u++) for (var v = 0; v <= N - u; v++) P[u + '_' + v] = mix(V[t[0]], V[t[1]], V[t[2]], u / N, v / N, (N - u - v) / N);
+    for (u = 0; u < N; u++) for (v = 0; v < N - u; v++) { seg(P[u + '_' + v], P[(u + 1) + '_' + v]); seg(P[u + '_' + v], P[u + '_' + (v + 1)]); seg(P[(u + 1) + '_' + v], P[u + '_' + (v + 1)]); }
+  });
+
+  function rotY(p, s, c) { return [p[0] * c + p[2] * s, p[1], -p[0] * s + p[2] * c]; }
+  function rotX(p, s, c) { return [p[0], p[1] * c - p[2] * s, p[1] * s + p[2] * c]; }
+
+  function draw(t) {
+    var u = (t % LOOP) / LOOP, m = Math.min(W, H), cx = W / 2, cy = H * 0.5;
+    var cam = 6.2, f = m * 1.24, pitch = 0.2 + 0.05 * Math.sin(TAU * u), ps = Math.sin(pitch), pc = Math.cos(pitch);
+    function proj(p) { var q = rotX(p, ps, pc), z = cam - q[2]; return z < 0.2 ? null : [cx + (q[0] * f) / z, cy - (q[1] * f) / z, z]; }
+    function line(p, q, col, al, lw) { var A = proj(p), B = proj(q); if (!A || !B) return; g.strokeStyle = 'rgba(' + col + ',' + al.toFixed(3) + ')'; g.lineWidth = lw; g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.stroke(); }
+    var lw = Math.max(1, m / 400);
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.fillStyle = '#0B0A08'; g.fillRect(0, 0, W, H);
+    var bg = g.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.6); bg.addColorStop(0, 'rgba(46,36,24,0.55)'); bg.addColorStop(1, 'rgba(11,10,8,0)');
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    g.lineCap = 'round';
+
+    // floor grid: the camera walks a quarter turn around it in one loop (a square grid looks the same after a quarter turn)
+    var aw = (Math.PI / 2) * u, sw = Math.sin(aw), cw = Math.cos(aw), R = 5;
+    for (var k = -R; k <= R; k++) {
+      for (var n = -R; n < R; n++) {
+        var fade = function (x, z) { return Math.max(0, 1 - Math.hypot(x, z) / R); };
+        var a1 = 0.42 * fade(k, n + 0.5);
+        if (a1 > 0.01) { line(rotY([k, -1.5, n], sw, cw), rotY([k, -1.5, n + 1], sw, cw), IVORY, a1, lw); line(rotY([n, -1.5, k], sw, cw), rotY([n + 1, -1.5, k], sw, cw), IVORY, a1, lw); }
+      }
+    }
+    // the outer cage turns the other way
+    var ao = -Math.PI * u, so = Math.sin(ao), co = Math.cos(ao);
+    OUT.forEach(function (s) { var p = rotY(s[0], so, co), q = rotY(s[1], so, co), zz = (p[2] + q[2]) / 2; line([p[0] * 1.9, p[1] * 1.9, p[2] * 1.9], [q[0] * 1.9, q[1] * 1.9, q[2] * 1.9], IVORY, 0.16 + 0.4 * (zz + 1) / 2, lw * 1.3); });
+    // two rings that stay with the camera, three beads on each
+    [[2.55, 0.5, 1], [2.9, -0.36, -1]].forEach(function (r, ri) {
+      var st = Math.sin(r[1]), ct = Math.cos(r[1]), prev = null;
+      for (var s = 0; s <= 96; s++) { var th = (s / 96) * TAU, p = [Math.cos(th) * r[0], Math.sin(th) * r[0] * st, Math.sin(th) * r[0] * ct]; if (prev) line(prev, p, GOLD, 0.3 + 0.25 * (p[2] / r[0] + 1) / 2, lw); prev = p; }
+      for (var bN = 0; bN < 3; bN++) { var tb = (bN / 3 + (u / 3) * r[2]) * TAU + ri, pb = proj([Math.cos(tb) * r[0], Math.sin(tb) * r[0] * st, Math.sin(tb) * r[0] * ct]); if (pb) { g.fillStyle = 'rgba(' + GOLD2 + ',' + (0.55 + 0.45 * (cam - pb[2] + 3) / 6).toFixed(3) + ')'; g.beginPath(); g.arc(pb[0], pb[1], (lw * 26) / pb[2], 0, TAU); g.fill(); } }
+    });
+    // the gold solid: half a turn in a loop (it looks the same after half a turn)
+    var ai = Math.PI * u, si = Math.sin(ai), ci = Math.cos(ai), VV = V.map(function (p) { var q = rotY(p, si, ci); return [q[0] * 1.12, q[1] * 1.12, q[2] * 1.12]; });
+    E.forEach(function (e) { var zz = (VV[e[0]][2] + VV[e[1]][2]) / 2.24; line(VV[e[0]], VV[e[1]], zz > 0 ? GOLD2 : GOLD, 0.34 + 0.62 * (zz + 1) / 2, lw * (zz > 0 ? 2.2 : 1.4)); });
+    VV.forEach(function (p) { var q = proj(p); g.fillStyle = 'rgba(' + GOLD2 + ',' + (0.5 + 0.5 * (p[2] / 1.12 + 1) / 2).toFixed(3) + ')'; g.beginPath(); g.arc(q[0], q[1], (lw * 24) / q[2], 0, TAU); g.fill(); });
+  }
+
+  function size() { var r = Math.min(2, window.devicePixelRatio || 1); W = cv.width = Math.max(2, Math.round(cv.clientWidth * r)); H = cv.height = Math.max(2, Math.round(cv.clientHeight * r)); }
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches, rec = location.hash === '#rec', last = 1.4;
+  window.sceneDraw = function (t) { last = t; if (!W) size(); draw(t); };
+  window.addEventListener('resize', function () { size(); draw(last); });
+  size(); draw(last);
+  if (!still && !rec) { var t0 = performance.now(); (function tick(now) { last = (now - t0) / 1000; draw(last); requestAnimationFrame(tick); })(t0); }
+})();
+</script>
+</body>
+</html>

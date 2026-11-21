@@ -1,0 +1,34 @@
+{
+  "kind": "remotion/kinetic-words",
+  "title": "Kinetic words (Remotion composition)",
+  "description": "Three words spring in one after another, the last one gold. It is a Remotion composition (Comp.tsx) played through @remotion/player and seeked frame by frame: the bridge from lessons 2 and 3 to slides and the web.",
+  "source": {
+    "type": "remotion",
+    "package": "@remotion/player",
+    "version": "4.0.529"
+  },
+  "license": "MIT (component) + Remotion License",
+  "use": "statement",
+  "family": "remotion-kinetic",
+  "lead": "type",
+  "props": {
+    "words": "required, 3 short words",
+    "gold": "index of the gold word (0-2)",
+    "caption": "small line under it"
+  },
+  "component": "Comp.tsx",
+  "fps": 30,
+  "durationInFrames": 84,
+  "width": 1920,
+  "height": 1080,
+  "example": {
+    "words": [
+      "Video",
+      "Slides",
+      "Web"
+    ],
+    "gold": 2,
+    "caption": "Visual Vibe Coding, lessons 2 to 5"
+  },
+  "dur": 2.8
+}

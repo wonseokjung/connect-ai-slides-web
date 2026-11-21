@@ -1,0 +1,30 @@
+{
+  "kind": "hyperframes/split-words",
+  "title": "Words rise (HyperFrames block)",
+  "description": "Each word rises out of its own mask, one after another, and the last word is gold (GSAP SplitText with masks). A HyperFrames-format block played as it is; the canvas grows with the sentence so it fills the width.",
+  "source": {
+    "type": "hyperframes",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "SplitText"
+    ],
+    "note": "our own block in the HyperFrames format; blocks from heygen-com/hyperframes (Apache-2.0) run the same way"
+  },
+  "license": "MIT (block) + GSAP standard license",
+  "use": "statement",
+  "family": "hf-split",
+  "lead": "type",
+  "props": {
+    "text": "required, 2-5 words; the last one is gold",
+    "kicker": "small caps above"
+  },
+  "data": [
+    "block.html"
+  ],
+  "example": {
+    "kicker": "Lessons 4-5",
+    "text": "Slides and web"
+  },
+  "dur": 1.4
+}

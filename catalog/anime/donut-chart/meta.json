@@ -1,0 +1,54 @@
+{
+  "kind": "anime/donut-chart",
+  "title": "Donut chart",
+  "description": "Two to six slices of a thick ring are drawn one after another from 12 o'clock (anime.js svg.createDrawable, stroke-dasharray), the total in the middle counts with the sweep, and each legend line (colour, label, value) comes in as its slice starts. The ring takes most of the slide height; on a phone it sits above the legend.",
+  "source": {
+    "type": "anime",
+    "package": "animejs",
+    "version": "4.5.0"
+  },
+  "license": "MIT",
+  "use": "chart",
+  "family": "donut-sweep",
+  "lead": "picture",
+  "props": {
+    "parts": "required, 2-6 of {label, value, color}: real numbers; color 1-6 picks gold, light gold, blue, clay, ivory or dark gold (default: in that order)",
+    "unit": "1-2 words under the total",
+    "title": "heading, 3-7 words",
+    "kicker": "small caps above",
+    "total": "number in the middle (default: the sum of the values)",
+    "decimals": "digits after the point (default 0)"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "The ten lessons by subject",
+    "unit": "lessons",
+    "parts": [
+      {
+        "label": "Video",
+        "value": 2
+      },
+      {
+        "label": "Slides and web",
+        "value": 2
+      },
+      {
+        "label": "three.js",
+        "value": 2
+      },
+      {
+        "label": "Blender",
+        "value": 2
+      },
+      {
+        "label": "Library",
+        "value": 1
+      },
+      {
+        "label": "Intro",
+        "value": 1
+      }
+    ]
+  },
+  "dur": 2.8
+}

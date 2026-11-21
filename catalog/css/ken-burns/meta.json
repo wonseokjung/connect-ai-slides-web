@@ -1,0 +1,36 @@
+{
+  "kind": "css/ken-burns",
+  "title": "Ken Burns still",
+  "description": "A still fills the whole frame and the camera pushes in very slowly towards a point you choose (CSS @keyframes on transform, no library). A thin band at the bottom carries a gold line, a label and one line; only the band is darkened. For a photo of a person give the face box: the caption becomes a corner column on the free side of the person and the picture is never shown above its own size.",
+  "source": {
+    "type": "css",
+    "package": "none (browser CSS + Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "media",
+  "lead": "picture",
+  "family": "ken-burns",
+  "props": {
+    "src": "required, a picture, or a clip (mp4/webm) that plays while the camera pushes in",
+    "text": "required, one line in the caption band: what the picture is",
+    "label": "small caps beside it",
+    "focus": "[x, y] in 0..1 of the picture: where the camera pushes in (default: the centre, or the face)",
+    "seconds": "how long the push lasts (default 6)",
+    "face": "[x, y, w, h] of the face in 0..1 when the picture shows a person",
+    "alt": "what the picture shows",
+    "body": "[x, y, w, h] of the whole person (guessed from the face when missing)",
+    "side": "left or right: force the side of the caption beside a person (default: the wider free side)",
+    "poster": "still shown before a clip loads"
+  },
+  "example": {
+    "src": "media/shot-2.svg",
+    "label": "connect-ai-three",
+    "text": "Lesson 6-7 result: a three.js scene",
+    "focus": [
+      0.5,
+      0.44
+    ],
+    "alt": "Stand-in picture: a wireframe 3D object"
+  },
+  "dur": 6
+}

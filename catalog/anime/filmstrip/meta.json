@@ -1,0 +1,29 @@
+{
+  "kind": "anime/filmstrip",
+  "title": "Film strip",
+  "description": "A film strip of five to eight stills runs from right to left through the middle of the frame (anime.js timeline). The still at the gate grows a little while the others step back, and the frame number and the caption under the film change with it. The film band is more than half of the slide height. One click per still on a slide; on a web page the block stays pinned and your scroll pushes the film. Nothing is drawn on the pictures.",
+  "source": {"type": "anime", "package": "animejs", "version": "4.5.0"},
+  "license": "MIT",
+  "use": "timeline",
+  "lead": "picture",
+  "family": "film-strip",
+  "site": {"mode": "scrub", "len": 3},
+  "props": {
+    "items": "required, 5-8 of {src: a 16:9 picture, label: small caps (for example the lesson), caption: 2-6 words, alt}",
+    "kicker": "small caps above the film, on the left",
+    "title": "one short line above the film, on the right"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "Lesson 2 to lesson 10",
+    "items": [
+      {"src": "media/shot-5.svg", "label": "Lesson 2", "caption": "Motion graphics on your video", "alt": "Stand-in still: a waveform over a timeline"},
+      {"src": "media/shot-3.svg", "label": "Lesson 3", "caption": "Motion graphics only", "alt": "Stand-in still: a big type poster"},
+      {"src": "media/shot-4.svg", "label": "Lessons 4-5", "caption": "Slides and web", "alt": "Stand-in still: a web page in a window"},
+      {"src": "media/shot-2.svg", "label": "Lessons 6-7", "caption": "three.js", "alt": "Stand-in still: a wireframe 3D object"},
+      {"src": "media/shot-6.svg", "label": "Lessons 8-9", "caption": "Blender", "alt": "Stand-in still: a road on a map"},
+      {"src": "media/shot-1.svg", "label": "Lesson 10", "caption": "The library", "alt": "Stand-in still: a line chart"}
+    ]
+  },
+  "dur": 7.05
+}

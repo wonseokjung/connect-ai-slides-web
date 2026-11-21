@@ -1,0 +1,58 @@
+{
+  "kind": "gsap/horizontal-cards",
+  "title": "Horizontal cards",
+  "description": "A row of cards wider than the screen slides sideways while a thin line fills (GSAP timeline on a CSS variable). On a web page the pinned screen turns the vertical scroll into the sideways move; on a slide it glides to the last card and stops.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0"
+  },
+  "license": "GSAP standard license",
+  "use": "list",
+  "family": "side-scroll-cards","lead": "type",
+  "props": {
+    "items": "required, 4-8 of {title, text, image, alt}",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "site": {
+    "mode": "scrub",
+    "len": 2
+  },
+  "example": {
+    "kicker": "connect-ai-slides-web",
+    "title": "Every motion library, one contract",
+    "items": [
+      {
+        "title": "GSAP",
+        "text": "Timelines, SplitText, Flip, MorphSVG."
+      },
+      {
+        "title": "Motion",
+        "text": "Springs and stagger."
+      },
+      {
+        "title": "anime.js",
+        "text": "Timelines and line drawing."
+      },
+      {
+        "title": "Lottie",
+        "text": "After Effects files, as they are."
+      },
+      {
+        "title": "CSS",
+        "text": "Plain keyframes, no library."
+      },
+      {
+        "title": "HyperFrames",
+        "text": "HTML blocks, played as they are."
+      },
+      {
+        "title": "Remotion",
+        "text": "Video compositions, live in the page."
+      }
+    ]
+  },
+  "dur": 4.5,
+  "overflow": "flow"
+}

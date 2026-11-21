@@ -1,0 +1,23 @@
+{
+  "kind": "kit/embed-scene",
+  "title": "Live scene",
+  "description": "Your own one-file HTML scene (three.js, canvas, WebGL) put in as it is: it runs live in a sandboxed iframe that fills the top 78 % of the frame, while it is in view. A gold seam is drawn, the scene rises out of it, the label and the title come in under it; nothing is drawn on the scene. When the story is recorded, checked or printed, or the viewer asked for less motion, the clip (an mp4 of the same scene, exact frames) or the poster stands in.",
+  "source": {"type": "kit", "package": "none (iframe + Web Animations API)"},
+  "license": "MIT",
+  "use": "media",
+  "lead": "picture",
+  "family": "live-scene",
+  "props": {
+    "src": "required, one html file in the story folder that needs no other file (scripts inlined, nothing from the internet)",
+    "title": "2-7 words under the scene",
+    "kicker": "small caps above the title",
+    "caption": "one line on the right",
+    "hint": "small caps under the caption, for example how to move the scene",
+    "clip": "an mp4 of the same scene: shown at the exact frame when the story is recorded or checked",
+    "poster": "a still of the scene: shown while it loads, in print and with reduced motion",
+    "interactive": "true lets the pointer and the wheel reach the scene (the page then does not scroll while the pointer is on it)",
+    "alt": "what the scene shows"
+  },
+  "example": {"src": "media/scene.html", "clip": "media/reel-3.mp4", "poster": "media/shot-2.svg", "kicker": "Lessons 6-7", "title": "A live scene in the slide", "caption": "One html file in an iframe, not a screen recording.", "hint": "three.js", "alt": "A stand-in scene: a wireframe solid turning above a floor grid"},
+  "dur": 1.95
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "gsap/path-journey",
+  "title": "Path journey",
+  "description": "A curved road is drawn (GSAP DrawSVG), a dot travels along it (MotionPath), and three to six stops light up with their labels as the dot arrives. On a phone the road runs down the side.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "MotionPathPlugin",
+      "DrawSVGPlugin"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "timeline",
+  "family": "road-stops",
+  "lead": "picture",
+  "props": {
+    "stops": "required, 3-6 of {when, title, text}",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "The lesson map",
+    "stops": [
+      {
+        "when": "Lessons 2-3",
+        "title": "Motion graphics"
+      },
+      {
+        "when": "Lessons 4-5",
+        "title": "Slides and web"
+      },
+      {
+        "when": "Lessons 6-7",
+        "title": "three.js"
+      },
+      {
+        "when": "Lessons 8-9",
+        "title": "Blender"
+      },
+      {
+        "when": "Lesson 10",
+        "title": "The library"
+      }
+    ]
+  },
+  "dur": 4.4
+}

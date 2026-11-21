@@ -1,0 +1,47 @@
+{
+  "kind": "kit/film-hero",
+  "title": "Film hero",
+  "description": "Your video or photo fills the whole frame and opens like a gate; a large thin title arrives word by word on the empty side of it, with a small spaced label and a thin gold line. Give the face box (and the body box): the block picks the wider free side, sizes the type to that column and darkens only that strip, never the person. Without a face box the words sit in a band at the bottom. On a phone the picture goes on top, framed on the face.",
+  "source": {
+    "type": "kit",
+    "package": "none (Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "person",
+  "lead": "picture",
+  "family": "film-hero",
+  "props": {
+    "src": "required, video (mp4/webm) or photo that fills the frame",
+    "title": "required, 3-8 words",
+    "face": "[x, y, w, h] of the face in 0..1 of the picture",
+    "body": "[x, y, w, h] of the whole person in 0..1 of the picture (guessed from the face when missing)",
+    "kicker": "small spaced label above the title",
+    "sub": "one line under the gold line",
+    "name": "small spaced name under it",
+    "side": "left or right: force the side of the words (default: the wider free side)",
+    "align": "top (default: the title starts at the top of its column, the name sits at the foot), middle or bottom",
+    "poster": "still shown before the video loads",
+    "alt": "what the picture shows"
+  },
+  "example": {
+    "src": "media/person.mp4",
+    "poster": "media/person.svg",
+    "face": [
+      0.39,
+      0.2,
+      0.22,
+      0.4
+    ],
+    "body": [
+      0.27,
+      0.16,
+      0.46,
+      0.84
+    ],
+    "kicker": "CONNECT AI LAB",
+    "title": "The most beautiful way to learn AI",
+    "sub": "AI education for everyone.",
+    "name": "AI Mentor Jay"
+  },
+  "dur": 2.7
+}

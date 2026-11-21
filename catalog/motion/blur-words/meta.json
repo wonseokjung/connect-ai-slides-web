@@ -1,0 +1,27 @@
+{
+  "kind": "motion/blur-words",
+  "title": "Blur words",
+  "description": "A statement appears word by word out of a blur (Motion animate + stagger). One or two words can be gold.",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "statement",
+  "family": "word-blur",
+  "lead": "type",
+  "props": {
+    "text": "required, one sentence, up to 14 words",
+    "gold": "word(s) to colour gold",
+    "kicker": "small caps above",
+    "by": "small line under it"
+  },
+  "example": {
+    "kicker": "Our mission",
+    "text": "AI education for everyone.",
+    "gold": "everyone",
+    "by": "CONNECT AI LAB"
+  },
+  "dur": 1.8
+}

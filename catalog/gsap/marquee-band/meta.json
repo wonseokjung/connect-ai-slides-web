@@ -1,0 +1,13 @@
+{
+  "kind": "gsap/marquee-band",
+  "title": "Marquee bands",
+  "description": "Two tilted bands of large words run in opposite directions (GSAP timeline, about four seconds) behind a quiet panel with a kicker and one line. On a web page the scroll moves the bands.",
+  "source": {"type": "gsap", "package": "gsap", "version": "3.15.0"},
+  "license": "GSAP standard license",
+  "use": "background",
+  "family": "tilted-marquee","lead": "type",
+  "props": {"title": "required, 2-6 words", "words": "2-6 words for the bands (default: the words of the title)", "kicker": "small caps above", "sub": "one line under it"},
+  "site": {"mode": "scrub", "len": 1.5},
+  "example": {"kicker": "CONNECT AI LAB", "title": "AI education for everyone", "words": ["AI Yahakdang", "Visual Vibe Coding", "Open source"], "sub": "The most beautiful way to learn AI."},
+  "dur": 4
+}

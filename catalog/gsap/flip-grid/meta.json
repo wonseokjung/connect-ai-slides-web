@@ -1,0 +1,52 @@
+{
+  "kind": "gsap/flip-grid",
+  "title": "Flip grid",
+  "description": "Three to six cards sit in one tilted pile, then fan out into a grid (GSAP Flip records the pile and animates the layout change); number, title and one line appear on each.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "Flip"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "list",
+  "family": "pile-to-grid","lead": "type",
+  "props": {
+    "items": "required, 3-6 of {title, text} or strings",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "One open-source tool per lesson",
+    "items": [
+      {
+        "title": "Motion on your video",
+        "text": "Lesson 2"
+      },
+      {
+        "title": "Motion only",
+        "text": "Lesson 3"
+      },
+      {
+        "title": "Slides and web",
+        "text": "Lessons 4 and 5"
+      },
+      {
+        "title": "three.js",
+        "text": "Lessons 6 and 7"
+      },
+      {
+        "title": "Blender",
+        "text": "Lessons 8 and 9"
+      },
+      {
+        "title": "The library",
+        "text": "Lesson 10"
+      }
+    ]
+  },
+  "dur": 2.4
+}

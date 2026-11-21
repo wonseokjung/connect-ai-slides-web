@@ -1,0 +1,37 @@
+{
+  "kind": "kit/hero-video",
+  "title": "Hero with a person",
+  "description": "Your video or photo fills one side, the opening line appears word by word on the other. Give the face box and the words stay off the face. On a phone the picture goes on top.",
+  "source": {
+    "type": "kit",
+    "package": "none (Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "person",
+  "family": "hero-person","lead": "picture",
+  "props": {
+    "src": "required, video (mp4/webm) or photo",
+    "title": "required, 3-8 words",
+    "face": "[x, y, w, h] of the face in 0..1 of the picture",
+    "kicker": "small caps above",
+    "sub": "one line under it",
+    "name": "name line with a gold rule",
+    "side": "left (default) or right: where the words go",
+    "poster": "still shown before the video loads",
+    "alt": "what the picture shows"
+  },
+  "example": {
+    "src": "media/person.svg",
+    "face": [
+      0.39,
+      0.2,
+      0.22,
+      0.4
+    ],
+    "kicker": "CONNECT AI LAB",
+    "title": "The most beautiful way to learn AI",
+    "sub": "AI education for everyone.",
+    "name": "AI Mentor Jay"
+  },
+  "dur": 2.2
+}

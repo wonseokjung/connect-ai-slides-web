@@ -1,0 +1,9 @@
+node_modules/
+work/
+out/
+*-demo/
+*-gallery/
+connect-ai-slides-web-*/
+.connect-ai-slides-web.json
+*.log
+.DS_Store

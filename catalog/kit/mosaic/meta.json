@@ -1,0 +1,31 @@
+{
+  "kind": "kit/mosaic",
+  "title": "Mosaic wall",
+  "description": "A wall of five to eight pictures and clips fills the whole frame: one large tile and smaller ones on an uneven grid. The tiles open one after another, each from its own side (clip-path), and every picture keeps pushing in by 2 %. The title sits in a tile of its own, never on a picture. Any tile can be a video. Two columns on a phone.",
+  "source": {"type": "kit", "package": "none (Web Animations API)"},
+  "license": "MIT",
+  "use": "media",
+  "lead": "picture",
+  "family": "mosaic-wall",
+  "props": {
+    "items": "required, 5-8 of {src, alt, poster, face} (or plain paths): pictures or videos (mp4/webm); the first one gets the large tile; face is [x, y, w, h] when a picture shows a person",
+    "title": "heading in the words tile, 2-5 words",
+    "kicker": "small caps above it",
+    "text": "one line under it"
+  },
+  "example": {
+    "kicker": "CONNECT AI LAB",
+    "title": "Visual Vibe Coding",
+    "text": "The most beautiful way to learn AI.",
+    "items": [
+      {"src": "media/shot-2.svg", "alt": "Stand-in picture: a wireframe 3D object"},
+      {"src": "media/shot-5.svg", "alt": "Stand-in picture: a waveform over a timeline"},
+      {"src": "media/person.mp4", "poster": "media/person.svg", "face": [0.39, 0.2, 0.22, 0.4], "alt": "Stand-in video of a person on camera"},
+      {"src": "media/shot-1.svg", "alt": "Stand-in picture: a line chart"},
+      {"src": "media/shot-3.svg", "alt": "Stand-in picture: a type poster"},
+      {"src": "media/shot-4.svg", "alt": "Stand-in picture: a web page in a window"},
+      {"src": "media/shot-6.svg", "alt": "Stand-in picture: a road on a map"}
+    ]
+  },
+  "dur": 2.5
+}

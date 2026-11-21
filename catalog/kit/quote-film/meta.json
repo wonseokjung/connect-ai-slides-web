@@ -1,0 +1,23 @@
+{
+  "kind": "kit/quote-film",
+  "title": "Quote with its clip",
+  "description": "What the person really said, next to the clip where they say it. The clip fills 60 % of the frame, framed on the face; on the other side the words of that moment arrive phrase by phrase, thin and large, with one word in gold, a small quotation mark and a source line. Give the face box and the words keep to their own column: nothing is drawn on the person. Korean lines break between words. On a phone the clip is on top and the words under it.",
+  "source": {"type": "kit", "package": "none (Web Animations API)"},
+  "license": "MIT",
+  "use": "quote",
+  "lead": "picture",
+  "family": "quote-clip",
+  "props": {
+    "src": "required, the clip (mp4/webm) or a photo of the person saying it",
+    "lines": "required, 2-4 short phrases of what was really said, one per line",
+    "gold": "the word or words to show in gold (text as it stands in the lines)",
+    "source": "small line under the quote: where and when it was said",
+    "face": "[x, y, w, h] of the face in 0..1 of the picture",
+    "body": "[x, y, w, h] of the body in 0..1 of the picture",
+    "side": "right (default) or left: where the words go",
+    "poster": "still shown before the video loads",
+    "alt": "what the clip shows"
+  },
+  "example": {"src": "media/person.mp4", "poster": "media/person.svg", "face": [0.39, 0.2, 0.22, 0.4], "lines": ["A free live class,", "every weeknight at 8 PM."], "gold": "8 PM", "source": "AI Yahakdang", "alt": "A stand-in for a person on camera"},
+  "dur": 2.05
+}

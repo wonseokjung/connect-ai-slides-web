@@ -1,0 +1,12 @@
+{
+  "kind": "kit/ident",
+  "title": "Ident",
+  "description": "A brand ident for the first or last second: a wide-tracked thin wordmark lights up letter by letter, a thin gold rule draws from the centre, one small line settles under it. Quiet on purpose.",
+  "source": {"type": "kit", "package": "none (Web Animations API)"},
+  "license": "MIT",
+  "use": "ident",
+  "family": "ident-wordmark","lead": "type",
+  "props": {"name": "required, the wordmark, 1-3 words", "line": "one small line under the rule", "small": "a tiny gold word under that, for example PRESENTS"},
+  "example": {"name": "CONNECT AI LAB", "line": "AI education for everyone", "small": "Presents"},
+  "dur": 3.1
+}

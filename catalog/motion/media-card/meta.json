@@ -1,0 +1,38 @@
+{
+  "kind": "motion/media-card",
+  "title": "Media card",
+  "description": "A picture or video inside a rounded window springs in with a small turn (Motion spring); the title, a gold rule and the caption follow beside it. Give a face box for a person: the words always stay outside the window.",
+  "source": {
+    "type": "motion",
+    "package": "motion",
+    "version": "14.14.0"
+  },
+  "license": "MIT",
+  "use": "media",
+  "family": "window-card",
+  "lead": "picture",
+  "props": {
+    "src": "required, image or video (mp4/webm)",
+    "title": "2-6 words beside the window",
+    "caption": "one or two lines",
+    "kicker": "small caps above",
+    "face": "[x, y, w, h] of the face in 0..1 of the picture, if a person is in it",
+    "side": "left (default) or right: where the window goes",
+    "poster": "still shown before a video loads",
+    "alt": "what the picture shows"
+  },
+  "example": {
+    "src": "media/person.svg",
+    "face": [
+      0.39,
+      0.2,
+      0.22,
+      0.4
+    ],
+    "kicker": "CONNECT AI LAB",
+    "title": "AI Mentor Jay",
+    "caption": "AI education for everyone.",
+    "alt": "AI Mentor Jay at his desk, speaking into a microphone"
+  },
+  "dur": 1.9
+}

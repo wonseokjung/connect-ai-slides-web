@@ -1,0 +1,36 @@
+{
+  "kind": "kit/split-film",
+  "title": "Split film",
+  "description": "Two pictures or clips side by side, edge to edge: a thin gold line is drawn down the middle and the two halves open away from it (clip-path). Each half has a numbered label under the picture and a small title sits above. For a comparison, or for the same thing in two places. Nothing is drawn on the pictures; on a phone the halves are stacked.",
+  "source": {
+    "type": "kit",
+    "package": "none (Web Animations API)"
+  },
+  "license": "MIT",
+  "use": "compare",
+  "lead": "picture",
+  "family": "split-film",
+  "props": {
+    "left": "required, {src, label, text, poster, alt, face}: a picture or a video (mp4/webm) and its label",
+    "right": "required, the same for the other half",
+    "title": "small heading above, 2-6 words",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "connect-ai-slides-web",
+    "title": "One story, two stages",
+    "left": {
+      "src": "media/shot-3.svg",
+      "label": "On a slide",
+      "text": "The deck: 1920 x 1080",
+      "alt": "Stand-in picture: a type poster"
+    },
+    "right": {
+      "src": "media/shot-4.svg",
+      "label": "On a website",
+      "text": "The page: 1440 wide, 390 on a phone",
+      "alt": "Stand-in picture: a web page in a window"
+    }
+  },
+  "dur": 2.2
+}

@@ -1,0 +1,1 @@
+{"kind": "test/low-contrast", "title": "Test low-contrast", "description": "A block that is wrong on purpose, for the tests.", "source": {"type": "kit", "package": "none"}, "license": "MIT", "use": "statement", "family": "test-low-contrast", "props": {"text": "text"}, "example": {"text": "Hello"}}

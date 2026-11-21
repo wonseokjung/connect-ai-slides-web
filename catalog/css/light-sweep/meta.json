@@ -1,0 +1,12 @@
+{
+  "kind": "css/light-sweep",
+  "title": "Light sweep",
+  "description": "One large word; a light passes through the letters once and a rule settles under it. Plain CSS @keyframes, no library, driven through the Web Animations API.",
+  "source": {"type": "css", "package": "none (browser CSS + Web Animations API)"},
+  "license": "MIT",
+  "use": "chapter",
+  "family": "light-sweep","lead": "type",
+  "props": {"word": "required, 1-2 words", "kicker": "small caps above", "sub": "one line under it"},
+  "example": {"kicker": "Lesson 4 and 5", "word": "Slides + Web", "sub": "Motion graphics on things that are not video."},
+  "dur": 2.2
+}

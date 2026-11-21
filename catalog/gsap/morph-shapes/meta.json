@@ -1,0 +1,12 @@
+{
+  "kind": "gsap/morph-shapes",
+  "title": "Morph shapes",
+  "description": "One thin gold outline changes shape at every step (GSAP MorphSVG): play button, slide, browser window, cube or circle, and the label beside it changes with it. On a slide each click is one step.",
+  "source": {"type": "gsap", "package": "gsap", "version": "3.15.0", "uses": ["MorphSVGPlugin"]},
+  "license": "GSAP standard license",
+  "use": "steps",
+  "family": "shape-morph","lead": "picture",
+  "props": {"stages": "required, 2-5 of {shape: play | slide | browser | cube | circle, label, text}", "kicker": "small caps above"},
+  "example": {"kicker": "Visual Vibe Coding", "stages": [{"shape": "play", "label": "Video", "text": "Motion graphics on your own video."}, {"shape": "slide", "label": "Slides", "text": "The same motion on a deck you present."}, {"shape": "browser", "label": "Website", "text": "And on a page that moves as you scroll."}, {"shape": "cube", "label": "3D", "text": "Then three.js and Blender."}]},
+  "dur": 6.4
+}

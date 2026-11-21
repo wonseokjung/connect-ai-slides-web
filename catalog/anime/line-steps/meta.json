@@ -1,0 +1,12 @@
+{
+  "kind": "anime/line-steps",
+  "title": "Line steps",
+  "description": "A thin gold line draws through numbered stops (anime.js createDrawable + timeline); each label rises as the line reaches it. On a slide each click shows the next stop.",
+  "source": {"type": "anime", "package": "animejs", "version": "4.5.0"},
+  "license": "MIT",
+  "use": "steps",
+  "family": "line-steps","lead": "type",
+  "props": {"steps": "required, 2-5 items: {title, text} or strings", "title": "heading", "kicker": "small caps above", "click": "false = no click steps on a slide"},
+  "example": {"kicker": "How it works", "title": "Say it, check it, show it", "steps": [{"title": "Say it", "text": "Tell your coding agent what the story is."}, {"title": "Check it", "text": "The kit measures the real screen."}, {"title": "Show it", "text": "A deck and a website from one story."}]},
+  "dur": 2.6
+}

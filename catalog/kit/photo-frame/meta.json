@@ -1,0 +1,12 @@
+{
+  "kind": "kit/photo-frame",
+  "title": "Result in a window",
+  "description": "A screen recording or a picture of the result, shown large in a rounded glass window with a thin window bar. The window rises in, the picture grows 2 % very slowly, a caption sits under it. For screens and results, not for portraits.",
+  "source": {"type": "kit", "package": "none (Web Animations API)"},
+  "license": "MIT",
+  "use": "media",
+  "family": "glass-window","lead": "picture",
+  "props": {"src": "required, picture or video (mp4/webm) of a screen or a result", "caption": "one line under the window", "kicker": "small caps before the caption", "poster": "still shown before the video loads", "alt": "what the picture shows"},
+  "example": {"src": "media/screen.svg", "kicker": "The result", "caption": "One story built twice: a deck you present and a page you scroll."},
+  "dur": 2.8
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" font-family="Inter, -apple-system, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif">
+  <!-- connect-ai-slides-web: a drawn stand-in for "a picture of your result" (2 of 6: a wireframe 3D object). CC0. -->
+  <defs><radialGradient id="g" cx="50%" cy="42%" r="70%"><stop offset="0" stop-color="#1C1915"/><stop offset="1" stop-color="#0B0A08"/></radialGradient>
+  <linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0A08"/><stop offset="1" stop-color="#0B0A08" stop-opacity="0"/></linearGradient></defs>
+  <rect width="1920" height="1080" fill="url(#g)"/>
+  <path d="M600 700 L-2010 1080M640 700 L-1680 1080M680 700 L-1350 1080M720 700 L-1020 1080M760 700 L-690 1080M800 700 L-360 1080M840 700 L-30 1080M880 700 L300 1080M920 700 L630 1080M960 700 L960 1080M1000 700 L1290 1080M1040 700 L1620 1080M1080 700 L1950 1080M1120 700 L2280 1080M1160 700 L2610 1080M1200 700 L2940 1080M1240 700 L3270 1080M1280 700 L3600 1080M1320 700 L3930 1080M0 709H1920M0 735H1920M0 775H1920M0 831H1920M0 900H1920M0 983H1920M0 1080H1920" stroke="#EBE2D2" stroke-opacity=".2" stroke-width="2" fill="none"/>
+  <rect y="690" width="1920" height="170" fill="url(#f)"/>
+  <ellipse cx="960" cy="900" rx="300" ry="34" fill="#000" fill-opacity=".5"/>
+  <g fill="none" stroke="#7FB2D0" stroke-width="3"><ellipse cx="960" cy="470" rx="101" ry="330"/><ellipse cx="960" cy="470" rx="203" ry="330"/><ellipse cx="960" cy="470" rx="285" ry="330"/><ellipse cx="960" cy="470" rx="330" ry="330"/></g>
+  <g fill="none" stroke="#7FB2D0" stroke-opacity=".6" stroke-width="2"><ellipse cx="960" cy="185" rx="165" ry="33"/><ellipse cx="960" cy="281" rx="270" ry="54"/><ellipse cx="960" cy="402" rx="322" ry="64"/><ellipse cx="960" cy="538" rx="322" ry="64"/><ellipse cx="960" cy="659" rx="270" ry="54"/><ellipse cx="960" cy="755" rx="165" ry="33"/></g>
+  <ellipse cx="960" cy="470" rx="520" ry="96" fill="none" stroke="#F2B45A" stroke-width="4" transform="rotate(-18 960 470)"/>
+  <circle cx="466" cy="631" r="18" fill="#F2B45A"/><circle cx="1454" cy="309" r="10" fill="#EBE2D2"/>
+  <text x="72" y="132" font-size="20" letter-spacing="8" fill="#EBE2D2" fill-opacity=".62">YOUR PICTURE 2</text>
+</svg>
