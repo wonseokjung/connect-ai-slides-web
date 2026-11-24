@@ -165,10 +165,21 @@ footer a:hover { color: var(--gold2); }
     <figure class="ph"><div class="shot"><video src="demo/en/phone.mp4" poster="demo/en/phone_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Phone</b></figcaption></figure>
   </div>
   <div class="demo two" data-lang="ko" hidden lang="ko">
-    <figure><div class="shot"><video src="demo/ko/deck.mp4" poster="demo/ko/deck_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Deck</b><a href="demo/ko/deck/index.html">Open the live deck</a><a href="demo/ko/deck.pdf">PDF</a><a href="demo/ko/site/index.html">Open the live website</a><a href="demo/ko/story.json">story.json</a></figcaption></figure>
+    <figure><div class="shot"><video src="demo/ko/deck.mp4" poster="demo/ko/deck_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Deck</b><a href="demo/ko/deck/index.html">Open the live deck</a><a href="demo/ko/deck.pdf">PDF</a><a href="demo/ko/deck.pptx">PPTX</a><a href="demo/ko/site/index.html">Open the live website</a><a href="demo/ko/story.json">story.json</a></figcaption></figure>
     
     <figure class="ph"><div class="shot"><video src="demo/ko/phone.mp4" poster="demo/ko/phone_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Phone</b></figcaption></figure>
   </div>
+</div></section>
+
+<section id="pptx"><div class="wrap two">
+  <div>
+    <div class="kicker">Lesson 4</div>
+    <h2>A real PowerPoint file</h2>
+    <p class="text">Write what you want to say in a few lines of markdown. One command gives you the moving deck and a .pptx: the words are real text boxes you can edit, the motion of each slide is a video clip behind them that starts by itself, each box fades in when its words appear in the deck, and your speaker notes come along. A second copy with pictures instead of clips is there for Google Slides.</p>
+    <div class="pre-wrap"><pre class="block" id="c0">npx connect-ai-slides-web ppt my-talk.md</pre><button class="copy ghost" data-copy="#c0">Copy</button></div>
+    <p class="note">The frames on the right are read from the text box positions inside the file and drawn over Apple's own Office rendering of it. Open the file in PowerPoint or Keynote before you present.</p>
+  </div>
+  <div><div class="shot"><img src="pptx/hero.webp" alt="The deck.pptx this tool wrote, opened with Apple's Office engine, then the same slides with every editable text box framed in gold" style="display:block;width:100%;height:auto" loading="lazy"></div></div>
 </div></section>
 
 <section id="catalog"><div class="wrap">
