@@ -1,13 +1,20 @@
 ---
 name: connect-ai-slides-web
-description: Make a presentation deck and a one-page website from one story, with code-made motion graphics (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion blocks from a catalog), then measure the real screen and fix what the check reports. Use when the user says "make a deck", "make slides", "make a presentation", "make a landing page", "make a one-page website", "turn this into slides and a site", "발표 자료 만들어 줘", "슬라이드 만들어 줘", "PPT 만들어 줘", "웹사이트 한 장 만들어 줘", "랜딩 페이지 만들어 줘". Output is two static folders that open by double click, plus PDF, PPTX and mp4 on request.
+description: The presentation employee. Make a real PowerPoint file (.pptx) from a few lines of text or markdown, with code-made motion graphics from a catalog of 67 blocks (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion). Every word in the .pptx is an editable text box, each slide's motion plays as a video clip that starts by itself, the words fade in when they appear, and speaker notes come along. The same story is also a deck in the browser and a one-page website, and a check measures the real screen. Use when the user says "make a PPT", "make a PowerPoint", "make slides", "make a deck", "make a presentation", "make a Keynote", "turn my notes into slides", "make a landing page", "make a one-page website", "PPT 만들어 줘", "발표자료 만들어 줘", "슬라이드 만들어 줘", "파워포인트로 만들어 줘", "키노트로", "웹사이트 한 장 만들어 줘", "랜딩 페이지 만들어 줘".
 ---
 
 # connect-ai-slides-web
 
-You turn what the user tells you into `story.json`. The kit builds `out/deck/index.html` (a reveal.js deck) and `out/site/index.html` (a one-page website) from it, the same scenes on both, and `check` measures them in a real browser at three sizes: slide 1920x1080, web 1440x900, phone 390x844.
+You turn what the user tells you into a presentation. The main thing people want is a PowerPoint file: `out/deck.pptx` (opens in PowerPoint and Keynote; words are editable text boxes, the motion of each slide is a clip behind the words, speaker notes included). The same `story.json` also builds `out/deck/index.html` (a reveal.js deck with every motion) and `out/site/index.html` (a one-page website), and `check` measures them in a real browser at three sizes: slide 1920x1080, web 1440x900, phone 390x844.
+<!-- connect-ai-slides-web:runtime -->
+Run the kit's CLI with `node <kit>/bin/cli.mjs`, where `<kit>` is the `kit` folder written in `.connect-ai-slides-web.json` next to this file. If that folder is gone, use `npx -y connect-ai-slides-web` instead of `node <kit>/bin/cli.mjs`.
+<!-- /connect-ai-slides-web:runtime -->
 
-The kit is at the path in `.connect-ai-slides-web.json` next to this file (`kit`). Run its CLI with `node <kit>/bin/cli.mjs` (or `npx connect-ai-slides-web` inside a project that installed it).
+## The quick way (a beginner, a few lines, "just make me a PPT")
+1. Write the user's words into `talk.md`: `# Title` (the line under it is the subtitle), then `## Heading` for each slide. Under a heading: `- items` (a list), `1. steps`, `> a quote` (last line `> - who`), `**42%** what it means` (a number: only the user's real number), `![what it shows](photo.jpg)` (their picture), one sentence (a statement), nothing (a chapter slide), `- [Label](https://...)` links on the last slide (buttons), `Note: ...` for speaker notes.
+2. `node <kit>/bin/cli.mjs ppt talk.md` (add `--google` for a Google Slides copy, `--pdf` for a PDF). It prints which block each slide got and writes `talk-deck/out/deck.pptx`.
+3. `node <kit>/bin/cli.mjs inspect talk-deck/out/deck.pptx` lists, slide by slide, the text boxes, clips and notes. Tell the user what is in the file from this list, not from memory.
+4. To change one slide's design, edit `talk-deck/story.json` (pick another `kind` from `catalog`), then `export talk-deck --pptx`.
 
 ## Rules you must keep
 - **Only what the user gave you.** Every sentence, name and number on screen comes from the user or from material they pointed at. Never invent numbers, results, quotes, dates or claims. If something is missing, ask or leave it out. Mark anything you are unsure of in your report.
@@ -29,7 +36,13 @@ The kit is at the path in `.connect-ai-slides-web.json` next to this file (`kit`
 4. `node <kit>/bin/cli.mjs build <project>`.
 5. `node <kit>/bin/cli.mjs check <project>`. Read `out/report.md`. Fix every ERROR the way its sentence says (shorten, split the scene, change the block, fix a path, move the text off the face), build and check again until it says PASS. If the same ERROR is still there after three tries, stop and tell the user what it is. ADVICE lines are judgment calls: follow them unless the user wants otherwise.
 6. Look at the screens yourself: `node <kit>/bin/cli.mjs record <project> --sheet-only` writes `out/sheet_deck.jpg`, `out/sheet_site.jpg`, `out/sheet_phone.jpg` (one still per scene; without ffmpeg the stills are in `out/stills/`). Open the three sheets. Fix what looks wrong even if the check passed (an empty-looking slide, an awkward line break).
-7. Only if asked: `record` (mp4 of the deck playing, the site scrolling, the phone), `export <project> --pdf --pptx`. Say honestly what they are: PDF and PPTX hold the finished screen of each slide as a picture plus the speaker notes; the motion lives in the HTML deck.
+7. `node <kit>/bin/cli.mjs export <project> --pptx` (add `--google`, `--pdf`). Then `inspect out/deck.pptx`. Say honestly what the file is:
+   - words: editable text boxes at the place they have on the slide (words drawn inside a video, a canvas or an embedded player stay part of that picture: the export says which slides);
+   - motion: each slide's motion, without its words, as an mp4 clip behind the words, set to start by itself; the text boxes fade in at the moment the words appear in the HTML deck. The words' own letter effects (scramble, letter by letter) are a simple fade in PowerPoint;
+   - `--click`: clips start on a click; `--still-words`: no fades; `--no-video`: still pictures instead of clips; `--pptx-pictures`: the old way, one finished picture per slide;
+   - `deck_google.pptx` (with `--google`): the same text boxes on still pictures, because Google Slides does not play videos inside a .pptx;
+   - fonts: the export lists them. On a computer without them, PowerPoint or Keynote shows a similar font. `--font "Name"` sets one font for every box.
+   `record` (mp4 of the deck playing, the site scrolling, the phone) only if asked.
 8. Report to the user in two lists:
    - **Checked by the tool**: the PASS line, how many scenes, which blocks, the files (`out/deck/index.html`, `out/site/index.html`, anything exported).
    - **For you to look at**: the room (projector, back row), a real phone (`serve <project>` prints an address for the same Wi-Fi), anything you were unsure of, any ADVICE you did not follow and why. Say "exported" or "recorded" only for files you really made.

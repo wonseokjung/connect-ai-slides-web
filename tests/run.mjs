@@ -12,7 +12,10 @@ import {KIT, NAME, readPng, findChrome, findFfmpeg, pkgDir, closeBrowser} from '
 import {loadCatalog, validateMeta, wrapBlock, byKind} from '../lib/catalog.mjs';
 import {build, loadStory, validateStory, sceneText} from '../lib/build.mjs';
 import {check, countWords, ratio, contrastOf} from '../lib/check.mjs';
-import {installSkill, removeSkill} from '../lib/install.mjs';
+import {installSkill, removeSkill, installRuntime, pinSkill} from '../lib/install.mjs';
+import {parseTalk, talkToStory, SAMPLE} from '../lib/markdown.mjs';
+import {textBox, faceFor, slideTiming, patchTiming} from '../lib/pptx.mjs';
+import {inspectPptx} from '../lib/inspect-pptx.mjs';
 import {eyeVerdict, eyesAvailable, measureEyes, EYES} from '../lib/eyes.mjs';
 
 const FAST = process.argv.includes('--fast');
@@ -197,16 +200,83 @@ await test('without the optional packages (npm install --omit=optional) the engi
 await test('install-skill copies the skill, updates its own copy, never touches a foreign folder', () => {
   const home = tmp('home'); fs.mkdirSync(path.join(home, '.claude')); const env = {};
   const log = () => {};
-  let l = installSkill({agent: 'claude', home, env, log});
+  let l = installSkill({agent: 'claude', home, env, log, runtime: false});
   const dest = path.join(home, '.claude', 'skills', NAME);
   assert.equal(l[0].action, 'install'); assert.ok(fs.existsSync(path.join(dest, 'SKILL.md')) && fs.existsSync(path.join(dest, 'BLOCKS.md')));
   assert.equal(JSON.parse(fs.readFileSync(path.join(dest, '.' + NAME + '.json'), 'utf8')).kit, KIT);
-  assert.equal(installSkill({agent: 'claude', home, env, log})[0].action, 'update');
+  assert.equal(installSkill({agent: 'claude', home, env, log, runtime: false})[0].action, 'update');
   removeSkill({agent: 'claude', home, env, log}); assert.ok(!fs.existsSync(dest));
   fs.mkdirSync(dest, {recursive: true}); fs.writeFileSync(path.join(dest, 'theirs.txt'), 'x');
-  assert.equal(installSkill({agent: 'claude', home, env, log})[0].action, 'skip'); assert.ok(fs.existsSync(path.join(dest, 'theirs.txt')));
+  assert.equal(installSkill({agent: 'claude', home, env, log, runtime: false})[0].action, 'skip'); assert.ok(fs.existsSync(path.join(dest, 'theirs.txt')));
   const text = fs.readFileSync(path.join(KIT, 'skill', 'SKILL.md'), 'utf8');
   assert.ok(/^---\nname: connect-ai-slides-web\ndescription: /.test(text) && !/\/Users\//.test(text));
+});
+
+await test('install-skill: a versioned runtime copy with the lock file, npm started without a shell, the skill pinned to it', () => {
+  const home = tmp('rt'); fs.mkdirSync(path.join(home, '.cursor')); const env = {};
+  const calls = [];
+  const npm = (args, {cwd}) => { calls.push({args, cwd}); fs.mkdirSync(path.join(cwd, 'node_modules'), {recursive: true}); return {code: 0, out: ''}; };
+  const l = installSkill({agent: 'all', home, env, log: () => {}, npm});
+  const ver = JSON.parse(fs.readFileSync(path.join(KIT, 'package.json'), 'utf8')).version;
+  const rt = path.join(home, '.connect-ai', NAME, ver);
+  assert.equal(l[0].label, 'Cursor'); assert.ok(l[0].done);
+  assert.ok(fs.existsSync(path.join(rt, 'bin', 'cli.mjs')) && fs.existsSync(path.join(rt, 'npm-shrinkwrap.json')), 'runtime copy with its lock');
+  assert.deepEqual(calls[0].args.slice(0, 2), ['ci', '--omit=dev']);
+  const md = fs.readFileSync(path.join(home, '.cursor', 'skills', NAME, 'SKILL.md'), 'utf8');
+  assert.ok(md.includes(JSON.stringify(path.join(rt, 'bin', 'cli.mjs'))), 'the skill names the runtime');
+  installSkill({agent: 'all', home, env, log: () => {}, npm});
+  assert.equal(calls.length, 1, 'same lock: npm is not run again');
+  const src = fs.readFileSync(path.join(KIT, 'lib', 'install.mjs'), 'utf8');
+  assert.ok(/shell: false/.test(src) && !/shell: true|shell: process/.test(src));
+  const pkg = JSON.parse(fs.readFileSync(path.join(KIT, 'package.json'), 'utf8'));
+  assert.ok(pkg.files.includes('npm-shrinkwrap.json') && /^>=18\.18/.test(pkg.engines.node));
+  for (const f of ['bin/cli.mjs', 'lib/shoot.mjs', 'lib/export.mjs', 'lib/tools.mjs', 'lib/eyes.mjs']) {
+    const t = fs.readFileSync(path.join(KIT, f), 'utf8');
+    const n = (t.match(/\bspawn(Sync)?\(/g) || []).length, m = (t.match(/shell: false/g) || []).length;
+    assert.ok(m >= n, `${f}: ${n} spawns, ${m} say shell: false`);
+  }
+  return 'runtime ' + path.relative(home, rt);
+});
+
+await test('markdown: every part becomes one slide, every word is kept, no block is used twice in the sample', () => {
+  for (const lang of ['ko', 'en']) {
+    const talk = parseTalk(SAMPLE[lang]);
+    const story = talkToStory(talk);
+    assert.equal(story.lang, lang);
+    assert.equal(story.scenes.length, talk.slides.length + 1);
+    assert.equal(validateStory(story, cat).length, 0, validateStory(story, cat).join('\n'));
+    const kinds = story.scenes.map((x) => x.kind);
+    assert.equal(new Set(kinds).size, kinds.length, 'a design twice: ' + kinds.join(', '));
+    const all = JSON.stringify(story);
+    for (const w of SAMPLE[lang].replace(/^(note|노트)\s*:.*$/gim, '').replace(/\[[^\]]*\]\([^)]*\)|[#>*\-]|\d+\.\s/g, ' ').split(/\s+/).filter((w) => w.length > 1)) assert.ok(all.includes(w.replace(/[.:]$/, '')), 'lost the word ' + w);
+    assert.ok(story.scenes.every((x) => x.notes), 'every slide has notes');
+    assert.ok(kinds.includes('kit/end-card') && story.scenes.at(-1).links.length === 2);
+  }
+  const plain = talkToStory(parseTalk('My talk\nFirst point.\n- a\n- b\nLast line.'));
+  assert.equal(plain.scenes.length, 4);
+  const num = talkToStory(parseTalk('# T\n## Growth\n**3강** lessons so far\n## Shot\n![my screen](shot.png)'));
+  assert.equal(num.scenes[1].kind, 'css/big-number'); assert.equal(num.scenes[1].value, '3강'); assert.equal(num.scenes[2].kind, 'kit/photo-frame');
+  return 'ko + en sample, plain text, a number, a picture';
+});
+
+await test('pptx parts: a measured line becomes runs in points, Pretendard / Helvetica weights by name, timing XML is well formed', () => {
+  const t = {tag: 'g', align: 'center', x: 100, y: 200, w: 400, h: 80, lh: 80, firstH: 60, size: 64, weight: 200, family: '"Inter", "Pretendard", sans-serif',
+    lines: [{runs: [{text: 'Hello ', color: 'F6F3EC', alpha: 1, size: 64, weight: 200, italic: false, spacing: 0}, {text: 'gold', color: 'F2B45A', alpha: 0.5, size: 64, weight: 200, italic: false, spacing: 2}]}, {runs: [{text: 'line two', color: 'F6F3EC', alpha: 1, size: 64, weight: 200, italic: false, spacing: 0}]}]};
+  const b = textBox(t, {font: 'Pretendard'});
+  assert.equal(b.runs.length, 3); assert.equal(b.runs[0].options.fontSize, 32); assert.equal(b.runs[0].options.fontFace, 'Pretendard ExtraLight');
+  assert.ok(b.runs[1].options.breakLine && !b.runs[2].options.breakLine); assert.equal(b.runs[1].options.transparency, 50); assert.equal(b.runs[1].options.charSpacing, 1);
+  assert.ok(b.opts.x < 100 * 13.333333 / 1920 && b.opts.w > 400 * 13.333333 / 1920, 'centred box grows to both sides');
+  assert.deepEqual(faceFor('.SF NS', 300), {face: 'Helvetica Neue Light', bold: false});
+  assert.deepEqual(faceFor('Pretendard', 700), {face: 'Pretendard', bold: true});
+  assert.deepEqual(faceFor('Didot', 400), {face: 'Didot', bold: false});
+  const xml = slideTiming({clip: {spid: 5, ms: 2500}, builds: [{spid: 6, delay: 300}, {spid: 7, delay: 900}]});
+  const stack = [];
+  for (const m of xml.matchAll(/<(\/?)([\w:]+)[^>]*?(\/?)>/g)) { if (m[3]) continue; if (m[1]) assert.equal(stack.pop(), m[2]); else stack.push(m[2]); }
+  assert.equal(stack.length, 0, 'balanced tags');
+  const ids = [...xml.matchAll(/<p:cTn id="(\d+)"/g)].map((m) => +m[1]);
+  assert.equal(new Set(ids).size, ids.length, 'unique timing ids');
+  assert.ok(/nodeType="mainSeq"/.test(xml) && /cmd="playFrom\(0\.0\)"/.test(xml) && /<p:bldP spid="6" grpId="0" animBg="1"\/>/.test(xml) && /<p:cond delay="900"\/>/.test(xml));
+  assert.equal(slideTiming({}), '');
 });
 
 await test('the command line answers in sentences', () => {
@@ -217,6 +287,10 @@ await test('the command line answers in sentences', () => {
   const list = JSON.parse(run('catalog', '--json').stdout); assert.equal(list.length, cat.length);
   assert.ok(new RegExp(ready.length + ' blocks ready').test(run('catalog').stdout));
   const d = path.join(tmp('new'), 'my-talk'); assert.equal(run('new', d).status, 0); assert.equal(loadStory(d).scenes.length, 3); assert.equal(validateStory(loadStory(d), cat).length, 0);
+  const w = tmp('ppt'); const r = spawnSync(process.execPath, [path.join(KIT, 'bin', 'cli.mjs'), 'ppt', '--ko', '--quiet'], {cwd: w, encoding: 'utf8'});
+  assert.equal(r.status, 0, r.stderr); assert.ok(fs.readFileSync(path.join(w, 'my-talk.md'), 'utf8').startsWith('# ')); assert.ok(/ppt my-talk\.md/.test(r.stdout));
+  const again = spawnSync(process.execPath, [path.join(KIT, 'bin', 'cli.mjs'), 'ppt', 'nothere.md'], {cwd: w, encoding: 'utf8'}); assert.equal(again.status, 1); assert.ok(/no file at nothere\.md/.test(again.stderr));
+  assert.ok(/CONNECT|██/.test(run('help').stdout) && !/██/.test(run('--version').stdout), 'banner on help, not on --version');
 });
 
 console.log('B. in Chrome');
@@ -384,22 +458,38 @@ else {
       const j = JSON.parse(fs.readFileSync(g.json, 'utf8')); assert.ok(j.items.every((i) => i.stills.deck && fs.existsSync(path.join(dir, 'g', i.stills.deck)) && i.dur > 0));
     });
 
-    await test('export: a PDF with one page per slide and a PPTX with one slide per scene and the notes', async () => {
+    await test('export: a PDF with one page per slide, and a real PPTX: editable words, the motion as a clip that starts by itself, fades, notes', async () => {
       const {exportDeck} = await import('../lib/export.mjs');
       const dir = tmp('exp'); fs.cpSync(path.join(KIT, 'examples', 'sample'), dir, {recursive: true}); fs.cpSync(path.join(KIT, 'examples', 'media'), path.join(dir, 'media'), {recursive: true});
-      const r = await exportDeck(dir, {pdf: true, pptx: true, browser});
+      const r = await exportDeck(dir, {pdf: true, pptx: true, google: true, browser});
       const n = loadStory(dir).scenes.length;
       const pdf = fs.readFileSync(r.pdf).toString('latin1');
       assert.equal((pdf.match(/\/Type\s*\/Page(?![s\w])/g) || []).length, n, 'PDF pages');
-      const JSZip = createRequire(import.meta.url)('jszip');
-      const zip = await JSZip.loadAsync(fs.readFileSync(r.pptx));
-      const slides = Object.keys(zip.files).filter((f) => /^ppt\/slides\/slide\d+\.xml$/.test(f));
-      assert.equal(slides.length, n, 'PPTX slides');
-      const notes = Object.keys(zip.files).filter((f) => /^ppt\/notesSlides\/notesSlide\d+\.xml$/.test(f));
-      assert.ok(notes.length >= n, 'PPTX notes');
-      assert.ok((await zip.file(notes[0]).async('string')).includes('kit explaining itself'));
-      assert.ok(/not editable/.test(r.notes[0]));
-      return `${n} pages, ${n} slides`;
+      const x = await inspectPptx(r.pptx);
+      assert.equal(x.totals.slides, n, 'PPTX slides');
+      assert.ok(x.totals.boxes >= n, 'text boxes: ' + x.totals.boxes);
+      assert.equal(x.totals.notes, n, 'notes on every slide');
+      assert.ok(x.slides[0].notes.includes('kit explaining itself'));
+      const words = x.slides.flatMap((s) => s.boxes).join(' ');
+      assert.ok(words.includes('One story, a deck and a website'), 'the title is a text box');
+      if (findFfmpeg()) { assert.ok(x.totals.videos >= 1 && x.totals.autoplay === x.totals.videos, 'clips start by themselves'); }
+      const g = await inspectPptx(r.google);
+      assert.equal(g.totals.videos, 0); assert.equal(g.totals.boxes, x.totals.boxes);
+      const p = await exportDeck(dir, {pptx: true, pptxMode: 'pictures', browser});
+      const pi = await inspectPptx(p.pptx);
+      assert.equal(pi.totals.boxes, 0); assert.ok(/not editable/.test(p.notes[0]));
+      return `${n} pages; ${x.totals.boxes} text boxes, ${x.totals.videos} clips, ${r.builds} fades`;
+    });
+
+    await test('ppt: a markdown file in, a PowerPoint file out, from the command line', async () => {
+      const w = tmp('md'); fs.writeFileSync(path.join(w, 'talk.md'), SAMPLE.en);
+      const r = spawnSync(process.execPath, [path.join(KIT, 'bin', 'cli.mjs'), 'talk.md', '--quiet', '--no-video'], {cwd: w, encoding: 'utf8', timeout: 240000});
+      assert.equal(r.status, 0, r.stderr + r.stdout);
+      const x = await inspectPptx(path.join(w, 'talk-deck', 'out', 'deck.pptx'));
+      assert.equal(x.totals.slides, parseTalk(SAMPLE.en).slides.length + 1);
+      assert.ok(x.slides.flatMap((s) => s.boxes).join(' ').includes('Our little bakery'));
+      assert.equal(x.totals.notes, x.totals.slides);
+      return `${x.totals.slides} slides, ${x.totals.boxes} text boxes`;
     });
 
     if (!findFfmpeg()) skip('record', 'no ffmpeg on this computer');

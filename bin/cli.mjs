@@ -7,8 +7,15 @@ import path from 'node:path';
 import http from 'node:http';
 import {spawn} from 'node:child_process';
 import {KIT, NAME, readJson, findChrome, findFfmpeg} from '../lib/tools.mjs';
+import {NODE_FLOOR} from '../lib/name.mjs';
+import {banner, gold, dimmed} from '../lib/banner.mjs';
+
+// Node floor: say it in plain words instead of a stack trace from a newer syntax
+{ const [a, b] = process.versions.node.split('.').map(Number); if (a < NODE_FLOOR[0] || (a === NODE_FLOOR[0] && b < NODE_FLOOR[1])) { console.error(`\n  ${NAME} needs Node ${NODE_FLOOR.join('.')} or newer. This computer has ${process.versions.node}. Get the LTS from nodejs.org, then run this again.\n`); process.exit(1); } }
 
 const argv = process.argv.slice(2);
+// npx connect-ai-slides-web my-talk.md  ==  npx connect-ai-slides-web ppt my-talk.md
+if (argv[0] && /\.(md|markdown|txt)$/i.test(argv[0])) argv.unshift('ppt');
 const cmd = argv[0] && !argv[0].startsWith('-') ? argv.shift() : argv.includes('--version') || argv.includes('-v') ? 'version' : argv.includes('--help') || argv.includes('-h') ? 'help' : '';
 const has = (n) => { const i = argv.indexOf(n); if (i < 0) return false; argv.splice(i, 1); return true; };
 const val = (n, d = null) => { const i = argv.indexOf(n); if (i < 0) return d; const v = argv[i + 1]; argv.splice(i, 2); return v == null || v.startsWith('--') ? d : v; };
@@ -19,6 +26,8 @@ const VERSION = readJson(path.join(KIT, 'package.json')).version;
 const HELP = `${NAME} ${VERSION}
 One story, a deck and a website. Motion from GSAP, Motion, anime.js, Lottie, CSS, HyperFrames and Remotion, checked on the real screen.
 
+  npx ${NAME} ppt [talk.md] [--google] [--open]
+                                            a markdown or text file -> a PowerPoint file (no file: a sample)
   npx ${NAME} demo [folder] [--open]        the sample, start to finish (deck + website + report)
   npx ${NAME} new <folder>                  a three-scene starter story
   npx ${NAME} catalog [--use x] [--source x] [--json]
@@ -31,12 +40,15 @@ One story, a deck and a website. Motion from GSAP, Motion, anime.js, Lottie, CSS
   npx ${NAME} record <project> [--deck] [--site] [--phone] [--sheet] [--fps 30] [--jobs 2]
                                             out/deck.mp4, out/site.mp4, out/phone.mp4
                                             (--sheet-only: just out/sheet_*.jpg, one still per scene)
-  npx ${NAME} export <project> [--pdf] [--pptx] [--pptx-video]
-                                            out/deck.pdf, out/deck.pptx (finished screens + notes)
+  npx ${NAME} export <project> [--pptx] [--pdf] [--google] [--click] [--no-video] [--still-words] [--pptx-pictures]
+                                            out/deck.pptx: words you can edit, the motion as clips, notes
+                                            (--google: also out/deck_google.pptx for Google Slides)
+  npx ${NAME} inspect <file.pptx>           what is inside: text boxes, clips, notes
   npx ${NAME} gallery [--out dir] [--clips] [--only kind,kind] [--map file.json] [--blocks dir]
                                             every catalog block from its example (--blocks: your own too)
-  npx ${NAME} install-skill [--claude|--codex|--agents] [--project dir] [--remove]
-                                            teach your coding agent to use this kit
+  npx ${NAME} install-skill [--claude|--codex|--antigravity|--cursor] [--dir folder] [--no-runtime]
+                                            teach your AI agent this kit (Claude Code, Codex, Antigravity, Cursor)
+  npx ${NAME} remove-skill                  take it out again
   npx ${NAME} doctor                        is this computer ready?
 
 A project is a folder with story.json (and media/). Docs: README.md, docs/BLOCKS.md (write your own block).`;
@@ -50,7 +62,7 @@ function projectArg(what) {
   return abs;
 }
 const framesArg = (dflt) => { const f = []; if (has('--deck')) f.push('deck'); if (has('--site') || has('--web')) f.push('site'); if (has('--phone')) f.push('phone'); return f.length ? f : dflt; };
-function openFile(p) { const c = process.platform === 'darwin' ? ['open', [p]] : process.platform === 'win32' ? ['cmd', ['/c', 'start', '', p]] : ['xdg-open', [p]]; try { spawn(c[0], c[1], {stdio: 'ignore', detached: true}).unref(); } catch {} }
+function openFile(p) { const c = process.platform === 'darwin' ? ['open', [p]] : process.platform === 'win32' ? ['explorer.exe', [p]] : ['xdg-open', [p]]; try { spawn(c[0], c[1], {stdio: 'ignore', detached: true, shell: false, windowsHide: true}).unref(); } catch {} }
 
 function printBuilt(b) {
   if (b.deck) say(`  deck     ${rel(b.deck.index)}   (${b.deck.scenes} slides; open it by double click)`);
@@ -74,10 +86,19 @@ const STARTER = (name) => ({
   ],
 });
 
+const BANNER_CMDS = new Set(['', 'help', 'demo', 'ppt', 'pptx', 'deck', 'doctor', 'install-skill', 'catalog', 'new']);
+function hello() {
+  say(banner());
+  say('  ' + 'Your slides, made by your AI employee. ' + gold('Words you can edit, motion that plays, a check on the real screen.') + dimmed('  내 발표자료, AI 직원이 만들어요'));
+  say('');
+}
+
 async function main() {
+  if (BANNER_CMDS.has(cmd) && !argv.includes('--quiet') && !argv.includes('--json')) hello();
+  if (argv.includes('--quiet')) argv.splice(argv.indexOf('--quiet'), 1);
   if (cmd === 'version') return say(VERSION);
   if (cmd === 'help') return say(HELP);
-  if (!cmd) { say(HELP); say(`\nNew here? Run:  npx ${NAME} demo`); return; }
+  if (!cmd) { say(HELP); say(`\nNew here? Run:  npx ${NAME} ppt   (a sample talk you can change, then a PowerPoint file)`); return; }
 
   if (cmd === 'doctor') { const {doctor} = await import('../lib/doctor.mjs'); const ok = await doctor(); process.exitCode = ok ? 0 : 1; return; }
 
@@ -167,12 +188,71 @@ async function main() {
   }
 
   if (cmd === 'export') {
-    const dir = projectArg('export'), pdf = has('--pdf'), pptx = has('--pptx'), pptxVideo = has('--pptx-video');
+    const dir = projectArg('export');
+    let pdf = has('--pdf'), pptx = has('--pptx');
+    const pictures = has('--pptx-pictures') || has('--pptx-images'), legacyVideo = has('--pptx-video'), google = has('--google'), noVideo = has('--no-video'), click = has('--click'), font = val('--font'), still = has('--still-words');
+    if (pictures || legacyVideo || google || noVideo || click || font) pptx = true;
     const {exportDeck} = await import('../lib/export.mjs');
-    const r = await exportDeck(dir, {pdf, pptx: pptx || pptxVideo, pptxVideo});
-    if (r.pdf) say(`  pdf   ${rel(r.pdf)}   (${r.slides} pages)`);
-    if (r.pptx) say(`  pptx  ${rel(r.pptx)}   (${r.slides} slides)`);
+    const r = await exportDeck(dir, {pdf, pptx, pptxMode: pictures ? 'pictures' : 'editable', video: !noVideo, autoplay: !click, builds: !still, google, font, onProgress: (m) => { if (process.stdout.isTTY) process.stdout.write('\r  ' + m + '   '); }});
+    if (process.stdout.isTTY) process.stdout.write('\r' + ' '.repeat(40) + '\r');
+    if (r.pptx) say(`  pptx    ${rel(r.pptx)}   (${r.slides} slides)`);
+    if (r.google) say(`  google  ${rel(r.google)}`);
+    if (r.pdf) say(`  pdf     ${rel(r.pdf)}   (${r.slides} pages)`);
     for (const n of r.notes) say('  ' + n);
+    return;
+  }
+
+  if (cmd === 'ppt' || cmd === 'pptx' || cmd === 'deck') {
+    // the simple door: a markdown or text file in, a PowerPoint file out
+    const {parseTalk, talkToStory, bringMedia, SAMPLE} = await import('../lib/markdown.mjs');
+    const google = has('--google'), noVideo = has('--no-video'), click = has('--click'), still = has('--still-words'), pdf = has('--pdf'), open = has('--open'), check = has('--check'), ko = has('--ko'), en = has('--en');
+    const look = val('--look', 'connect'), outOpt = val('--out'), font = val('--font');
+    const file = argv.find((a) => !a.startsWith('-'));
+    if (!file) {
+      const lang = ko ? 'ko' : en ? 'en' : /^ko/i.test(process.env.LANG || Intl.DateTimeFormat().resolvedOptions().locale || '') ? 'ko' : 'en';
+      const name = lang === 'ko' ? 'my-talk.md' : 'my-talk.md';
+      if (fs.existsSync(name)) throw new Error(`${name} is already here. Run: npx ${NAME} ppt ${name}`);
+      fs.writeFileSync(name, SAMPLE[lang]);
+      say(`Made ${name}: a sample talk in ${lang === 'ko' ? 'Korean' : 'English'} (# title, ## one slide each).`);
+      say(`Change the words to yours, then run:\n  npx ${NAME} ppt ${name}`);
+      return;
+    }
+    const src = path.resolve(file);
+    if (!fs.existsSync(src)) throw new Error(`There is no file at ${file}. Run \`npx ${NAME} ppt\` with no file to get a sample my-talk.md.`);
+    const talk = parseTalk(fs.readFileSync(src, 'utf8'), {name: path.basename(src).replace(/\.[^.]+$/, '')});
+    if (!talk.title && !talk.slides.length) throw new Error(`${file} has no words in it. Write a # title and a few ## slides.`);
+    const story = talkToStory(talk, {look});
+    const dir = path.resolve(outOpt || src.replace(/\.[^.]+$/, '') + '-deck');
+    fs.mkdirSync(path.join(dir, 'media'), {recursive: true});
+    const missing = bringMedia(story, path.dirname(src), dir);
+    if (missing.length) throw new Error(`These pictures are not there: ${missing.join(', ')} (paths are read from the folder of ${file}).`);
+    fs.writeFileSync(path.join(dir, 'story.json'), JSON.stringify(story, null, 2) + '\n');
+    say(`${talk.slides.length + 1} slides from ${rel(src)}:`);
+    story.scenes.forEach((s, i) => say(`  ${String(i + 1).padStart(2)}  ${s.kind.padEnd(22)} ${String(s.title || s.word || s.text || s.value || (s.lines || [])[0] || s.caption || '').slice(0, 50)}`));
+    const {build} = await import('../lib/build.mjs');
+    const b = await build(dir);
+    if (check) { const {check: run} = await import('../lib/check.mjs'); printCheck(await run(dir, {built: b, frames: ['deck']})); }
+    const {exportDeck} = await import('../lib/export.mjs');
+    const r = await exportDeck(dir, {pdf, pptx: true, video: !noVideo, autoplay: !click, builds: !still, google, font, onProgress: (m) => { if (process.stdout.isTTY) process.stdout.write('\r  ' + m + '   '); }});
+    if (process.stdout.isTTY) process.stdout.write('\r' + ' '.repeat(40) + '\r');
+    say('Done:');
+    say(`  pptx    ${rel(r.pptx)}   (open it in PowerPoint or Keynote)`);
+    if (r.google) say(`  google  ${rel(r.google)}`);
+    if (r.pdf) say(`  pdf     ${rel(r.pdf)}`);
+    say(`  deck    ${rel(b.deck.index)}   (the same deck in a browser, with every motion)`);
+    for (const n of r.notes) say('  ' + n);
+    say(`Change a slide: edit ${rel(path.join(dir, 'story.json'))} (or the .md) and run this again.`);
+    if (open) openFile(r.pptx);
+    return;
+  }
+
+  if (cmd === 'inspect') {
+    const f = argv.find((a) => !a.startsWith('-'));
+    if (!f || !/\.pptx$/i.test(f)) throw new Error(`Give a .pptx file: npx ${NAME} inspect out/deck.pptx`);
+    const {inspectPptx, printInspect} = await import('../lib/inspect-pptx.mjs');
+    const r = await inspectPptx(path.resolve(f));
+    if (has('--json')) return say(JSON.stringify(r, null, 2));
+    printInspect(r, say);
     return;
   }
 
@@ -224,14 +304,23 @@ async function main() {
     return;
   }
 
-  if (cmd === 'install-skill') {
+  if (cmd === 'install-skill' || cmd === 'remove-skill') {
     const {installSkill, removeSkill} = await import('../lib/install.mjs');
-    const remove = has('--remove'), dryRun = has('--dry-run'), project = argv.includes('--project') ? val('--project', true) : null, dirOpt = val('--dir');
+    const remove = cmd === 'remove-skill' || has('--remove'), dryRun = has('--dry-run'), noRuntime = has('--no-runtime'), project = has('--project'), dirOpt = val('--dir');
     let agent = val('--agent', 'all');
-    if (has('--claude')) agent = 'claude'; if (has('--codex')) agent = 'codex'; if (has('--agents')) agent = 'agents';
+    for (const k of ['claude', 'codex', 'antigravity', 'cursor', 'gemini']) if (has('--' + k)) agent = agent === 'all' ? k : agent + ',' + k;
+    if (has('--agents')) agent = 'codex';
     say(remove ? 'Removing the skill:' : 'Installing the skill (a folder copy; your agent settings are not touched):');
     if (remove) removeSkill({agent, dir: dirOpt, project, dryRun});
-    else { const list = installSkill({agent, dir: dirOpt, project, dryRun}); if (list.some((t) => t.action === 'install' || t.action === 'update')) say(`Now ask your agent: "make a deck and a one-page website about <your topic> with ${NAME}".`); }
+    else {
+      const list = installSkill({agent, dir: dirOpt, project, dryRun, runtime: !noRuntime});
+      if (list.some((t) => t.done)) {
+        say('');
+        say('  ' + gold('Done.') + ' Open a new chat with your agent and say:');
+        say('    "make a presentation about <your topic> with connect-ai-slides-web, as a PowerPoint file"');
+        say(dimmed('    "connect-ai-slides-web 로 <주제> 발표자료 PPT 만들어 줘"'));
+      }
+    }
     return;
   }
 

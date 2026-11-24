@@ -1,7 +1,7 @@
 {
   "name": "connect-ai-slides-web",
-  "version": "0.2.0",
-  "description": "One story, a presentation deck and a one-page website. 67 motion blocks from GSAP, Motion, anime.js, Lottie, CSS, HyperFrames and Remotion go through one seekable block contract, and a check measures the real screen (type size, contrast, words, motion, phone width, nothing on a face or body, eyes open on people's posters).",
+  "version": "0.3.0",
+  "description": "Your AI agent becomes a presentation employee: a few lines of markdown become a real PowerPoint file. Every word is an editable text box, each slide's motion plays as a clip, the words fade in on time, and your speaker notes come along. The same story is also a deck in the browser and a one-page website, from 67 motion blocks (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion), checked on the real screen.",
   "type": "module",
   "bin": {
     "connect-ai-slides-web": "bin/cli.mjs"
@@ -10,14 +10,16 @@
     "test": "node tests/run.mjs",
     "tsc": "tsc -p tsconfig.json",
     "demo": "node bin/cli.mjs demo",
+    "ppt": "node bin/cli.mjs ppt",
     "check": "node bin/cli.mjs check",
     "gallery": "node bin/cli.mjs gallery",
+    "dogfood": "node scripts/dogfood.mjs dogfood-out",
     "cs": "node bin/cli.mjs"
   },
   "license": "MIT",
   "author": "CONNECT AI LAB",
   "engines": {
-    "node": ">=18"
+    "node": ">=18.18"
   },
   "repository": {
     "type": "git",
@@ -45,7 +47,17 @@
     "remotion",
     "pptx",
     "agent-skill",
-    "vibe-coding"
+    "vibe-coding",
+    "powerpoint",
+    "keynote",
+    "google-slides",
+    "markdown-to-pptx",
+    "speaker-notes",
+    "claude-code",
+    "codex",
+    "antigravity",
+    "cursor",
+    "ai-employee"
   ],
   "files": [
     "bin/",
@@ -57,17 +69,20 @@
     "examples/",
     "tools/make-lottie.mjs",
     "tools/eyes.swift",
+    "tools/keynote-check.mjs",
     "docs/BLOCKS.md",
     "tests/",
     "tsconfig.json",
     "NOTICE.md",
     "README.md",
     "README.ko.md",
-    "LICENSE"
+    "LICENSE",
+    "npm-shrinkwrap.json"
   ],
   "dependencies": {
     "animejs": "4.5.0",
     "gsap": "3.15.0",
+    "jszip": "3.10.2",
     "lenis": "1.3.27",
     "lottie-web": "5.13.0",
     "motion": "14.14.0",
