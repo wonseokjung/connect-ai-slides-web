@@ -265,9 +265,9 @@
           "label": "8–9강",
           "title": "Blender",
           "text": "connect-ai-blender",
-          "src": "media/l89_logo.mp4",
-          "poster": "media/l89_logo.jpg",
-          "alt": "8–9강 결과: Blender 로고 렌더"
+          "src": "media/l89_bottle.mp4",
+          "poster": "media/l89_bottle.jpg",
+          "alt": "8–9강 결과: Blender 제품 렌더"
         }
       ],
       "notes": "강의마다 오픈소스 하나. 그림은 각 도구의 결과물. 클릭마다 한 강의."

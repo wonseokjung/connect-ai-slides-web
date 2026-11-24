@@ -265,9 +265,9 @@
           "label": "Lessons 8-9",
           "title": "Blender",
           "text": "connect-ai-blender",
-          "src": "media/l89_logo.mp4",
-          "poster": "media/l89_logo.jpg",
-          "alt": "Lessons 8-9 result: a Blender logo render"
+          "src": "media/l89_bottle.mp4",
+          "poster": "media/l89_bottle.jpg",
+          "alt": "Lessons 8-9 result: a Blender product render"
         }
       ],
       "notes": "One open-source tool per lesson; the pictures are results of each tool. One click per lesson."

@@ -31,6 +31,9 @@ export const css = `
 .b-gsap-lesson-map .st.now .wh { background: var(--gold2); color: var(--bg); font-weight: 500; padding: 0.1em 0.6em 0.1em 0.8em; border-radius: 999px; margin-bottom: 0.15em; }
 .b-gsap-lesson-map .t { font-size: calc(var(--lead) * 0.62); color: var(--ink); line-height: 1.13; letter-spacing: -0.012em; text-wrap: balance; }
 .b-gsap-lesson-map .tool { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: var(--label); color: var(--dim); line-height: 1.3; }
+.cs-frame[data-stage="deck"] .b-gsap-lesson-map .ttl { font-size: calc(var(--lead) * 1.15); }
+.cs-frame[data-stage="deck"] .b-gsap-lesson-map .wh { font-size: calc(var(--label) * 1.15); }
+.cs-frame[data-stage="deck"] .b-gsap-lesson-map .t { font-size: calc(var(--lead) * 0.84); }
 .cs-frame[data-stage="site"][data-shape="wide"] .b-gsap-lesson-map .t { font-size: calc(var(--lead) * 0.72); }
 .cs-frame[data-stage="site"][data-shape="wide"] .b-gsap-lesson-map .tool { font-size: var(--label); }
 .cs-frame[data-shape="tall"] .b-gsap-lesson-map .wrap { padding: calc(var(--pad) * 0.6 + var(--top)) var(--pad) calc(var(--pad) * 0.5); gap: calc(var(--gap) * 0.9); }
