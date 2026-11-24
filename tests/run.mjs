@@ -235,6 +235,14 @@ await test('install-skill: a versioned runtime copy with the lock file, npm star
     const n = (t.match(/\bspawn(Sync)?\(/g) || []).length, m = (t.match(/shell: false/g) || []).length;
     assert.ok(m >= n, `${f}: ${n} spawns, ${m} say shell: false`);
   }
+  // a runtime folder that holds someone else's files is never cleaned, and a link on the way is refused
+  const home2 = tmp('rt2'); fs.mkdirSync(path.join(home2, '.cursor'));
+  const rt2 = path.join(home2, '.connect-ai', NAME, ver); fs.mkdirSync(rt2, {recursive: true}); fs.writeFileSync(path.join(rt2, 'keep-me.txt'), 'mine');
+  assert.throws(() => installSkill({agent: 'all', home: home2, env, log: () => {}, npm}), /not this kit/);
+  assert.ok(fs.existsSync(path.join(rt2, 'keep-me.txt')), 'a foreign file is kept');
+  const home3 = tmp('rt3'); fs.mkdirSync(path.join(home3, '.cursor')); const elsewhere = tmp('rt3x');
+  fs.symlinkSync(elsewhere, path.join(home3, '.connect-ai'), 'dir');
+  assert.throws(() => installSkill({agent: 'all', home: home3, env, log: () => {}, npm}), /is a link/);
   return 'runtime ' + path.relative(home, rt);
 });
 
@@ -256,7 +264,15 @@ await test('markdown: every part becomes one slide, every word is kept, no block
   assert.equal(plain.scenes.length, 4);
   const num = talkToStory(parseTalk('# T\n## Growth\n**3강** lessons so far\n## Shot\n![my screen](shot.png)'));
   assert.equal(num.scenes[1].kind, 'css/big-number'); assert.equal(num.scenes[1].value, '3강'); assert.equal(num.scenes[2].kind, 'kit/photo-frame');
-  return 'ko + en sample, plain text, a number, a picture';
+  // a section with more than one block can show is split, in order, and keeps every word
+  const mixed = talkToStory(parseTalk('# Launch\n## Why\nThree reasons matter here.\n- fast\n- cheap\n- local\nNote: say it slowly\n## Pics\n![shop](media/a(1).jpg) Our shop at dawn\n## Mid\n- [Docs](https://x.y)\n## Ver\n**1.2.3** is live\n## End\nThanks\n- [Site](https://a.b)\n- [Shop](https://c.d)'));
+  const mj = JSON.stringify(mixed);
+  for (const w of ['Three reasons matter here.', 'fast', 'local', 'Our shop at dawn', 'Docs', '1.2.3', 'is live', 'Thanks']) assert.ok(mj.includes(w), 'lost ' + w);
+  assert.equal(validateStory(JSON.parse(mj), cat).length, 0, validateStory(JSON.parse(mj), cat).join('\n'));
+  assert.ok(mixed.scenes.some((x) => x.src === 'media/a(1).jpg'), 'a file name with brackets');
+  assert.ok(!mixed.scenes.some((x) => x.kind === 'gsap/counter'), '1.2.3 is not a number to count');
+  assert.equal(mixed.scenes.at(-1).kind, 'kit/end-card');
+  return 'ko + en sample, plain text, a number, a picture, a mixed section split in order';
 });
 
 await test('pptx parts: a measured line becomes runs in points, Pretendard / Helvetica weights by name, timing XML is well formed', () => {
@@ -277,6 +293,8 @@ await test('pptx parts: a measured line becomes runs in points, Pretendard / Hel
   assert.equal(new Set(ids).size, ids.length, 'unique timing ids');
   assert.ok(/nodeType="mainSeq"/.test(xml) && /cmd="playFrom\(0\.0\)"/.test(xml) && /<p:bldP spid="6" grpId="0" animBg="1"\/>/.test(xml) && /<p:cond delay="900"\/>/.test(xml));
   assert.equal(slideTiming({}), '');
+  const click = slideTiming({clip: {spid: 3, ms: 2000, auto: false}});
+  assert.ok(/nodeType="interactiveSeq"/.test(click) && /cmd="togglePause"/.test(click) && /<p:video>/.test(click) && !/playFrom/.test(click) && !/mainSeq/.test(click), 'a clip that plays on a click still has its media node');
 });
 
 await test('the command line answers in sentences', () => {
@@ -467,6 +485,7 @@ else {
       assert.equal((pdf.match(/\/Type\s*\/Page(?![s\w])/g) || []).length, n, 'PDF pages');
       const x = await inspectPptx(r.pptx);
       assert.equal(x.totals.slides, n, 'PPTX slides');
+      assert.deepEqual(x.problems, [], 'every shape its own id, every picture named for its format');
       assert.ok(x.totals.boxes >= n, 'text boxes: ' + x.totals.boxes);
       assert.equal(x.totals.notes, n, 'notes on every slide');
       assert.ok(x.slides[0].notes.includes('kit explaining itself'));
@@ -474,7 +493,7 @@ else {
       assert.ok(words.includes('One story, a deck and a website'), 'the title is a text box');
       if (findFfmpeg()) { assert.ok(x.totals.videos >= 1 && x.totals.autoplay === x.totals.videos, 'clips start by themselves'); }
       const g = await inspectPptx(r.google);
-      assert.equal(g.totals.videos, 0); assert.equal(g.totals.boxes, x.totals.boxes);
+      assert.equal(g.totals.videos, 0); assert.equal(g.totals.boxes, x.totals.boxes); assert.deepEqual(g.problems, []);
       const p = await exportDeck(dir, {pptx: true, pptxMode: 'pictures', browser});
       const pi = await inspectPptx(p.pptx);
       assert.equal(pi.totals.boxes, 0); assert.ok(/not editable/.test(p.notes[0]));
