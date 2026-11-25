@@ -7,7 +7,9 @@
 
 # connect-ai-slides-web
 
-**My AI presentation employee. Write down a few lines of what you want to say, and you get a deck that moves and a real PowerPoint file.**
+**Motion graphics aren't just for video. The same motion becomes a slide deck or a website.**
+
+My AI presentation employee. Write down a few lines of what you want to say, and you get a deck that moves and a real PowerPoint file.
 
 ![A real .pptx opened with Apple's own Office engine. Every gold dashed frame is a text box you can edit](docs/pptx/hero.webp)
 
