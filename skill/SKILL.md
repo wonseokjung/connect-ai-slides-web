@@ -1,13 +1,13 @@
 ---
 name: connect-ai-slides-web
-description: The presentation employee. Make a real PowerPoint file (.pptx) from a few lines of text or markdown, with code-made motion graphics from a catalog of 67 blocks (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion). Every word in the .pptx is an editable text box, each slide's motion plays as a video clip that starts by itself, the words fade in when they appear, and speaker notes come along. The same story is also a deck in the browser and a one-page website, and a check measures the real screen. Use when the user says "make a PPT", "make a PowerPoint", "make slides", "make a deck", "make a presentation", "make a Keynote", "turn my notes into slides", "make a landing page", "make a one-page website", "PPT 만들어 줘", "발표자료 만들어 줘", "슬라이드 만들어 줘", "파워포인트로 만들어 줘", "키노트로", "웹사이트 한 장 만들어 줘", "랜딩 페이지 만들어 줘".
+description: The presentation employee. Make a real PowerPoint file (.pptx) from a few lines of text or markdown, with code-made motion graphics from a catalog of 67 blocks (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion). Every word in the .pptx is an editable text box, each slide's motion plays as a video clip that starts by itself, the words fade in when they appear, and speaker notes come along. The same story is also a deck in the browser and a one-page website, and a check measures the real screen. Also takes an old PowerPoint file (.pptx) and remakes it as a motion deck from its own words, pictures and notes, and reads Marp, Slidev and reveal.js markdown as it is. Use when the user says "make a PPT", "remake my old PPT", "make this .pptx move", "turn my Marp / Slidev slides into a PowerPoint", "make a PowerPoint", "make slides", "make a deck", "make a presentation", "make a Keynote", "turn my notes into slides", "make a landing page", "make a one-page website", "PPT 만들어 줘", "발표자료 만들어 줘", "슬라이드 만들어 줘", "파워포인트로 만들어 줘", "키노트로", "웹사이트 한 장 만들어 줘", "랜딩 페이지 만들어 줘", "예전 PPT 움직이게 바꿔 줘", "이 PPT 다시 만들어 줘".
 ---
 
 # connect-ai-slides-web
 
 You turn what the user tells you into a presentation. The main thing people want is a PowerPoint file: `out/deck.pptx` (opens in PowerPoint and Keynote; words are editable text boxes, the motion of each slide is a clip behind the words, speaker notes included). The same `story.json` also builds `out/deck/index.html` (a reveal.js deck with every motion) and `out/site/index.html` (a one-page website), and `check` measures them in a real browser at three sizes: slide 1920x1080, web 1440x900, phone 390x844.
 <!-- connect-ai-slides-web:runtime -->
-Run the kit's CLI with `node <kit>/bin/cli.mjs`, where `<kit>` is the `kit` folder written in `.connect-ai-slides-web.json` next to this file. If that folder is gone, use `npx -y connect-ai-slides-web` instead of `node <kit>/bin/cli.mjs`.
+Run the kit's CLI with `node <kit>/bin/cli.mjs`, where `<kit>` is the `kit` folder written in `.connect-ai-slides-web.json` next to this file. If that folder is gone, use `npx -y github:wonseokjung/connect-ai-slides-web` instead of `node <kit>/bin/cli.mjs`.
 <!-- /connect-ai-slides-web:runtime -->
 
 ## The quick way (a beginner, a few lines, "just make me a PPT")
@@ -15,6 +15,16 @@ Run the kit's CLI with `node <kit>/bin/cli.mjs`, where `<kit>` is the `kit` fold
 2. `node <kit>/bin/cli.mjs ppt talk.md` (add `--google` for a Google Slides copy, `--pdf` for a PDF). It prints which block each slide got and writes `talk-deck/out/deck.pptx`.
 3. `node <kit>/bin/cli.mjs inspect talk-deck/out/deck.pptx` lists, slide by slide, the text boxes, clips and notes. Tell the user what is in the file from this list, not from memory.
 4. To change one slide's design, edit `talk-deck/story.json` (pick another `kind` from `catalog`), then `export talk-deck --pptx`.
+
+## The user brings an old PowerPoint (.pptx)
+1. `node <kit>/bin/cli.mjs import "old talk.pptx"` writes `old talk.md` and `old talk-media/` next to it, and prints per slide what came in and what was left in the old file (short labels on a diagram, drawn shapes, charts, equations, EMF pictures, hidden slides). An old `.ppt` (before 2007): ask the user to open it in PowerPoint or Keynote and save it as `.pptx` first.
+2. Read `old talk.md`. Old slides are crowded: make each slide one message **with the words that are already there**. Cut, split, reorder, move detail into `Note:`; never add a word, a number or a claim that is not in the file. Show the user the new outline (one line per slide) and wait for their OK.
+3. Pictures from the old file are the user's to judge: ask whether they own them before they go on a public website.
+4. `node <kit>/bin/cli.mjs ppt "old talk.md"`, then `inspect` and `check` as below. Tell the user, from the import list, what stayed in the old file (a diagram made of shapes, a chart) so they can bring it back as a picture or a chart block.
+`ppt "old talk.pptx"` does steps 1 and 4 in one go, without the tidy-up; use it only when the user asks for a quick look.
+
+## Markdown from Marp, Slidev or reveal.js
+A file with `---` between slides (Marp `marp: true` front matter, Slidev per-slide settings, reveal.js `---` / `--` and `Note:`) is read as it is: every slide's heading and words come in, HTML comments become speaker notes, settings (theme, class, layout, paginate) and Vue / HTML tags stay out. Run `ppt` on it directly.
 
 ## Rules you must keep
 - **Only what the user gave you.** Every sentence, name and number on screen comes from the user or from material they pointed at. Never invent numbers, results, quotes, dates or claims. If something is missing, ask or leave it out. Mark anything you are unsure of in your report.
@@ -72,6 +82,7 @@ Run the kit's CLI with `node <kit>/bin/cli.mjs`, where `<kit>` is the `kit` fold
 - The user's own material: a Lottie file `{"kind": "lottie/player", "src": "media/anim.json"}`, a HyperFrames block `{"kind": "hyperframes/player", "src": "media/block.html"}`, a Remotion component `{"kind": "remotion/player", "component": "./My.tsx", "durationInFrames": 90}`, a clip made with connect-ai-video-motion as a video `src`. Check `catalog` for the exact props.
 
 ## When something fails
+- The report says how much a phone loads before the website is there (`phone first screen`). Over 1500 KB it gives ADVICE: smaller pictures first.
 - `doctor` says what is missing (Chrome for check, record and export; ffmpeg only for record and sheets; Remotion only for `remotion/*` blocks).
 - "unknown kind": you made a name up. Use `catalog`.
 - A file "was not found": paths are relative to the folder of `story.json`.

@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import http from 'node:http';
 import {spawn} from 'node:child_process';
-import {KIT, NAME, readJson, findChrome, findFfmpeg} from '../lib/tools.mjs';
+import {KIT, NAME, RUN, readJson, findChrome, findFfmpeg} from '../lib/tools.mjs';
 import {NODE_FLOOR} from '../lib/name.mjs';
 import {banner, gold, dimmed} from '../lib/banner.mjs';
 
@@ -15,7 +15,7 @@ import {banner, gold, dimmed} from '../lib/banner.mjs';
 
 const argv = process.argv.slice(2);
 // npx connect-ai-slides-web my-talk.md  ==  npx connect-ai-slides-web ppt my-talk.md
-if (argv[0] && /\.(md|markdown|txt)$/i.test(argv[0])) argv.unshift('ppt');
+if (argv[0] && /\.(md|markdown|txt|pptx)$/i.test(argv[0])) argv.unshift('ppt');
 const cmd = argv[0] && !argv[0].startsWith('-') ? argv.shift() : argv.includes('--version') || argv.includes('-v') ? 'version' : argv.includes('--help') || argv.includes('-h') ? 'help' : '';
 const has = (n) => { const i = argv.indexOf(n); if (i < 0) return false; argv.splice(i, 1); return true; };
 const val = (n, d = null) => { const i = argv.indexOf(n); if (i < 0) return d; const v = argv[i + 1]; argv.splice(i, 2); return v == null || v.startsWith('--') ? d : v; };
@@ -24,10 +24,14 @@ const rel = (p) => { const r = path.relative(process.cwd(), p); return r && !r.s
 const VERSION = readJson(path.join(KIT, 'package.json')).version;
 
 const HELP = `${NAME} ${VERSION}
+Not on npm yet: type ${RUN} where it says npx ${NAME}.
 One story, a deck and a website. Motion from GSAP, Motion, anime.js, Lottie, CSS, HyperFrames and Remotion, checked on the real screen.
 
   npx ${NAME} ppt [talk.md] [--google] [--open]
                                             a markdown or text file -> a PowerPoint file (no file: a sample)
+  npx ${NAME} ppt old-talk.pptx            an old PowerPoint -> its words, pictures and notes -> a new motion deck
+  npx ${NAME} import old-talk.pptx [--out talk.md] [--no-pictures] [--hidden] [--labels]
+                                            only the first half: old-talk.md + old-talk-media/ to read and tidy
   npx ${NAME} demo [folder] [--open]        the sample, start to finish (deck + website + report)
   npx ${NAME} new <folder>                  a three-scene starter story
   npx ${NAME} catalog [--use x] [--source x] [--json]
@@ -55,13 +59,27 @@ A project is a folder with story.json (and media/). Docs: README.md, docs/BLOCKS
 
 function projectArg(what) {
   const p = argv.find((a) => !a.startsWith('-'));
-  if (!p) throw new Error(`Give the project folder: npx ${NAME} ${what} <project>   (a folder with story.json; make one with \`npx ${NAME} new my-talk\`)`);
+  if (!p) throw new Error(`Give the project folder: ${RUN} ${what} <project>   (a folder with story.json; make one with \`${RUN} new my-talk\`)`);
   argv.splice(argv.indexOf(p), 1);
   const abs = path.resolve(p);
-  if (!fs.existsSync(abs)) throw new Error(`There is no folder or file at ${p}. Make a project with \`npx ${NAME} new ${p}\`.`);
+  if (!fs.existsSync(abs)) throw new Error(`There is no folder or file at ${p}. Make a project with \`${RUN} new ${p}\`.`);
   return abs;
 }
 const framesArg = (dflt) => { const f = []; if (has('--deck')) f.push('deck'); if (has('--site') || has('--web')) f.push('site'); if (has('--phone')) f.push('phone'); return f.length ? f : dflt; };
+// an old .pptx -> <name>.md + <name>-media/ next to it (never over a file that is already there)
+async function importToMd(file, {out = null, pictures = true, hidden = false, force = false, labels = false} = {}) {
+  const {importPptx, printImport} = await import('../lib/import-pptx.mjs');
+  const md = path.resolve(out || file.replace(/\.pptx$/i, '.md'));
+  if (fs.existsSync(md) && !force) throw new Error(`${rel(md)} is already here. If you changed it, run: ${RUN} ppt ${rel(md)}  (or import again with --out other.md, or --force to write over it)`);
+  const mediaName = path.basename(md).replace(/\.[^.]+$/, '') + '-media';
+  const mediaDir = path.join(path.dirname(md), mediaName);
+  const R = await importPptx(file, {mediaDir: pictures ? mediaDir : null, mediaRel: mediaName, pictures, hidden, labels});
+  if (!R.slides.length) throw new Error(`${path.basename(file)} has no slides.`);
+  fs.writeFileSync(md, R.md);
+  printImport(R, say, {md: rel(md), mediaDir: R.media.length ? rel(mediaDir) : null});
+  return md;
+}
+
 function openFile(p) { const c = process.platform === 'darwin' ? ['open', [p]] : process.platform === 'win32' ? ['explorer.exe', [p]] : ['xdg-open', [p]]; try { spawn(c[0], c[1], {stdio: 'ignore', detached: true, shell: false, windowsHide: true}).unref(); } catch {} }
 
 function printBuilt(b) {
@@ -98,7 +116,7 @@ async function main() {
   if (argv.includes('--quiet')) argv.splice(argv.indexOf('--quiet'), 1);
   if (cmd === 'version') return say(VERSION);
   if (cmd === 'help') return say(HELP);
-  if (!cmd) { say(HELP); say(`\nNew here? Run:  npx ${NAME} ppt   (a sample talk you can change, then a PowerPoint file)`); return; }
+  if (!cmd) { say(HELP); say(`\nNew here? Run:  ${RUN} ppt   (a sample talk you can change, then a PowerPoint file)`); return; }
 
   if (cmd === 'doctor') { const {doctor} = await import('../lib/doctor.mjs'); const ok = await doctor(); process.exitCode = ok ? 0 : 1; return; }
 
@@ -127,13 +145,13 @@ async function main() {
 
   if (cmd === 'new') {
     const p = argv.find((a) => !a.startsWith('-'));
-    if (!p) throw new Error(`Give a folder name: npx ${NAME} new my-talk`);
+    if (!p) throw new Error(`Give a folder name: ${RUN} new my-talk`);
     const dir = path.resolve(p);
     if (fs.existsSync(path.join(dir, 'story.json'))) throw new Error(`${p}/story.json is already there. Pick another folder name, or edit that story.`);
     fs.mkdirSync(path.join(dir, 'media'), {recursive: true});
     fs.writeFileSync(path.join(dir, 'story.json'), JSON.stringify(STARTER(path.basename(dir)), null, 2) + '\n');
     say(`Made ${rel(path.join(dir, 'story.json'))} (3 scenes) and ${rel(path.join(dir, 'media'))}/ for your pictures and videos.`);
-    say(`Next:\n  npx ${NAME} catalog              pick blocks\n  npx ${NAME} build ${p}\n  npx ${NAME} check ${p}`);
+    say(`Next:\n  ${RUN} catalog              pick blocks\n  ${RUN} build ${p}\n  ${RUN} check ${p}`);
     return;
   }
 
@@ -153,7 +171,7 @@ async function main() {
       else say('check: skipped (no Chrome found; install Chrome, Edge or Chromium to measure the screen).');
     }
     if (open) { openFile(b.deck.index); openFile(b.site.index); } else say(`Open them: double click the two index.html files, or run this again with --open.`);
-    say(`Now change ${rel(path.join(dir, 'story.json'))}, or ask your coding agent to (npx ${NAME} install-skill).`);
+    say(`Now change ${rel(path.join(dir, 'story.json'))}, or ask your coding agent to (${RUN} install-skill).`);
     return;
   }
 
@@ -162,7 +180,7 @@ async function main() {
     const {build} = await import('../lib/build.mjs');
     const b = await build(dir, only ? {stages: [...new Set(only.map((f) => (f === 'deck' ? 'deck' : 'site')))]} : {});
     say('Built:'); printBuilt(b);
-    say(`Next: npx ${NAME} check ${rel(dir)}`);
+    say(`Next: ${RUN} check ${rel(dir)}`);
     return;
   }
 
@@ -211,14 +229,20 @@ async function main() {
     if (!file) {
       const lang = ko ? 'ko' : en ? 'en' : /^ko/i.test(process.env.LANG || Intl.DateTimeFormat().resolvedOptions().locale || '') ? 'ko' : 'en';
       const name = lang === 'ko' ? 'my-talk.md' : 'my-talk.md';
-      if (fs.existsSync(name)) throw new Error(`${name} is already here. Run: npx ${NAME} ppt ${name}`);
+      if (fs.existsSync(name)) throw new Error(`${name} is already here. Run: ${RUN} ppt ${name}`);
       fs.writeFileSync(name, SAMPLE[lang]);
       say(`Made ${name}: a sample talk in ${lang === 'ko' ? 'Korean' : 'English'} (# title, ## one slide each).`);
-      say(`Change the words to yours, then run:\n  npx ${NAME} ppt ${name}`);
+      say(`Change the words to yours, then run:\n  ${RUN} ppt ${name}`);
       return;
     }
-    const src = path.resolve(file);
-    if (!fs.existsSync(src)) throw new Error(`There is no file at ${file}. Run \`npx ${NAME} ppt\` with no file to get a sample my-talk.md.`);
+    let src = path.resolve(file);
+    if (!fs.existsSync(src)) throw new Error(`There is no file at ${file}. Run \`${RUN} ppt\` with no file to get a sample my-talk.md.`);
+    if (/\.pptx$/i.test(src)) {
+      // an old PowerPoint: take its words, pictures and notes into a .md first, then the same road as a .md
+      const md = await importToMd(src, {pictures: !has('--no-pictures'), hidden: has('--hidden'), labels: has('--labels')});
+      say('');
+      src = md;
+    }
     const talk = parseTalk(fs.readFileSync(src, 'utf8'), {name: path.basename(src).replace(/\.[^.]+$/, '')});
     if (!talk.title && !talk.slides.length) throw new Error(`${file} has no words in it. Write a # title and a few ## slides.`);
     const story = talkToStory(talk, {look});
@@ -227,7 +251,7 @@ async function main() {
     const missing = bringMedia(story, path.dirname(src), dir);
     if (missing.length) throw new Error(`These pictures are not there: ${missing.join(', ')} (paths are read from the folder of ${file}).`);
     fs.writeFileSync(path.join(dir, 'story.json'), JSON.stringify(story, null, 2) + '\n');
-    say(`${talk.slides.length + 1} slides from ${rel(src)}:`);
+    say(`${story.scenes.length} slides from ${rel(src)}:`);
     story.scenes.forEach((s, i) => say(`  ${String(i + 1).padStart(2)}  ${s.kind.padEnd(22)} ${String(s.title || s.word || s.text || s.value || (s.lines || [])[0] || s.caption || '').slice(0, 50)}`));
     const {build} = await import('../lib/build.mjs');
     const b = await build(dir);
@@ -246,9 +270,17 @@ async function main() {
     return;
   }
 
+  if (cmd === 'import') {
+    const f = argv.find((a) => !a.startsWith('-'));
+    if (!f || !/\.pptx$/i.test(f)) throw new Error(`Give a .pptx file: ${RUN} import my-old-talk.pptx`);
+    if (!fs.existsSync(f)) throw new Error(`There is no file at ${f}.`);
+    await importToMd(path.resolve(f), {out: val('--out'), pictures: !has('--no-pictures'), hidden: has('--hidden'), force: has('--force'), labels: has('--labels')});
+    return;
+  }
+
   if (cmd === 'inspect') {
     const f = argv.find((a) => !a.startsWith('-'));
-    if (!f || !/\.pptx$/i.test(f)) throw new Error(`Give a .pptx file: npx ${NAME} inspect out/deck.pptx`);
+    if (!f || !/\.pptx$/i.test(f)) throw new Error(`Give a .pptx file: ${RUN} inspect out/deck.pptx`);
     const {inspectPptx, printInspect} = await import('../lib/inspect-pptx.mjs');
     const r = await inspectPptx(path.resolve(f));
     if (has('--json')) return say(JSON.stringify(r, null, 2));
@@ -294,7 +326,7 @@ async function main() {
       res.writeHead(200, {'content-type': type, 'content-length': size, 'accept-ranges': 'bytes', 'cache-control': 'no-store'});
       fs.createReadStream(file).pipe(res);
     });
-    server.on('error', (e) => { console.error(e.code === 'EADDRINUSE' ? `\n  Port ${port} is taken. Try: npx ${NAME} serve ${rel(dir)} --port ${port + 1}\n` : '\n  ' + e.message + '\n'); process.exit(1); });
+    server.on('error', (e) => { console.error(e.code === 'EADDRINUSE' ? `\n  Port ${port} is taken. Try: ${RUN} serve ${rel(dir)} --port ${port + 1}\n` : '\n  ' + e.message + '\n'); process.exit(1); });
     server.listen(port, '0.0.0.0', () => {
       say(`Serving ${rel(root)}  (Ctrl+C to stop)`);
       say(`  this computer   http://localhost:${port}/deck/   http://localhost:${port}/site/`);
@@ -324,7 +356,7 @@ async function main() {
     return;
   }
 
-  throw new Error(`"${cmd}" is not a command. Run \`npx ${NAME} --help\`.`);
+  throw new Error(`"${cmd}" is not a command. Run \`${RUN} --help\`.`);
 }
 
 // leave only after stdout is flushed (a long `catalog --json` through a pipe), and do not wait for a slow Chrome

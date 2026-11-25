@@ -154,6 +154,8 @@ eye check: 16 pictures of people measured (poster, first frame, finished screen)
 | `serve <project> [--port 4173]` | 내 컴퓨터 주소, 폰에서도 |
 | `record <project> [--deck] [--site] [--phone] [--sheet]` | `out/deck.mp4`, `out/site.mp4`, `out/phone.mp4`, `out/sheet_*.jpg`. 프레임마다 정확히 되감아 찍어서 빠지는 프레임이 없음 |
 | `ppt [talk.md] [--ko] [--google] [--click] [--no-video] [--still-words] [--pdf]` | 마크다운이나 텍스트 파일에서 `<이름>-deck/out/deck.pptx` 까지 한 번에. 파일이 없으면 견본 `my-talk.md` 를 써 줍니다 |
+| `ppt old.pptx` · `import old.pptx [--out talk.md] [--no-pictures] [--hidden] [--labels]` | 예전 PowerPoint 파일에서 글, 사진, 발표자 노트를 꺼내 `old.md` + `old-media/` 로. `ppt` 는 이어서 새 덱과 .pptx 까지. 도형으로 그린 도표, 차트, 수식, EMF 그림, 숨긴 장은 장마다 보고만 하고 옛 파일에 둡니다 |
+| Marp · Slidev · reveal.js 마크다운 | `---` 로 장을 나눈 파일을 그대로 `ppt` 에. 주석은 발표자 노트, 설정(theme, layout, class)은 화면에 안 올라갑니다 |
 | `export <project> [--pdf] [--pptx] [--google] [--click] [--no-video] [--still-words] [--pptx-pictures]` | `out/deck.pdf`, `out/deck.pptx`(고칠 수 있는 글상자, 모션은 클립, 페이드, 노트), `out/deck_google.pptx` |
 | `inspect <file.pptx> [--json]` | .pptx 안에 뭐가 있는지: 글상자, 클립, 저절로 시작하는지, 노트 |
 | `gallery [--clips] [--blocks dir]` | 카탈로그 블록 전부를 예제로; 내 블록 시험도 |

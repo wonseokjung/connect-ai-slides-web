@@ -13,7 +13,8 @@ import {loadCatalog, validateMeta, wrapBlock, byKind} from '../lib/catalog.mjs';
 import {build, loadStory, validateStory, sceneText} from '../lib/build.mjs';
 import {check, countWords, ratio, contrastOf} from '../lib/check.mjs';
 import {installSkill, removeSkill, installRuntime, pinSkill} from '../lib/install.mjs';
-import {parseTalk, talkToStory, SAMPLE} from '../lib/markdown.mjs';
+import {parseTalk, talkToStory, fromDeckMarkdown, SAMPLE} from '../lib/markdown.mjs';
+import {importPptx} from '../lib/import-pptx.mjs';
 import {textBox, faceFor, slideTiming, patchTiming} from '../lib/pptx.mjs';
 import {inspectPptx} from '../lib/inspect-pptx.mjs';
 import {eyeVerdict, eyesAvailable, measureEyes, EYES} from '../lib/eyes.mjs';
@@ -275,6 +276,105 @@ await test('markdown: every part becomes one slide, every word is kept, no block
   return 'ko + en sample, plain text, a number, a picture, a mixed section split in order';
 });
 
+await test('Marp, Slidev and reveal.js markdown come in as they are: slides, notes, no settings on screen, --- inside code kept', () => {
+  const marp = '---\nmarp: true\ntheme: gaia\npaginate: true\n---\n\n<!-- _class: lead -->\n# Our bakery\nA day at the shop\n\n---\n\n![bg right](media/p.jpg)\n\n## How we make it\n1. Dough\n2. Rise\n3. Bake\n\n<!-- Say it slowly. -->\n<!-- And smile. -->\n\n---\n\n## We open at 6\nBread first thing.\n';
+  const t1 = parseTalk(marp);
+  assert.equal(t1.title, 'Our bakery'); assert.equal(t1.sub, 'A day at the shop');
+  assert.equal(t1.slides.length, 2);
+  assert.deepEqual(t1.slides[0].steps, ['Dough', 'Rise', 'Bake']); assert.equal(t1.slides[0].images[0].src, 'media/p.jpg'); assert.equal(t1.slides[0].images[0].alt, '');
+  assert.deepEqual(t1.slides[0].notes, ['Say it slowly.', 'And smile.']);
+  assert.ok(!JSON.stringify(t1).includes('gaia') && !JSON.stringify(t1).includes('_class'), 'settings stay off the slides');
+  const slidev = '---\ntheme: seriph\ntitle: Lesson four\n---\n\n# Lesson four\nMotion on slides\n\n---\nlayout: center\nclass: text-center\n---\n\n## Words you can edit\n\n<v-click>\n\n- One message\n- One picture\n\n</v-click>\n\n<!--\nThe part I explain.\n-->\n\n---\n\n## Code\n```js\nconst a = 1\n---\n```\n';
+  const t2 = parseTalk(slidev);
+  assert.equal(t2.title, 'Lesson four'); assert.equal(t2.slides.length, 2);
+  assert.deepEqual(t2.slides[0].bullets, ['One message', 'One picture']); assert.deepEqual(t2.slides[0].notes, ['The part I explain.']);
+  assert.ok(!JSON.stringify(t2).includes('layout') && !JSON.stringify(t2).includes('v-click'));
+  assert.ok(t2.slides[1].paras.includes('const a = 1'), 'code inside a fence is one slide, not split at ---');
+  const reveal = '# Talk\n\n---\n\n## One\nFirst.\nNote: the first note\n\n---\n\n## Two\nSecond.\n\n--\n\n## Two, deeper\nThird.\n';
+  const t3 = parseTalk(reveal);
+  assert.deepEqual(t3.slides.map((x) => x.heading), ['One', 'Two', 'Two, deeper']); assert.deepEqual(t3.slides[0].notes, ['the first note']);
+  // our own markdown is read exactly as before
+  assert.equal(fromDeckMarkdown(SAMPLE.ko), null); assert.equal(fromDeckMarkdown(SAMPLE.en), null);
+  assert.equal(fromDeckMarkdown('Title\n---\n\nText\n\nSub\n---\n\nmore'), null, 'two underlined (Setext) headings are a normal file, not a deck');
+  assert.ok(!fromDeckMarkdown('---\nmarp: true\nmy_key: 1\n---\n\n# A\n\n---\n\n## B\n').includes('my_key'), 'marp: true front matter never reaches a slide');
+  assert.equal(validateStory(talkToStory(t1), cat).length, 0); assert.equal(validateStory(talkToStory(t2), cat).length, 0);
+  return 'Marp 2 slides + 2 notes, Slidev 2 slides, reveal.js 3 slides';
+});
+
+// a small PowerPoint file of the kind people really have: title placeholders, bullets, a table, a picture, an icon,
+// notes, a hidden slide, a group, an EMF picture, an equation and labels on a diagram
+function solidPng(w, h, rgb) {
+  const crcT = Array.from({length: 256}, (_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
+  const crc = (b) => { let c = 0xffffffff; for (const x of b) c = crcT[(c ^ x) & 255] ^ (c >>> 8); return (c ^ 0xffffffff) >>> 0; };
+  const chunk = (t, d) => { const l = Buffer.alloc(4); l.writeUInt32BE(d.length); const td = Buffer.concat([Buffer.from(t), d]); const c = Buffer.alloc(4); c.writeUInt32BE(crc(td)); return Buffer.concat([l, td, c]); };
+  const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(w, 0); ihdr.writeUInt32BE(h, 4); ihdr[8] = 8; ihdr[9] = 2;
+  const raw = Buffer.alloc((w * 3 + 1) * h); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) raw.set(rgb, y * (w * 3 + 1) + 1 + x * 3);
+  return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr), chunk('IDAT', zlib.deflateSync(raw)), chunk('IEND', Buffer.alloc(0))]);
+}
+async function oldDeck(dir) {
+  const PptxGenJS = createRequire(import.meta.url)('pptxgenjs');
+  const JSZip = createRequire(import.meta.url)('jszip');
+  const p = new PptxGenJS(); p.layout = 'LAYOUT_WIDE';
+  const png = path.join(dir, 'shop.png'); fs.writeFileSync(png, solidPng(64, 40, [214, 137, 42]));
+  let s = p.addSlide(); s.addText('Opening day', {x: 1, y: 2, w: 11, h: 1.5, fontSize: 54}); s.addText('A bakery in five slides', {x: 1, y: 3.8, w: 11, h: 0.8, fontSize: 24}); s.addNotes('Hello everyone.');
+  s = p.addSlide(); s.addText('How we bake', {x: 0.5, y: 0.3, w: 12, h: 1, fontSize: 40}); s.addText([{text: 'Dough at night', options: {bullet: true}}, {text: 'Rise slowly', options: {bullet: true}}, {text: 'Bake at six', options: {bullet: true}}], {x: 0.5, y: 1.6, w: 7, h: 4, fontSize: 24}); s.addText('x1', {x: 9, y: 3, w: 0.6, h: 0.4, fontSize: 14}); s.addText('w2', {x: 10, y: 3, w: 0.6, h: 0.4, fontSize: 14}); s.addNotes('The oven is the secret.');
+  s = p.addSlide(); s.addText('What sells', {x: 0.5, y: 0.3, w: 12, h: 1, fontSize: 40}); s.addTable([['Bread', 'Price'], ['Salt bread', '3,000'], ['Milk loaf', '4,500']], {x: 0.5, y: 1.6, w: 8});
+  s = p.addSlide(); s.addText('The shop', {x: 0.5, y: 0.3, w: 12, h: 1, fontSize: 40}); s.addImage({path: png, x: 1, y: 1.5, w: 8, h: 5, altText: 'Our shop'}); s.addImage({path: png, x: 12, y: 6.8, w: 0.5, h: 0.4}); s.addText('Open at six every morning', {x: 9.2, y: 2, w: 3.5, h: 1, fontSize: 20});
+  s = p.addSlide({}); s.hidden = true; s.addText('Secret slide', {x: 0.5, y: 0.3, w: 12, h: 1, fontSize: 40});
+  s = p.addSlide(); s.addText('Thanks', {x: 0.5, y: 0.3, w: 12, h: 1, fontSize: 40}); s.addText('Grouped words inside', {x: 1, y: 2, w: 5, h: 1, fontSize: 20});
+  const file = path.join(dir, 'old talk 발표.pptx');
+  await p.writeFile({fileName: file});
+  // what PptxGenJS does not write, put in by hand: a hidden flag, a group, an EMF picture, an equation
+  const zip = await JSZip.loadAsync(fs.readFileSync(file));
+  const n = Object.keys(zip.files).filter((f) => /^ppt\/slides\/slide\d+\.xml$/.test(f)).length;
+  let x5 = await zip.file('ppt/slides/slide5.xml').async('string'); if (!/show="0"/.test(x5)) x5 = x5.replace('<p:sld ', '<p:sld show="0" '); zip.file('ppt/slides/slide5.xml', x5);
+  let x6 = await zip.file('ppt/slides/slide6.xml').async('string');
+  const sps = [...x6.matchAll(/<p:sp>[\s\S]*?<\/p:sp>/g)].map((m) => m[0]);
+  const grouped = sps[1];
+  x6 = x6.replace(grouped, `<p:grpSp><p:nvGrpSpPr><p:cNvPr id="90" name="Group"/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="1828800"/><a:ext cx="9144000" cy="914400"/><a:chOff x="0" y="0"/><a:chExt cx="9144000" cy="914400"/></a:xfrm></p:grpSpPr>${grouped}</p:grpSp>`);
+  x6 = x6.replace('</p:spTree>', '<mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"><mc:Choice Requires="a14"><p:sp><p:nvSpPr><p:cNvPr id="91" name="Eq"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="0" y="5000000"/><a:ext cx="3000000" cy="500000"/></a:xfrm></p:spPr><p:txBody><a:bodyPr/><a:p><a14:m><m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><m:oMath><m:r><m:t>y=wx+b</m:t></m:r></m:oMath></m:oMathPara></a14:m></a:p></p:txBody></p:sp></mc:Choice><mc:Fallback><p:pic><p:nvPicPr><p:cNvPr id="92" name="EqPic"/><p:cNvPicPr/><p:nvPr/></p:nvPicPr><p:blipFill><a:blip r:embed="rIdEmf"/></p:blipFill><p:spPr><a:xfrm><a:off x="0" y="5000000"/><a:ext cx="6000000" cy="3000000"/></a:xfrm></p:spPr></p:pic></mc:Fallback></mc:AlternateContent></p:spTree>');
+  zip.file('ppt/slides/slide6.xml', x6);
+  const r6 = await zip.file('ppt/slides/_rels/slide6.xml.rels').async('string');
+  zip.file('ppt/slides/_rels/slide6.xml.rels', r6.replace('</Relationships>', '<Relationship Id="rIdEmf" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/eq1.emf"/></Relationships>'));
+  zip.file('ppt/media/eq1.emf', Buffer.from('not really an emf'));
+  fs.writeFileSync(file, await zip.generateAsync({type: 'nodebuffer'}));
+  return {file, n};
+}
+
+await test('import: an old PowerPoint becomes talk.md with its words, pictures and notes, and says what it left behind', async () => {
+  const dir = tmp('imp');
+  const {file, n} = await oldDeck(dir);
+  assert.equal(n, 6);
+  const media = path.join(dir, 'm');
+  const R = await importPptx(file, {mediaDir: media, mediaRel: 'm'});
+  const md = R.md;
+  assert.ok(md.startsWith('# Opening day\nA bakery in five slides\nNote: Hello everyone.'), md.slice(0, 120));
+  assert.ok(/## How we bake\n- Dough at night\n- Rise slowly\n- Bake at six\nNote: The oven is the secret\./.test(md), 'bullets and notes');
+  assert.ok(!/\bx1\b|\bw2\b/.test(md), 'labels on a diagram stay out'); assert.ok(R.slides[1].left.some((l) => /2 short labels/.test(l)));
+  assert.ok(md.includes('- Salt bread · 3,000') && md.includes('- Milk loaf · 4,500'), 'table rows');
+  assert.ok(/!\[Our shop\]\(m\/slide04-\d\.(png|jpg)\)/.test(md), 'the picture with its alt text');
+  assert.equal(R.media.length, 1, 'the small icon is left out: ' + R.media.join(', ')); assert.ok(R.slides[3].left.some((l) => /small picture/.test(l)));
+  assert.ok(fs.existsSync(path.join(media, R.media[0])));
+  assert.ok(!md.includes('Secret slide') && R.slides[4].hidden, 'hidden slide left out');
+  assert.ok(md.includes('Grouped words inside'), 'words inside a group');
+  assert.ok(R.slides[5].left.some((l) => /equation/.test(l)) && R.slides[5].left.some((l) => /EMF/.test(l)), 'equation and EMF reported: ' + R.slides[5].left.join(' | '));
+  const all = await importPptx(file, {hidden: true});
+  assert.ok(all.md.includes('Secret slide'), '--hidden takes it');
+  const kept = await importPptx(file, {labels: true});
+  assert.ok(/\bx1\b/.test(kept.md), '--labels keeps them');
+  // the result is a story the kit accepts
+  const story = talkToStory(parseTalk(md));
+  assert.equal(validateStory(story, cat).length, 0, validateStory(story, cat).join('\n'));
+  // the command line: never over a file that is there, a sentence for a file that is not a .pptx
+  const run = (...a) => spawnSync(process.execPath, [path.join(KIT, 'bin', 'cli.mjs'), ...a], {cwd: dir, encoding: 'utf8'});
+  const first = run('import', path.basename(file)); assert.equal(first.status, 0, first.stderr);
+  assert.ok(fs.existsSync(path.join(dir, 'old talk 발표.md')) && fs.existsSync(path.join(dir, 'old talk 발표-media')));
+  const twice = run('import', path.basename(file)); assert.equal(twice.status, 1); assert.ok(/already here/.test(twice.stderr));
+  fs.writeFileSync(path.join(dir, 'fake.pptx'), 'hello');
+  const fake = run('import', 'fake.pptx'); assert.equal(fake.status, 1); assert.ok(/not a \.pptx/.test(fake.stderr) && !/at .*\(.*:\d+:\d+\)/.test(fake.stderr));
+  return `${R.slides.length} slides, ${R.media.length} picture, hidden / group / table / EMF / equation / labels handled`;
+});
+
 await test('pptx parts: a measured line becomes runs in points, Pretendard / Helvetica weights by name, timing XML is well formed', () => {
   const t = {tag: 'g', align: 'center', x: 100, y: 200, w: 400, h: 80, lh: 80, firstH: 60, size: 64, weight: 200, family: '"Inter", "Pretendard", sans-serif',
     lines: [{runs: [{text: 'Hello ', color: 'F6F3EC', alpha: 1, size: 64, weight: 200, italic: false, spacing: 0}, {text: 'gold', color: 'F2B45A', alpha: 0.5, size: 64, weight: 200, italic: false, spacing: 2}]}, {runs: [{text: 'line two', color: 'F6F3EC', alpha: 1, size: 64, weight: 200, italic: false, spacing: 0}]}]};
@@ -509,6 +609,29 @@ else {
       assert.ok(x.slides.flatMap((s) => s.boxes).join(' ').includes('Our little bakery'));
       assert.equal(x.totals.notes, x.totals.slides);
       return `${x.totals.slides} slides, ${x.totals.boxes} text boxes`;
+    });
+
+    await test('round trip: the .pptx this kit makes comes back through import with every word of the talk', async () => {
+      const w = tmp('rt'); fs.writeFileSync(path.join(w, 'talk.md'), SAMPLE.ko);
+      const r = spawnSync(process.execPath, [path.join(KIT, 'bin', 'cli.mjs'), 'talk.md', '--quiet', '--no-video'], {cwd: w, encoding: 'utf8', timeout: 240000});
+      assert.equal(r.status, 0, r.stderr + r.stdout);
+      const back = await importPptx(path.join(w, 'talk-deck', 'out', 'deck.pptx'), {labels: true});
+      const flat = (t) => t.replace(/\s+/g, '');
+      const got = flat(back.md);
+      const lost = SAMPLE.ko.replace(/^(note|노트)\s*:.*$/gim, '').replace(/\[[^\]]*\]\([^)]*\)|[#>*\-]|\d+\.\s/g, ' ').split(/\s+/).filter((x) => x.length > 1).map((x) => x.replace(/[.:]$/, '')).filter((x) => !got.includes(flat(x)));
+      assert.deepEqual(lost, [], 'words that did not come back');
+      assert.ok(back.slides.every((s) => s.notes), 'notes came back on every slide');
+      return `${back.slides.length} slides back, every word`;
+    });
+
+    await test('the phone first screen is measured and said in a sentence', async () => {
+      const {firstScreen} = await import('../lib/shoot.mjs');
+      const dir = tmp('fs'); fs.cpSync(path.join(KIT, 'examples', 'sample'), dir, {recursive: true}); fs.cpSync(path.join(KIT, 'examples', 'media'), path.join(dir, 'media'), {recursive: true});
+      const b = await build(dir);
+      const w = await firstScreen(browser, b.out, 'phone');
+      const page = fs.statSync(path.join(b.out, 'site', 'index.html')).size;
+      assert.ok(w.bytes >= page && w.kinds.page >= page && w.kinds.scripts > 0, JSON.stringify(w));
+      return `${Math.round(w.bytes / 1024)} KB in ${w.files} files`;
     });
 
     if (!findFfmpeg()) skip('record', 'no ffmpeg on this computer');

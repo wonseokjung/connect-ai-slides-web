@@ -154,6 +154,8 @@ If a scene shows a person, write the face box once: `"face": [x, y, w, h]`, each
 | `serve <project> [--port 4173]` | a local address, also for your phone |
 | `record <project> [--deck] [--site] [--phone] [--sheet]` | `out/deck.mp4`, `out/site.mp4`, `out/phone.mp4`, `out/sheet_*.jpg`. Each frame is seeked exactly, nothing is dropped |
 | `ppt [talk.md] [--ko] [--google] [--click] [--no-video] [--still-words] [--pdf]` | from a markdown or text file to `<name>-deck/out/deck.pptx` in one go; with no file it writes a sample `my-talk.md` |
+| `ppt old.pptx` · `import old.pptx [--out talk.md] [--no-pictures] [--hidden] [--labels]` | An old PowerPoint file: its words, pictures and speaker notes into `old.md` + `old-media/`; `ppt` goes on to the new deck and .pptx. Diagrams drawn with shapes, charts, equations, EMF pictures and hidden slides are reported per slide and stay in the old file |
+| Marp · Slidev · reveal.js markdown | A file with `---` between slides goes straight into `ppt`. Comments become speaker notes; settings (theme, layout, class) stay off the slides |
 | `export <project> [--pdf] [--pptx] [--google] [--click] [--no-video] [--still-words] [--pptx-pictures]` | `out/deck.pdf`, `out/deck.pptx` (editable text boxes, the motion as clips, fades, notes), `out/deck_google.pptx` |
 | `inspect <file.pptx> [--json]` | what is inside a .pptx: text boxes, clips, which start by themselves, notes |
 | `gallery [--clips] [--blocks dir]` | every catalog block from its example; also tries your own blocks |

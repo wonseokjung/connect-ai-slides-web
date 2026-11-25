@@ -1,7 +1,7 @@
 {
   "name": "connect-ai-slides-web",
-  "version": "0.3.0",
-  "description": "Your AI agent becomes a presentation employee: a few lines of markdown become a real PowerPoint file. Every word is an editable text box, each slide's motion plays as a clip, the words fade in on time, and your speaker notes come along. The same story is also a deck in the browser and a one-page website, from 67 motion blocks (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion), checked on the real screen.",
+  "version": "0.4.0",
+  "description": "Your AI agent becomes a presentation employee: a few lines of markdown, Marp or Slidev, or your old PowerPoint file, become a real PowerPoint file. Every word is an editable text box, each slide's motion plays as a clip, the words fade in on time, and your speaker notes come along. The same story is also a deck in the browser and a one-page website, from 67 motion blocks (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion), checked on the real screen.",
   "type": "module",
   "bin": {
     "connect-ai-slides-web": "bin/cli.mjs"
@@ -57,7 +57,10 @@
     "codex",
     "antigravity",
     "cursor",
-    "ai-employee"
+    "ai-employee",
+    "marp",
+    "slidev",
+    "pptx-import"
   ],
   "files": [
     "bin/",

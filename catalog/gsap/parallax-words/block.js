@@ -12,7 +12,8 @@ export const css = `
 .cs-frame[data-shape="tall"] .b-gsap-parallax-words .panel { width: 100%; padding: 3em var(--pad); background: linear-gradient(180deg, transparent 0%, var(--bg) 22%, var(--bg) 78%, transparent 100%); }
 `;
 export default function mount(el, p, cx) {
-  const g = cx.gsap, words = (p.words && p.words.length ? p.words : ['Video', 'Slides', 'Web']).slice(0, 3);
+  const g = cx.gsap, words = (p.words && p.words.length ? p.words : String(p.text || '').split(/\s+/).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')).filter((w) => w.length > 1).sort((a, b) => b.length - a.length).slice(0, 3)).slice(0, 3);
+  if (!words.length) words.push(String(p.text || '').trim() || ' ');
   while (words.length < 3) words.push(words[words.length - 1]);
   const row = (w, cls) => `<div class="row ${cls}">${Array.from({length: 9}, () => `<span>${cx.esc(w)}</span>`).join('')}</div>`;
   el.innerHTML = `

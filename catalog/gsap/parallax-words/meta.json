@@ -13,7 +13,7 @@
   "lead": "type",
   "props": {
     "text": "required, one sentence, up to 9 words",
-    "words": "3 single words for the rows behind",
+    "words": "3 single words for the rows behind (default: the three longest words of the sentence, never other words)",
     "kicker": "small caps above",
     "sub": "one line under it"
   },

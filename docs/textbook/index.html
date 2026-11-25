@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>4강 발표자료 AI 직원 · 비주얼 바이브코딩</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="비주얼 바이브코딩 4강 교재. CONNECT AI LAB 발표자료 직원 connect-ai-slides-web.">
+<meta property="og:title" content="4강 발표자료 AI 직원 · 비주얼 바이브코딩">
+<meta property="og:image" content="../brand/social-preview.jpg">
+<meta name="theme-color" content="#0B0A09">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* Lesson 4 textbook, titles only (Jay explains on video). CONNECT AI LAB premium look: black, gold, ivory, thin sans,
+ * serif numbers, film grain. Every picture is from a real run of the kit. */
+:root{
+  --bg:#0B0A09; --bg2:#12100E; --panel:#171411; --ink:#F4EEE3; --text:#EBE2D2; --muted:#A79C8B; --dim:#6F665A;
+  --line:rgba(235,226,210,.10); --line2:rgba(235,226,210,.20);
+  --gold:#D6892A; --gold2:#F2B45A; --gold-dim:rgba(214,137,42,.45); --gold-wash:rgba(214,137,42,.08);
+  --teal:#5FB3B3; --rose:#E07A6B;
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif;
+  --serif:"Cormorant Garamond","Times New Roman",serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:50;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+h1,h2,h3,p,ul{margin:0}
+h1,h2,h3,p,li,span{word-break:keep-all}
+img,video{display:block;max-width:100%;height:auto}
+a{color:var(--gold2)}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.shell{max-width:1120px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.mono{font:500 11px/1.4 var(--mono);letter-spacing:.24em;text-transform:uppercase}
+
+.mast{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(8px + env(safe-area-inset-top,0px)) 0 8px;border-bottom:1px solid var(--line)}
+.mast .brand{color:var(--gold2);text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.mast .brand i{width:7px;height:7px;background:var(--gold);margin-right:10px}
+.lang{display:inline-flex;border:1px solid var(--line2)}
+.lang button{min-height:42px;min-width:52px;padding:0 12px;border:0;background:transparent;color:var(--muted);font:600 13px/1 var(--sans);cursor:pointer}
+.lang button+button{border-left:1px solid var(--line2)}
+.lang button[aria-pressed="true"]{background:var(--gold);color:#120C04}
+[data-lang="ko"] .en,[data-lang="en"] .ko{display:none}
+
+.hero{padding:56px 0 40px}
+.hero .kick{color:var(--gold2)}
+.hero .serif{margin:22px 0 6px;color:var(--gold2);font:italic 500 clamp(26px,3vw,38px)/1.1 var(--serif)}
+.hero h1{color:var(--ink);font-size:clamp(46px,9vw,112px);font-weight:200;line-height:1.04;letter-spacing:-.045em}
+.hero h1 em{font-style:normal;color:var(--gold2)}
+.hero .pkg{display:inline-block;margin-top:26px;padding:9px 14px;border:1px solid var(--gold-dim);color:var(--text);font:500 14px/1.4 var(--mono);letter-spacing:.02em;text-transform:none}
+.banner{margin:44px 0 0;position:relative}
+.banner img{width:100%;outline:1px solid var(--gold-dim);outline-offset:6px}
+.film{margin:48px 0 0;display:grid;gap:12px}
+.film .frame{position:relative;background:#000;outline:1px solid var(--gold-dim);outline-offset:6px;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.film video{width:100%;aspect-ratio:16/9;background:#000}
+.film .tag{color:var(--muted)}
+
+.toc{list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:1fr;border-top:1px solid var(--gold-dim)}
+@media (min-width:760px){.toc{grid-template-columns:1fr 1fr;column-gap:40px}}
+.toc li{border-bottom:1px solid var(--line)}
+.toc a{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:baseline;gap:10px;min-height:56px;padding:12px 0;color:var(--text);text-decoration:none;font-size:17px;font-weight:300;transition:color .25s}
+.toc a b{font:500 24px/1 var(--serif);color:var(--gold);font-variant-numeric:lining-nums}
+.toc a:hover{color:var(--gold2)}
+
+.ch{padding:88px 0;border-top:1px solid var(--line);scroll-margin-top:8px}
+.ch:nth-of-type(even){background:var(--bg2)}
+.ch-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:34px;align-items:start}
+@media (min-width:900px){.ch-grid{grid-template-columns:minmax(0,.86fr) minmax(0,1.3fr);gap:56px}}
+.num{display:flex;align-items:baseline;gap:14px;color:var(--muted)}
+.num b{font:500 clamp(64px,8vw,104px)/.9 var(--serif);color:var(--gold);font-variant-numeric:lining-nums;letter-spacing:-.02em}
+.ch h2{margin-top:14px;color:var(--ink);font-size:clamp(30px,4.2vw,48px);font-weight:200;line-height:1.18;letter-spacing:-.035em}
+.items{list-style:none;margin:28px 0 0;padding:0;border-top:1px solid var(--gold-dim)}
+.items li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--line);color:var(--text);font-size:17px;font-weight:300}
+.items li i{font:500 11px/2.2 var(--mono);font-style:normal;color:var(--gold)}
+.items code{font:500 .9em var(--mono);color:var(--gold2)}
+.shot{margin:0;position:relative}
+.shot img,.shot video{width:100%;background:#000;outline:1px solid var(--line2);outline-offset:0}
+.shot+.shot{margin-top:18px}
+.grid6{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:600px){.grid6{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.grid6 img{width:100%;aspect-ratio:16/9;object-fit:cover;outline:1px solid var(--line2)}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.hw .num b{color:var(--gold2)}
+.hw-box{padding:28px;border:1px solid var(--gold);box-shadow:inset 0 3px 0 var(--gold);background:var(--gold-wash)}
+.hw-box .items{margin-top:0;border-top:0}
+.hw-box .items li:last-child{border-bottom:0}
+
+.back{padding:64px 0 calc(72px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.made{display:grid;grid-template-columns:88px minmax(0,1fr);gap:20px;align-items:center}
+.made img{width:88px;height:88px;object-fit:cover;outline:1px solid var(--gold-dim);outline-offset:4px}
+.made .who{color:var(--ink);font-size:19px;font-weight:400}
+.made .tl{color:var(--muted);font-size:15px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.links a{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid var(--line2);color:var(--text);text-decoration:none;font-size:15px}
+.links a:hover{border-color:var(--gold);color:var(--gold2)}
+
+.rv{opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body data-lang="ko">
+<div class="shell">
+  <header class="mast">
+    <a class="brand mono" href="../../README.ko.md"><i></i>CONNECT AI LAB</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set="ko" aria-pressed="true">한국어</button>
+      <button type="button" data-set="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <p class="kick mono"><span class="ko">비주얼 바이브코딩 · 4강</span><span class="en">Visual Vibe Coding · Lesson 4</span></p>
+    <p class="serif">Slides that move</p>
+    <h1><span class="ko">발표자료<br><em>AI 직원</em></span><span class="en">The AI presentation<br><em>employee</em></span></h1>
+    <span class="pkg">connect-ai-slides-web</span>
+    <figure class="banner rv"><img src="../brand/banner.jpg" width="1920" height="960" alt="AI 멘토 제이, CONNECT AI LAB"></figure>
+    <figure class="film rv">
+      <div class="frame"><video src="../showcase/v04/hero.mp4" poster="../showcase/v04/hero_poster.jpg" muted playsinline loop autoplay preload="metadata" width="960" height="540"></video></div>
+      <figcaption class="tag mono"><span class="ko">2017 PPT → 움직이는 발표자료</span><span class="en">2017 PPT → slides that move</span></figcaption>
+    </figure>
+    <ol class="toc">
+      <li><a href="#c1"><b>01</b><span><span class="ko">발표자료 AI 직원 설치하기</span><span class="en">Install the presentation employee</span></span></a></li>
+      <li><a href="#c2"><b>02</b><span><span class="ko">데모 PPTX 열고 글상자 고치기</span><span class="en">Open the demo PPTX, edit a text box</span></span></a></li>
+      <li><a href="#c3"><b>03</b><span><span class="ko">예전 PPT 가져오기</span><span class="en">Bring in an old PPT</span></span></a></li>
+      <li><a href="#c4"><b>04</b><span><span class="ko">내 원고를 슬라이드 다섯 장과 발표자 노트로</span><span class="en">Turn my script into five slides and notes</span></span></a></li>
+      <li><a href="#c5"><b>05</b><span><span class="ko">장면 모션과 글자 등장</span><span class="en">Slide motion and text reveals</span></span></a></li>
+      <li><a href="#c6"><b>06</b><span><span class="ko">PowerPoint 재생과 Google Slides용 파일</span><span class="en">Play in PowerPoint, open in Google Slides</span></span></a></li>
+      <li><a href="#c7"><b>07</b><span><span class="ko">같은 원고를 브라우저 발표로</span><span class="en">The same script as a browser deck</span></span></a></li>
+      <li><a href="#c8"><b>08</b><span><span class="ko">모바일 스크롤 웹으로</span><span class="en">As a scrollable phone page</span></span></a></li>
+      <li><a href="#c9"><b>09</b><span><span class="ko">가독성, 동작 줄이기, 첫 화면 용량 검사</span><span class="en">Readability, reduced motion, first-load size</span></span></a></li>
+      <li><a href="#c10"><b>10</b><span><span class="ko">과제</span><span class="en">Assignment</span></span></a></li>
+    </ol>
+  </section>
+</div>
+
+<section class="ch" id="c1"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>01</b></p>
+    <h2><span class="ko">발표자료 AI 직원 설치하기</span><span class="en">Install the presentation employee</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">에이전트 채팅창에 한 줄</span><span class="en">One line in your agent's chat</span></span></li>
+      <li><i>B</i><span><span class="ko">새 채팅 열기</span><span class="en">Open a new chat</span></span></li>
+      <li><i>C</i><span><span class="ko">준비물 확인</span><span class="en">Check what you need</span> <code>doctor</code></span></li>
+    </ul>
+  </div>
+  <figure class="shot rv"><img src="../showcase/v04/deck_flow.jpg" width="1280" height="720" alt="" loading="lazy"></figure>
+</div></section>
+
+<section class="ch" id="c2"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>02</b></p>
+    <h2><span class="ko">데모 PPTX 열고 글상자 고치기</span><span class="en">Open the demo PPTX, edit a text box</span></h2>
+    <ul class="items">
+      <li><i>A</i><span>deck.pptx</span></li>
+      <li><i>B</i><span><span class="ko">글자 눌러서 고치기</span><span class="en">Click a word, change it</span></span></li>
+      <li><i>C</i><span><span class="ko">발표자 노트</span><span class="en">Speaker notes</span></span></li>
+    </ul>
+  </div>
+  <figure class="shot rv"><img src="../pptx/pptx_boxes.jpg" width="1932" height="1092" alt="" loading="lazy"></figure>
+</div></section>
+
+<section class="ch" id="c3"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>03</b></p>
+    <h2><span class="ko">예전 PPT 가져오기</span><span class="en">Bring in an old PPT</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">글자, 사진, 노트 꺼내기</span><span class="en">Pull out words, pictures and notes</span></span></li>
+      <li><i>B</i><span><span class="ko">못 가져온 것 확인</span><span class="en">What didn't carry over</span></span></li>
+      <li><i>C</i><span><span class="ko">제 2017년 퍼셉트론 PPT</span><span class="en">My 2017 Perceptron deck</span></span></li>
+    </ul>
+  </div>
+  <div class="rv">
+    <figure class="shot"><img src="../showcase/v04/remake.jpg" width="1600" height="900" alt="" loading="lazy"></figure>
+    <figure class="shot"><img src="../showcase/v04/import.jpg" width="1600" height="900" alt="" loading="lazy"></figure>
+  </div>
+</div></section>
+
+<section class="ch" id="c4"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>04</b></p>
+    <h2><span class="ko">내 원고를 슬라이드 다섯 장과 발표자 노트로</span><span class="en">Turn my script into five slides and notes</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">한 장에 한 마디</span><span class="en">One message per slide</span></span></li>
+      <li><i>B</i><span><span class="ko">발표자 노트</span><span class="en">Speaker notes</span></span></li>
+      <li><i>C</i><span><span class="ko">Marp, Slidev 파일</span><span class="en">Marp and Slidev files</span></span></li>
+    </ul>
+  </div>
+  <figure class="shot rv"><img src="../showcase/v04/marp.jpg" width="1600" height="900" alt="" loading="lazy"></figure>
+</div></section>
+
+<section class="ch" id="c5"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>05</b></p>
+    <h2><span class="ko">장면 모션과 글자 등장</span><span class="en">Slide motion and text reveals</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">모션 블록 67개</span><span class="en">67 motion blocks</span></span></li>
+      <li><i>B</i><span><a href="../index.html"><span class="ko">카탈로그 페이지</span><span class="en">The catalog page</span></a></span></li>
+      <li><i>C</i><span><span class="ko">클릭마다 한 단계</span><span class="en">One step per click</span></span></li>
+    </ul>
+  </div>
+  <div class="grid6 rv">
+    <img src="../stills/gsap-counter_deck.jpg" alt="" loading="lazy">
+    <img src="../stills/anime-draw-icons_deck.jpg" alt="" loading="lazy">
+    <img src="../stills/gsap-bars_deck.jpg" alt="" loading="lazy">
+    <img src="../stills/kit-split-person_deck.jpg" alt="" loading="lazy">
+    <img src="../stills/motion-timeline-years_deck.jpg" alt="" loading="lazy">
+    <img src="../stills/anime-donut-chart_deck.jpg" alt="" loading="lazy">
+  </div>
+</div></section>
+
+<section class="ch" id="c6"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>06</b></p>
+    <h2><span class="ko">PowerPoint 재생과 Google Slides용 파일</span><span class="en">Play in PowerPoint, open in Google Slides</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">넘기면 바로 재생되는 영상</span><span class="en">A clip that plays when the slide opens</span></span></li>
+      <li><i>B</i><span><span class="ko">클릭해서 재생</span><span class="en">Start on click</span> <code>--click</code></span></li>
+      <li><i>C</i><span><span class="ko">Google Slides용 파일</span><span class="en">A Google Slides file</span> <code>--google</code></span></li>
+    </ul>
+  </div>
+  <figure class="shot rv"><video src="../showcase/v04/clip.mp4" poster="../showcase/v04/clip_poster.jpg" muted playsinline loop autoplay preload="none" width="1280" height="720"></video></figure>
+</div></section>
+
+<section class="ch" id="c7"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>07</b></p>
+    <h2><span class="ko">같은 원고를 브라우저 발표로</span><span class="en">The same script as a browser deck</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">크롬에서 발표</span><span class="en">Present in Chrome</span></span></li>
+      <li><i>B</i><span>PDF</span></li>
+    </ul>
+  </div>
+  <figure class="shot rv"><img src="../showcase/v04/deck_formula.jpg" width="1280" height="720" alt="" loading="lazy"></figure>
+</div></section>
+
+<section class="ch" id="c8"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>08</b></p>
+    <h2><span class="ko">모바일 스크롤 웹으로</span><span class="en">As a scrollable phone page</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">한 장짜리 웹사이트</span><span class="en">A one-page website</span></span></li>
+      <li><i>B</i><span><span class="ko">폰에서 스크롤</span><span class="en">Scroll on a phone</span></span></li>
+    </ul>
+  </div>
+  <figure class="shot rv"><img src="../showcase/v04/phone.jpg" width="1600" height="900" alt="" loading="lazy"></figure>
+</div></section>
+
+<section class="ch" id="c9"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>09</b></p>
+    <h2><span class="ko">가독성, 동작 줄이기, 첫 화면 용량 검사</span><span class="en">Readability, reduced motion, first-load size</span></h2>
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">글자 크기, 대비, 잘린 글자</span><span class="en">Type size, contrast, cut-off text</span></span></li>
+      <li><i>B</i><span><span class="ko">동작 줄이기</span><span class="en">Reduced motion</span></span></li>
+      <li><i>C</i><span><span class="ko">폰 첫 화면 용량</span><span class="en">Phone first-load size</span></span></li>
+    </ul>
+  </div>
+  <figure class="shot rv"><img src="../showcase/v04/check.jpg" width="1600" height="900" alt="" loading="lazy"></figure>
+</div></section>
+
+<section class="ch hw" id="c10"><div class="shell ch-grid">
+  <div class="rv">
+    <p class="num"><b>10</b></p>
+    <h2><span class="ko">과제</span><span class="en">Assignment</span></h2>
+  </div>
+  <div class="hw-box rv">
+    <ul class="items">
+      <li><i>A</i><span><span class="ko">내 PPT 하나, 움직이는 발표자료로</span><span class="en">Remake one of your own decks so it moves</span></span></li>
+      <li><i>B</i><span><span class="ko">deck.pptx 제출</span><span class="en">Hand in deck.pptx</span></span></li>
+    </ul>
+  </div>
+</div></section>
+
+<footer class="back"><div class="shell">
+  <div class="made">
+    <img src="../brand/jay.jpg" width="480" height="480" alt="AI 멘토 제이">
+    <div>
+      <p class="who"><span class="ko">AI 멘토 제이</span><span class="en">AI Mentor Jay</span> · CONNECT AI LAB</p>
+      <p class="tl"><span class="ko">AI 비즈니스를 배우는 가장 멋진 방법 · 모두를 위한 AI 교육</span><span class="en">AI education for everyone</span></p>
+    </div>
+  </div>
+  <nav class="links">
+    <a href="../../README.ko.md">README</a>
+    <a href="../index.html"><span class="ko">카탈로그</span><span class="en">Catalog</span></a>
+    <a href="https://www.youtube.com/@CONNECT-AI-LAB">YouTube</a>
+    <a href="https://www.aicitybuilders.com/vibecoding"><span class="ko">비주얼 바이브코딩</span><span class="en">Visual Vibe Coding</span></a>
+  </nav>
+</div></footer>
+
+<script>
+(function(){
+  var b=document.body, KEY='cas-textbook-lang';
+  function set(l){b.setAttribute('data-lang',l);document.documentElement.lang=l;
+    document.querySelectorAll('.lang button').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.set===l?'true':'false')});
+    try{localStorage.setItem(KEY,l)}catch(e){}}
+  var saved=null;try{saved=localStorage.getItem(KEY)}catch(e){}
+  if(saved==='en'||saved==='ko')set(saved);
+  document.querySelectorAll('.lang button').forEach(function(x){x.addEventListener('click',function(){set(x.dataset.set)})});
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('in')});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e){io.observe(e)});
+})();
+</script>
+</body>
+</html>
