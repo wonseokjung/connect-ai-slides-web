@@ -45,6 +45,16 @@ export default function mount(el, p, cx) {
 
 Other helpers: `cx.esc(text)` (always escape props), `cx.spans(text, 'cs-w')` (one span per word; `'chars'` as third argument for letters), `cx.prog(t, start, duration, 'out' | 'expo' | 'inOut' | 'in' | 'lin')` → 0..1, `cx.clamp`, `cx.stage` (`'deck'` or `'site'`), `cx.shape` (`'wide'` or `'tall'`), `cx.w`, `cx.h` (frame size in layout px), `cx.meta.data['file']` (files listed in `meta.data`), `cx.face(mediaEl, [x, y, w, h])` (declare a face in a picture so `check` can guard it; `cx.face(mediaEl, box, 'body')` declares the body, guarded the same way but not used for the eye check), `cx.reduced` (true when the viewer asked for reduced motion: show the finished screen), `cx.capturing` (true while `record` or `check` is taking frames).
 
+### The pro design system (`cx.pro`)
+The `pro/*` blocks share one layout and one motion language through `cx.pro`. Use it in your own block and it sits in the same deck without looking pasted in.
+- Layout: `<div class="pro-wrap">${P.head(p)}<div class="pro-body">…</div>${P.foot(cx)}</div>` with `const P = cx.pro`. `head(p)` is the small gold kicker and the title, always in the same place; `foot(cx)` is the brand and the page number (deck only, hidden on the website, off with `"footer": false`). `<i class="pro-glow" style="--gx:80%;--gy:20%"></i>` adds the warm light behind.
+- Words: `P.words(text, gold)` (one masked span per word, gold words get `.pro-gold`), `P.math('w1 x1 + theta')` (small subscripts, θ, letters in italic serif), `P.num('1,500 KB')` → `{n, dec, comma, pre, suf}` and `P.fmt(n, dec, comma)`.
+- Media: `P.media(p, cls, alt)` (an `<img>` or a `<video>` with its poster and focus point), `P.freeSide(face, 'left')` (the side away from a face).
+- Motion: `P.headIn(tl, el, at)` (returns when the body may start), `P.rise(tl, els, at, {y, stagger})`, `P.draw(tl, els, at)` (hairlines that grow from the left), `P.count(tl, el, P.num(value), at, duration)` (a number counting up), `P.wordsIn(tl, root, at)`; `P.clip(cx, tl, el)` returns the clip, videos included.
+- `cx.index` and `cx.total` say which slide this is.
+- Classes: `.pro-title`, `.pro-kicker`, `.pro-num` (tabular figures), `.pro-var` (a math letter), `.pro-gold`. Sizes come from `var(--hero)`, `var(--title)`, `var(--lead)`, `var(--body)`, `var(--label)`; colours from `var(--ink)`, `var(--dim)`, `var(--gold)`, `var(--gold2)` (gold for small text), `var(--line)`, `var(--card)`, so the light looks (`white`, `ivory`, `paper`) work without changes.
+- Lines: do not combine `pathLength` with `vector-effect: non-scaling-stroke` (Chrome draws dashes). Reveal a drawn line with a `clip-path: inset(...)` tween on its own `<svg>` instead.
+
 ## One block, three frames
 The same block must look right in: a 1920×1080 slide (`data-stage="deck"`), a desktop web screen (`data-stage="site" data-shape="wide"`, for example 1440×900) and a phone screen (`data-shape="tall"`, 390×844).
 

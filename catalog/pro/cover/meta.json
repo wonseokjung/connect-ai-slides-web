@@ -1,0 +1,34 @@
+{
+  "kind": "pro/cover",
+  "title": "Cover",
+  "description": "The first slide of a pro deck: a large thin title that rises word by word out of its own line, a gold hairline and a thin gold circle that draws itself. With a picture or a clip it fills the right half and the words keep the left.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "title",
+  "family": "pro-cover",
+  "lead": "type",
+  "dur": 2.4,
+  "props": {
+    "title": "required, the name of the talk, 2-8 words",
+    "sub": "one line under the title",
+    "kicker": "small caps above the title",
+    "by": "who and when, one short line at the bottom",
+    "src": "a photo or mp4 for the right half",
+    "poster": "still for a video",
+    "alt": "what the picture shows",
+    "face": "[x, y, w, h] of a face in the picture, 0 to 1",
+    "body": "[x, y, w, h] of the person",
+    "pos": "object-position of the picture, for example 50% 30%"
+  },
+  "example": {
+    "kicker": "CONNECT AI LAB",
+    "title": "Motion graphics on a slide",
+    "sub": "A real PowerPoint file, made from a few lines",
+    "by": "connect-ai-slides-web"
+  }
+}

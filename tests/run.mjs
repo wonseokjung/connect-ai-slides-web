@@ -250,7 +250,7 @@ await test('install-skill: a versioned runtime copy with the lock file, npm star
 await test('markdown: every part becomes one slide, every word is kept, no block is used twice in the sample', () => {
   for (const lang of ['ko', 'en']) {
     const talk = parseTalk(SAMPLE[lang]);
-    const story = talkToStory(talk);
+    const story = talkToStory(talk, {design: 'classic'});
     assert.equal(story.lang, lang);
     assert.equal(story.scenes.length, talk.slides.length + 1);
     assert.equal(validateStory(story, cat).length, 0, validateStory(story, cat).join('\n'));
@@ -261,12 +261,12 @@ await test('markdown: every part becomes one slide, every word is kept, no block
     assert.ok(story.scenes.every((x) => x.notes), 'every slide has notes');
     assert.ok(kinds.includes('kit/end-card') && story.scenes.at(-1).links.length === 2);
   }
-  const plain = talkToStory(parseTalk('My talk\nFirst point.\n- a\n- b\nLast line.'));
+  const plain = talkToStory(parseTalk('My talk\nFirst point.\n- a\n- b\nLast line.'), {design: 'classic'});
   assert.equal(plain.scenes.length, 4);
-  const num = talkToStory(parseTalk('# T\n## Growth\n**3강** lessons so far\n## Shot\n![my screen](shot.png)'));
+  const num = talkToStory(parseTalk('# T\n## Growth\n**3강** lessons so far\n## Shot\n![my screen](shot.png)'), {design: 'classic'});
   assert.equal(num.scenes[1].kind, 'css/big-number'); assert.equal(num.scenes[1].value, '3강'); assert.equal(num.scenes[2].kind, 'kit/photo-frame');
   // a section with more than one block can show is split, in order, and keeps every word
-  const mixed = talkToStory(parseTalk('# Launch\n## Why\nThree reasons matter here.\n- fast\n- cheap\n- local\nNote: say it slowly\n## Pics\n![shop](media/a(1).jpg) Our shop at dawn\n## Mid\n- [Docs](https://x.y)\n## Ver\n**1.2.3** is live\n## End\nThanks\n- [Site](https://a.b)\n- [Shop](https://c.d)'));
+  const mixed = talkToStory(parseTalk('# Launch\n## Why\nThree reasons matter here.\n- fast\n- cheap\n- local\nNote: say it slowly\n## Pics\n![shop](media/a(1).jpg) Our shop at dawn\n## Mid\n- [Docs](https://x.y)\n## Ver\n**1.2.3** is live\n## End\nThanks\n- [Site](https://a.b)\n- [Shop](https://c.d)'), {design: 'classic'});
   const mj = JSON.stringify(mixed);
   for (const w of ['Three reasons matter here.', 'fast', 'local', 'Our shop at dawn', 'Docs', '1.2.3', 'is live', 'Thanks']) assert.ok(mj.includes(w), 'lost ' + w);
   assert.equal(validateStory(JSON.parse(mj), cat).length, 0, validateStory(JSON.parse(mj), cat).join('\n'));
@@ -274,6 +274,28 @@ await test('markdown: every part becomes one slide, every word is kept, no block
   assert.ok(!mixed.scenes.some((x) => x.kind === 'gsap/counter'), '1.2.3 is not a number to count');
   assert.equal(mixed.scenes.at(-1).kind, 'kit/end-card');
   return 'ko + en sample, plain text, a number, a picture, a mixed section split in order';
+});
+
+await test('markdown, pro design: tables become charts or tables, formulas, plots, flows, networks, pictures and numbers get their own layouts, no word lost', () => {
+  const md = '# Launch\n![cover](media/c.jpg)\nA small shop\n## Sales\n| Month | Cups |\n|---|---|\n| Jan | 120 |\n| Feb | 180 |\n| Mar | 260 |\n## Menu\n| Item | Price |\n|---|---|\n| Tea | four |\n| Cake | five |\n## Formula\n$$ A = XW + B $$\n- A: output\n- X: input\n## Gate\n$$\ny = 0 if w1x1 <= theta\n1 if w1x1 > theta\n$$\n## Curves\nplot: step, relu\n## Path\nOrder -> Bake -> Serve\n## Net\nIn [x1 x2] -> Out [y]\n## Numbers\n**3** shops\n**12** people\n## Shop\n![one](a.jpg)\n![two](b.jpg)\n## Then and now\nBefore: paper, phone\nAfter: one page, one link\n## Why\nWe bake **every morning** for you.\n## Part two\n## End\n- [Map](https://a.b)';
+  const story = talkToStory(parseTalk(md));
+  const kinds = story.scenes.map((x) => x.kind);
+  assert.equal(validateStory(story, cat).length, 0, validateStory(story, cat).join('\n'));
+  for (const k of ['pro/cover', 'pro/line', 'pro/table', 'pro/equation', 'pro/plot', 'pro/flow', 'pro/network', 'pro/stats', 'pro/gallery', 'pro/compare', 'pro/statement', 'pro/chapter', 'pro/closing']) assert.ok(kinds.includes(k), 'missing ' + k + ' in ' + kinds.join(', '));
+  assert.equal(story.scenes[0].src, 'media/c.jpg', 'the cover picture');
+  const st = story.scenes.find((x) => x.kind === 'pro/statement' && /bake/.test(x.text)); assert.deepEqual(st.gold, ['every morning']);
+  const eq = story.scenes.filter((x) => x.kind === 'pro/equation'); assert.equal(eq[0].terms.length, 2); assert.equal(eq[1].cases.length, 2); assert.equal(eq[1].lhs, 'y');
+  assert.deepEqual(story.scenes.find((x) => x.kind === 'pro/line').points.map((p) => p.value), [120, 180, 260]);
+  assert.ok(story.scenes.every((x) => x.notes), 'every slide has notes');
+  const all = JSON.stringify(story);
+  for (const w of ['A small shop', 'Tea', 'five', 'output', 'Bake', 'shops', 'paper', 'one link', 'Part two', 'Map']) assert.ok(all.includes(w), 'lost ' + w);
+  assert.equal(talkToStory(parseTalk(SAMPLE.ko)).scenes.every((x) => x.kind.startsWith('pro/')), true, 'the sample is pro by default');
+  // a quote with its speaker on the next line, clock times in a flow, lesson labels as a timeline
+  const q = talkToStory(parseTalk('# T\n## Said\n> Good bread.\n- A guest\n## Day\n06:00 dough -> 07:00 open -> 12:00 lunch\n## Map\n1. Lesson 2: video\n2. Lessons 4–5: slides\n3. Lesson 10: library\n')).scenes;
+  assert.equal(q.find((x) => x.kind === 'pro/quote').by, 'A guest', 'the line under a quote says who');
+  assert.deepEqual(q.find((x) => x.kind === 'pro/flow').steps[0], {title: '06:00', text: 'dough'}, 'a clock time stays whole');
+  assert.equal(q.find((x) => x.kind === 'pro/timeline').items.length, 3, 'lesson labels make a timeline');
+  return kinds.length + ' slides';
 });
 
 await test('Marp, Slidev and reveal.js markdown come in as they are: slides, notes, no settings on screen, --- inside code kept', () => {
@@ -435,6 +457,7 @@ else {
         {id: 'dim', kind: 'test/low-contrast', text: 'Dim'},
         {id: 'face', kind: 'test/on-face', src: 'media/person.svg', face: [0.39, 0.2, 0.22, 0.4], text: 'On the face'},
         {id: 'wide', kind: 'test/wide-row'},
+        {id: 'stack', kind: 'test/overlap', text: 'First line'},
         {id: 'remote', kind: 'test/remote-image', text: 'Remote'},
         {id: 'wordy', kind: 'motion/blur-words', text: long},
         {id: 'nofile', kind: 'kit/hero-video', src: 'media/missing.jpg', title: 'A missing picture'},
@@ -453,6 +476,7 @@ else {
       assert.ok(!find('cut', 'wide', 'deck'), 'the wide row fits the slide');
       need('external', null, null, /example\.com/);
       need('words', 'wordy', 'deck', /words on one slide/);
+      need('overlap', 'stack', 'deck', /drawn on top of each other/);
       const miss = r.errors.find((e) => (e.what === 'broken' || e.what === 'missing') && /missing\.jpg/.test(e.msg)); assert.ok(miss, 'the missing picture is reported');
       assert.ok(!r.errors.some((e) => e.id === 'ok'), 'the good scene has no error: ' + r.errors.filter((e) => e.id === 'ok').map((e) => e.msg).join(' | '));
       assert.ok(/FAIL/.test(fs.readFileSync(path.join(dir, 'out', 'report.md'), 'utf8')));

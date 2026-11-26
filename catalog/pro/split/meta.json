@@ -1,0 +1,45 @@
+{
+  "kind": "pro/split",
+  "title": "Photo and words",
+  "description": "Half the slide is the user's photo or clip, revealed by a clean wipe from the edge; the other half carries the heading and two or three points on hairlines. The most useful business slide.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "media",
+  "family": "pro-split",
+  "lead": "picture",
+  "dur": 2.4,
+  "props": {
+    "src": "required, a photo or an mp4 of the user's own",
+    "alt": "required, what the picture shows",
+    "title": "required, heading, 1-8 words",
+    "items": "2-4 short points (\"Title: one line\" or {title, text})",
+    "text": "one line instead of points",
+    "kicker": "small caps above",
+    "side": "left or right: where the picture goes (default left; with a face, the words stay off it)",
+    "face": "[x, y, w, h] of a face, 0 to 1",
+    "body": "[x, y, w, h] of the person",
+    "poster": "still for a video",
+    "pos": "object-position"
+  },
+  "example": {
+    "src": "media/photo-cake.jpg",
+    "alt": "A carrot cake on a wooden table",
+    "kicker": "Our menu",
+    "title": "Made in small batches",
+    "items": [
+      {
+        "title": "Morning",
+        "text": "Bread and pastry"
+      },
+      {
+        "title": "Afternoon",
+        "text": "Cake and tea"
+      }
+    ]
+  }
+}

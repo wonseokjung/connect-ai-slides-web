@@ -1,0 +1,42 @@
+{
+  "kind": "pro/gallery",
+  "title": "Photo gallery",
+  "description": "Two to four of the user's photos in an editorial grid: one large, the others beside it, each wiped in from its own edge with a short caption. For a shop, a product line or a project's results.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "media",
+  "family": "pro-gallery",
+  "lead": "picture",
+  "dur": 2.4,
+  "props": {
+    "items": "required, 2-4 of {src, alt, caption}: the user's own photos or clips",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "A day at the shop",
+    "title": "What we bake",
+    "items": [
+      {
+        "src": "media/photo-croissant.jpg",
+        "alt": "A croissant on a wooden table",
+        "caption": "Croissant"
+      },
+      {
+        "src": "media/photo-cake.jpg",
+        "alt": "A carrot cake",
+        "caption": "Carrot cake"
+      },
+      {
+        "src": "media/photo-tea.jpg",
+        "alt": "A tea set on a marble table",
+        "caption": "Tea"
+      }
+    ]
+  }
+}

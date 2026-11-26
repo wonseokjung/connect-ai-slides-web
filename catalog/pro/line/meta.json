@@ -1,0 +1,44 @@
+{
+  "kind": "pro/line",
+  "title": "Line chart",
+  "description": "A line chart from the user's numbers: a gold line draws itself over quiet grid lines, the area under it fades in, a dot lands on every point and the last value counts up at the end of the line.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "pro-line",
+  "lead": "picture",
+  "dur": 2.8,
+  "props": {
+    "points": "required, 3-12 of {label, value} in order",
+    "unit": "short unit after the values",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under, for example the source",
+    "decimals": "digits after the point"
+  },
+  "example": {
+    "kicker": "One story, three frames",
+    "title": "The width of each frame the check opens",
+    "unit": "px",
+    "points": [
+      {
+        "label": "Slide",
+        "value": 1920
+      },
+      {
+        "label": "Web page",
+        "value": 1440
+      },
+      {
+        "label": "Phone",
+        "value": 390
+      }
+    ],
+    "note": "Measured in a real browser"
+  }
+}

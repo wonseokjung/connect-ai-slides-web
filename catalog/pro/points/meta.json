@@ -1,0 +1,40 @@
+{
+  "kind": "pro/points",
+  "title": "Points",
+  "description": "Two to four key points side by side, each under a gold index number and a hairline that draws itself. With \"build\": true each point comes on its own click.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "list",
+  "family": "pro-points",
+  "lead": "type",
+  "dur": 2.4,
+  "props": {
+    "items": "required, 2-4 points: \"Title: one line\" or {title, text}",
+    "title": "heading",
+    "kicker": "small caps above the heading",
+    "build": "true: one point per click"
+  },
+  "example": {
+    "kicker": "How it works",
+    "title": "Three things in one file",
+    "items": [
+      {
+        "title": "Editable words",
+        "text": "Every word is a real text box"
+      },
+      {
+        "title": "Motion clips",
+        "text": "Each slide's motion plays by itself"
+      },
+      {
+        "title": "Speaker notes",
+        "text": "What you will say comes along"
+      }
+    ]
+  }
+}

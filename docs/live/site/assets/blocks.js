@@ -1279,6 +1279,9 @@ const css = `
 .b-gsap-lesson-map .st.now .wh { background: var(--gold2); color: var(--bg); font-weight: 500; padding: 0.1em 0.6em 0.1em 0.8em; border-radius: 999px; margin-bottom: 0.15em; }
 .b-gsap-lesson-map .t { font-size: calc(var(--lead) * 0.62); color: var(--ink); line-height: 1.13; letter-spacing: -0.012em; text-wrap: balance; }
 .b-gsap-lesson-map .tool { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: var(--label); color: var(--dim); line-height: 1.3; }
+.cs-frame[data-stage="deck"] .b-gsap-lesson-map .ttl { font-size: calc(var(--lead) * 1.15); }
+.cs-frame[data-stage="deck"] .b-gsap-lesson-map .wh { font-size: calc(var(--label) * 1.15); }
+.cs-frame[data-stage="deck"] .b-gsap-lesson-map .t { font-size: calc(var(--lead) * 0.84); }
 .cs-frame[data-stage="site"][data-shape="wide"] .b-gsap-lesson-map .t { font-size: calc(var(--lead) * 0.72); }
 .cs-frame[data-stage="site"][data-shape="wide"] .b-gsap-lesson-map .tool { font-size: var(--label); }
 .cs-frame[data-shape="tall"] .b-gsap-lesson-map .wrap { padding: calc(var(--pad) * 0.6 + var(--top)) var(--pad) calc(var(--pad) * 0.5); gap: calc(var(--gap) * 0.9); }
@@ -1674,7 +1677,8 @@ const css = `
 .cs-frame[data-shape="tall"] .b-gsap-parallax-words .panel { width: 100%; padding: 3em var(--pad); background: linear-gradient(180deg, transparent 0%, var(--bg) 22%, var(--bg) 78%, transparent 100%); }
 `;
 const __mount = function mount(el, p, cx) {
-  const g = cx.gsap, words = (p.words && p.words.length ? p.words : ['Video', 'Slides', 'Web']).slice(0, 3);
+  const g = cx.gsap, words = (p.words && p.words.length ? p.words : String(p.text || '').split(/\s+/).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')).filter((w) => w.length > 1).sort((a, b) => b.length - a.length).slice(0, 3)).slice(0, 3);
+  if (!words.length) words.push(String(p.text || '').trim() || ' ');
   while (words.length < 3) words.push(words[words.length - 1]);
   const row = (w, cls) => `<div class="row ${cls}">${Array.from({length: 9}, () => `<span>${cx.esc(w)}</span>`).join('')}</div>`;
   el.innerHTML = `
@@ -3690,6 +3694,1047 @@ const __mount = function mount(el, p, cx) {
 }
 
 CS.register("motion/timeline-years", __mount, typeof css === "string" ? css : "", {"kind":"motion/timeline-years","title":"Timeline years","use":"timeline","family":"year-line","lead":"type","site":null,"dur":2.6,"source":{"type":"motion","package":"motion","version":"14.14.0"},"license":"MIT","data":{}});
+})();
+
+/* pro/agenda */
+(function(){
+// pro/agenda: a large heading and the parts of the talk on hairlines; the current one is gold.
+const css = `
+.b-pro-agenda .pro-wrap { flex-direction: row; flex-wrap: wrap; }
+.b-pro-agenda .pro-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: calc(var(--gap) * 1.6); align-items: center; flex-basis: 100%; }
+.b-pro-agenda .pro-foot { flex-basis: 100%; }
+.b-pro-agenda .ah { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.45); }
+.b-pro-agenda .ak { display: flex; align-items: center; gap: 0.9em; font-size: var(--label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold2); }
+.b-pro-agenda .ak i { display: block; width: 2.2em; height: 1px; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-agenda .at { font-size: var(--title); font-weight: var(--thin); letter-spacing: -0.03em; line-height: 1.04; color: var(--ink); text-wrap: balance; }
+.b-pro-agenda ol { display: flex; flex-direction: column; }
+.b-pro-agenda li { position: relative; display: grid; grid-template-columns: 2.6em 1fr; align-items: baseline; padding: 0.62em 0; font-size: var(--lead); color: var(--dim); line-height: 1.2; }
+.b-pro-agenda.short li { padding: 0.8em 0; }
+.b-pro-agenda.many li { padding: 0.42em 0; font-size: calc(var(--lead) * 0.84); }
+.b-pro-agenda li .n { font-size: 0.62em; letter-spacing: 0.1em; color: var(--dim); }
+.b-pro-agenda li.now { color: var(--ink); }
+.b-pro-agenda li.now .n { color: var(--gold2); }
+.b-pro-agenda li .rl { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); transform-origin: 0 50%; }
+.b-pro-agenda li.now .rl { background: var(--gold); }
+.b-pro-agenda.all li { color: var(--ivory); }
+.cs-frame[data-shape="tall"] .b-pro-agenda .pro-body { grid-template-columns: 1fr; align-content: center; gap: var(--gap); }
+.cs-frame[data-shape="tall"] .b-pro-agenda li { font-size: var(--body); }
+.cs-frame[data-shape="tall"] .b-pro-agenda li .n { font-size: 0.8em; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, items = (p.items || []).slice(0, 7).map((x) => (typeof x === 'string' ? x : x.title || '')), now = (p.now | 0) - 1;
+  el.classList.toggle('short', items.length <= 4); el.classList.toggle('many', items.length > 5); el.classList.toggle('all', now < 0);
+  el.innerHTML = `<i class="pro-glow" style="--gx:15%;--gy:50%"></i><div class="pro-wrap"><div class="pro-body"><div class="ah">${p.kicker ? `<div class="ak"><i></i><span>${cx.esc(p.kicker)}</span></div>` : ''}${p.title ? `<h2 class="at">${P.words(p.title)}</h2>` : ''}</div>
+    <ol>${items.map((x, i) => `<li class="${i === now ? 'now' : ''}"><span class="n cs-num">${String(i + 1).padStart(2, '0')}</span><span>${cx.esc(x)}</span><i class="rl" aria-hidden="true"></i></li>`).join('')}</ol></div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  if (q('.ak')) { tl.fromTo(q('.ak i'), {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.out'}, 0); P.rise(tl, q('.ak span'), 0.1, {y: 10}); }
+  if (q('.at')) P.wordsIn(tl, q('.at'), 0.15);
+  el.querySelectorAll('li').forEach((li, i) => { const at = 0.45 + i * 0.12; tl.fromTo(li.querySelector('.rl'), {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.inOut'}, at); P.rise(tl, li.querySelectorAll('span'), at + 0.1, {y: 14, stagger: 0.04}); });
+  if (q('.pro-foot')) tl.fromTo(q('.pro-foot'), {opacity: 0}, {opacity: 1, duration: 0.8}, 0.6);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/agenda", __mount, typeof css === "string" ? css : "", {"kind":"pro/agenda","title":"Agenda","use":"list","family":"pro-agenda","lead":"type","site":null,"dur":2.2,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/bars */
+(function(){
+// pro/bars: columns grow from a hairline baseline, values count above them, one column is gold.
+const css = `
+.b-pro-bars .pro-body { display: grid; grid-template-rows: minmax(0, 1fr) auto auto; gap: calc(var(--gap) * 0.4); }
+.b-pro-bars .plot { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(var(--gap) * var(--g, 1)); align-items: end; min-height: 0; border-bottom: 1px solid var(--line); padding: 0 calc(var(--gap) * 0.5); }
+.b-pro-bars .grid { position: absolute; left: 0; right: 0; height: 1px; background: var(--faint); }
+.b-pro-bars .col { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; min-width: 0; }
+.b-pro-bars .val { font-size: var(--lead); font-weight: var(--thin); color: var(--ivory); margin-bottom: 0.35em; white-space: nowrap; }
+.b-pro-bars .val small { font-size: 0.5em; color: var(--dim); margin-left: 0.2em; letter-spacing: 0.06em; }
+.b-pro-bars .bar { width: min(100%, 4.2em); font-size: var(--lead); border-radius: 0.12em 0.12em 0 0; background: color-mix(in srgb, var(--ink) 16%, transparent); transform-origin: 50% 100%; }
+.b-pro-bars .col.hi .bar { background: linear-gradient(180deg, var(--gold2), var(--gold)); }
+.b-pro-bars .col.hi .val { color: var(--gold2); }
+.b-pro-bars .labels { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(var(--gap) * var(--g, 1)); padding: 0 calc(var(--gap) * 0.5); }
+.b-pro-bars .lb { text-align: center; font-size: var(--body); color: var(--dim); line-height: 1.25; }
+.b-pro-bars .lb.hi { color: var(--ink); }
+.b-pro-bars .nt { font-size: calc(var(--body) * 0.8); color: var(--dim); letter-spacing: 0.04em; margin-top: calc(var(--gap) * 0.3); }
+.cs-frame[data-shape="tall"] .b-pro-bars .val { font-size: var(--body); }
+.cs-frame[data-shape="tall"] .b-pro-bars .lb { font-size: calc(var(--body) * 0.8); }
+.cs-frame[data-shape="tall"] .b-pro-bars .val small { font-size: 0.74em; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, items = (p.items || []).slice(0, 8).map((it) => ({label: String(it.label), value: Number(String(it.value).replace(/,/g, '')) || 0}));
+  const max = Math.max(1e-9, ...items.map((i) => i.value)), dec = Math.max(0, p.decimals | 0);
+  const hi = p.highlight == null ? items.findIndex((i) => i.value === max) : p.highlight - 1;
+  el.style.setProperty('--n', items.length || 1); el.style.setProperty('--g', items.length > 5 ? 0.5 : 1);
+  const comma = items.some((i) => i.value >= 10000);
+  el.innerHTML = `<i class="pro-glow" style="--gx:80%;--gy:20%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">
+    <div class="plot">${[0.25, 0.5, 0.75].map((g) => `<i class="grid" style="bottom:${g * 82}%" aria-hidden="true"></i>`).join('')}${items.map((it, i) => `<div class="col${i === hi ? ' hi' : ''}"><div class="val cs-num"><span class="n">${P.fmt(it.value, dec, comma)}</span>${p.unit && (i === hi || items.length <= 4) ? `<small>${cx.esc(p.unit)}</small>` : ''}</div><i class="bar" style="height:${Math.max(1.5, (it.value / max) * 82)}%" aria-hidden="true"></i></div>`).join('')}</div>
+    <div class="labels">${items.map((it, i) => `<div class="lb${i === hi ? ' hi' : ''}">${cx.esc(it.label)}</div>`).join('')}</div>
+    ${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  tl.fromTo(el.querySelectorAll('.grid'), {scaleX: 0}, {scaleX: 1, duration: 1.0, ease: 'expo.inOut', stagger: 0.06, transformOrigin: '0% 50%'}, t - 0.1);
+  P.rise(tl, el.querySelectorAll('.lb'), t, {y: 12, stagger: 0.06});
+  const ns = el.querySelectorAll('.val .n');
+  el.querySelectorAll('.col').forEach((c, i) => {
+    const at = t + 0.15 + i * 0.1;
+    tl.fromTo(c.querySelector('.bar'), {scaleY: 0}, {scaleY: 1, duration: 1.2, ease: 'expo.out'}, at);
+    tl.fromTo(c.querySelector('.val'), {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: 'expo.out'}, at + 0.2);
+    const o = {v: 0}; tl.to(o, {v: items[i].value, duration: 1.2, ease: 'expo.out', onUpdate: () => { ns[i].textContent = P.fmt(o.v, dec, comma); }}, at);
+  });
+  P.rise(tl, el.querySelector('.nt'), t + 1.2, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/bars", __mount, typeof css === "string" ? css : "", {"kind":"pro/bars","title":"Column chart","use":"chart","family":"pro-columns","lead":"picture","site":null,"dur":2.6,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/chapter */
+(function(){
+// pro/chapter: a large thin gold number, a hairline that grows, the title rises beside it.
+const css = `
+.b-pro-chapter .pro-body { display: flex; align-items: center; gap: calc(var(--gap) * 1.6); }
+.b-pro-chapter .ch-n { flex: none; font-size: calc(var(--hero) * 1.85); font-weight: var(--thin); letter-spacing: -0.05em; line-height: 0.8; color: var(--gold2); font-variant-numeric: lining-nums; }
+.b-pro-chapter .ch-bar { flex: none; width: 1px; align-self: stretch; margin: 12% 0; background: var(--gold); transform-origin: 50% 0%; }
+.b-pro-chapter .ch-txt { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.55); min-width: 0; }
+.b-pro-chapter .ch-k { font-size: var(--label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold2); }
+.b-pro-chapter .ch-t { font-size: var(--title); font-weight: var(--thin); letter-spacing: -0.03em; line-height: 1.04; color: var(--ink); text-wrap: balance; }
+.b-pro-chapter .ch-s { font-size: var(--lead); color: var(--dim); line-height: 1.3; }
+.cs-frame[data-shape="tall"] .b-pro-chapter .pro-body { flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--gap); }
+.cs-frame[data-shape="tall"] .b-pro-chapter .ch-bar { width: 30%; height: 1px; align-self: auto; margin: 0; transform-origin: 0 50%; }
+.cs-frame[data-shape="tall"] .b-pro-chapter .ch-n { font-size: calc(var(--hero) * 1.6); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  el.innerHTML = `<i class="pro-glow" style="--gx:18%;--gy:50%"></i><div class="pro-wrap"><div class="pro-body">
+    ${p.number != null && p.number !== '' ? `<div class="ch-n cs-num">${cx.esc(p.number)}</div><i class="ch-bar" aria-hidden="true"></i>` : ''}
+    <div class="ch-txt">${p.kicker ? `<div class="ch-k">${cx.esc(p.kicker)}</div>` : ''}<h2 class="ch-t">${P.words(p.title, p.gold)}</h2>${p.sub ? `<p class="ch-s">${cx.esc(p.sub)}</p>` : ''}</div>
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  if (q('.ch-n')) tl.fromTo(q('.ch-n'), {opacity: 0, y: 60}, {opacity: 1, y: 0, duration: 1.3, ease: 'expo.out'}, 0);
+  if (q('.ch-bar')) tl.fromTo(q('.ch-bar'), cx.shape === 'tall' ? {scaleX: 0} : {scaleY: 0}, cx.shape === 'tall' ? {scaleX: 1, duration: 1.0, ease: 'expo.inOut'} : {scaleY: 1, duration: 1.0, ease: 'expo.inOut'}, 0.2);
+  P.rise(tl, q('.ch-k'), 0.45, {y: 14});
+  P.wordsIn(tl, q('.ch-t'), 0.55);
+  P.rise(tl, q('.ch-s'), 1.0);
+  if (q('.pro-foot')) tl.fromTo(q('.pro-foot'), {opacity: 0}, {opacity: 1, duration: 0.8}, 0.8);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/chapter", __mount, typeof css === "string" ? css : "", {"kind":"pro/chapter","title":"Chapter","use":"chapter","family":"pro-chapter","lead":"type","site":null,"dur":2,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/closing */
+(function(){
+// pro/closing: a large thin last line, the cover's gold circle draws again, and buttons to the user's pages.
+const css = `
+.b-pro-closing .pc-art { position: absolute; z-index: 0; left: 50%; top: 50%; width: 92cqh; height: 92cqh; transform: translate(-50%, -50%); pointer-events: none; }
+.b-pro-closing .pc-art circle { fill: none; stroke: var(--gold); stroke-width: 0.12; opacity: 0.5; }
+.b-pro-closing .pc-art circle + circle { opacity: 0.2; }
+.b-pro-closing .pro-body { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: calc(var(--gap) * 0.7); }
+.b-pro-closing .ck { font-size: var(--label); letter-spacing: 0.34em; text-transform: uppercase; color: var(--gold2); }
+.b-pro-closing .ct { font-size: var(--hero); font-weight: var(--thin); letter-spacing: -0.04em; line-height: 1.0; color: var(--ink); text-wrap: balance; }
+.b-pro-closing .cs2 { font-size: var(--lead); color: var(--ivory); }
+.b-pro-closing .cb { display: flex; gap: 0.8em; flex-wrap: wrap; justify-content: center; margin-top: calc(var(--gap) * 0.4); }
+.b-pro-closing .cc { font-size: var(--label); letter-spacing: 0.16em; color: var(--dim); margin-top: calc(var(--gap) * 0.3); }
+.cs-frame[data-shape="tall"] .b-pro-closing .pc-art { width: 110cqw; height: 110cqw; }
+.cs-frame[data-shape="tall"] .b-pro-closing .ct { font-size: calc(var(--hero) * 0.9); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, links = (p.links || []).slice(0, 3);
+  el.innerHTML = `<svg class="pc-art" viewBox="0 0 100 100" aria-hidden="true" data-deco><circle cx="50" cy="50" r="49" pathLength="1"/><circle cx="50" cy="50" r="40" pathLength="1"/></svg><i class="pro-glow" style="--gx:50%;--gy:50%"></i><div class="pro-wrap"><div class="pro-body">
+    ${p.kicker ? `<div class="ck">${cx.esc(p.kicker)}</div>` : ''}<h2 class="ct">${P.words(p.title, p.gold)}</h2>${p.sub ? `<p class="cs2">${cx.esc(p.sub)}</p>` : ''}
+    ${links.length ? `<div class="cb">${links.map((l, i) => `<a class="cs-btn${i ? ' cs-ghost' : ''}" href="${cx.esc(l.href)}"${/^https?:/.test(l.href) ? ' target="_blank" rel="noopener"' : ''}>${cx.esc(l.label)}</a>`).join('')}</div>` : ''}
+    ${p.contact ? `<div class="cc">${cx.esc(p.contact)}</div>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  tl.fromTo(el.querySelectorAll('.pc-art circle'), {strokeDasharray: 1, strokeDashoffset: 1}, {strokeDashoffset: 0, duration: 2.0, ease: 'expo.inOut', stagger: 0.2}, 0);
+  P.rise(tl, q('.ck'), 0.2, {y: 10});
+  P.wordsIn(tl, q('.ct'), 0.3);
+  P.rise(tl, q('.cs2'), 0.85, {y: 16});
+  P.rise(tl, el.querySelectorAll('.cb a'), 1.05, {y: 14, stagger: 0.08});
+  P.rise(tl, q('.cc'), 1.25, {y: 8});
+  if (q('.pro-foot')) tl.fromTo(q('.pro-foot'), {opacity: 0}, {opacity: 1, duration: 0.8}, 1.0);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/closing", __mount, typeof css === "string" ? css : "", {"kind":"pro/closing","title":"Closing","use":"cta","family":"pro-closing","lead":"type","site":null,"dur":2.2,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/compare */
+(function(){
+// pro/compare: a quiet column and a gold column, a hairline between them, a gold arrow crossing over.
+const css = `
+.b-pro-compare .pro-body { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: calc(var(--gap) * 1.2); align-items: stretch; align-content: center; }
+.b-pro-compare .cc { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.5); min-width: 0; justify-content: center; }
+.b-pro-compare .cl { font-size: var(--label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); }
+.b-pro-compare .cc.r .cl { color: var(--gold2); }
+.b-pro-compare .ct { font-size: calc(var(--title) * 0.6); font-weight: var(--thin); color: var(--dim); line-height: 1.1; letter-spacing: -0.02em; }
+.b-pro-compare .cc.r .ct { color: var(--ink); }
+.b-pro-compare .cpic { position: relative; height: 30cqh; overflow: hidden; border-radius: calc(var(--radius) * 0.35); }
+.b-pro-compare .cpic > img, .b-pro-compare .cpic > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.b-pro-compare .cc.l .cpic { filter: grayscale(0.85) brightness(0.8); }
+.b-pro-compare ul { display: flex; flex-direction: column; }
+.b-pro-compare li { position: relative; padding: 0.55em 0 0.55em 1.4em; font-size: var(--body); color: var(--dim); line-height: 1.3; }
+.b-pro-compare .cc.r li { color: var(--ivory); }
+.b-pro-compare li::before { content: ""; position: absolute; left: 0; top: 1.05em; width: 0.55em; height: 1px; background: var(--dim); }
+.b-pro-compare .cc.r li::before { background: var(--gold); }
+.b-pro-compare li .rl { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); transform-origin: 0 50%; }
+.b-pro-compare .cx { color: var(--dim); font-size: var(--lead); line-height: 1.3; }
+.b-pro-compare .cc.r .cx { color: var(--ivory); }
+.b-pro-compare .cc.bare .cl { font-size: var(--body); letter-spacing: 0.2em; }
+.b-pro-compare .cc.bare li { font-size: var(--lead); padding: 0.7em 0 0.7em 1.4em; }
+.b-pro-compare .cc.bare li::before { top: 1.3em; }
+.b-pro-compare .mid { position: relative; width: 1px; }
+.b-pro-compare .mid i { position: absolute; inset: 0; background: var(--line); transform-origin: 50% 0; }
+.b-pro-compare .mid b { position: absolute; left: 50%; top: 50%; width: 3.2em; height: 3.2em; margin: -1.6em 0 0 -1.6em; border-radius: 50%; border: 1px solid var(--gold); background: var(--bg); display: grid; place-items: center; font-size: var(--body); }
+.b-pro-compare .mid b::after { content: ""; width: 0.6em; height: 0.6em; border-top: 1.5px solid var(--gold2); border-right: 1.5px solid var(--gold2); transform: translateX(-0.15em) rotate(45deg); }
+.cs-frame[data-shape="tall"] .b-pro-compare .pro-body { grid-template-columns: 1fr; grid-template-rows: auto auto auto; gap: calc(var(--gap) * 0.8); align-content: center; }
+.cs-frame[data-shape="tall"] .b-pro-compare .mid { width: 100%; height: 1px; }
+.cs-frame[data-shape="tall"] .b-pro-compare .mid b { transform: rotate(90deg); }
+.cs-frame[data-shape="tall"] .b-pro-compare .cpic { height: 18cqh; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  const col = (c, cls) => { c = c || {}; const items = (c.items || []).slice(0, 4); const bare = !c.title && !c.src && !c.text; return `<div class="cc ${cls}${bare ? ' bare' : ''}">${c.label ? `<div class="cl">${cx.esc(c.label)}</div>` : ''}${c.title ? `<h3 class="ct">${cx.esc(c.title)}</h3>` : ''}${c.src ? `<div class="cpic">${P.media(c, 'cm', c.title)}</div>` : ''}${items.length ? `<ul>${items.map((x) => `<li>${cx.esc(typeof x === 'string' ? x : x.title || '')}<i class="rl" aria-hidden="true"></i></li>`).join('')}</ul>` : ''}${c.text ? `<p class="cx">${cx.esc(c.text)}</p>` : ''}</div>`; };
+  el.innerHTML = `<i class="pro-glow" style="--gx:85%;--gy:50%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">${col(p.left, 'l')}<div class="mid" aria-hidden="true"><i></i><b></b></div>${col(p.right, 'r')}</div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true}), tall = cx.shape === 'tall';
+  const t = P.headIn(tl, el);
+  const L = el.querySelector('.cc.l'), R = el.querySelector('.cc.r');
+  const colIn = (c, at) => { P.rise(tl, c.querySelectorAll('.cl, .ct, .cx'), at, {y: 20}); const pic = c.querySelector('.cpic'); if (pic) tl.fromTo(pic, {clipPath: 'inset(0 0 100% 0)'}, {clipPath: 'inset(0 0 0% 0)', duration: 1.0, ease: 'expo.inOut'}, at + 0.1); c.querySelectorAll('li').forEach((li, i) => { P.rise(tl, li, at + 0.3 + i * 0.1, {y: 12}); tl.fromTo(li.querySelector('.rl'), {scaleX: 0}, {scaleX: 1, duration: 0.7, ease: 'expo.inOut'}, at + 0.3 + i * 0.1); }); };
+  colIn(L, t);
+  tl.fromTo(el.querySelector('.mid i'), tall ? {scaleX: 0} : {scaleY: 0}, tall ? {scaleX: 1, duration: 0.9, ease: 'expo.inOut'} : {scaleY: 1, duration: 0.9, ease: 'expo.inOut'}, t + 0.5);
+  tl.fromTo(el.querySelector('.mid b'), {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)'}, t + 0.9);
+  colIn(R, t + 1.05);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/compare", __mount, typeof css === "string" ? css : "", {"kind":"pro/compare","title":"Before and after","use":"compare","family":"pro-compare","lead":"picture","site":null,"dur":2.5,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/cover */
+(function(){
+// pro/cover: the title rises word by word, the gold hairline and a thin circle draw themselves; a picture takes the right half.
+const css = `
+.b-pro-cover .pc-art { position: absolute; z-index: 0; right: -14%; top: 50%; width: 78cqh; height: 78cqh; transform: translateY(-50%); pointer-events: none; }
+.b-pro-cover .pc-art circle { fill: none; stroke: var(--gold); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.55; }
+.b-pro-cover .pc-art circle + circle { opacity: 0.22; }
+.b-pro-cover .pro-body { display: flex; flex-direction: column; justify-content: flex-end; gap: calc(var(--gap) * 0.7); padding-bottom: calc(var(--gap) * 0.6); }
+.b-pro-cover .pc-k { display: flex; align-items: center; gap: 0.9em; font-size: var(--label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold2); }
+.b-pro-cover .pc-k i { display: block; width: 2.2em; height: 1px; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-cover .pc-t { font-size: var(--hero); font-weight: var(--thin); letter-spacing: -0.04em; line-height: 0.98; color: var(--ink); max-width: 88%; text-wrap: balance; }
+.b-pro-cover .pc-t.long { font-size: calc(var(--hero) * 0.72); }
+.b-pro-cover .pc-s { font-size: var(--lead); color: var(--ivory); font-weight: var(--light); max-width: 70%; line-height: 1.3; }
+.b-pro-cover .pc-by { display: flex; align-items: center; gap: 1.1em; font-size: calc(var(--label) * 0.95); letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-top: calc(var(--gap) * 0.5); }
+.b-pro-cover .pc-by i { display: block; width: 4em; height: 1px; background: var(--line); transform-origin: 0 50%; }
+.b-pro-cover.has-pic .pc-pic { position: absolute; z-index: 0; top: 0; right: 0; bottom: 0; width: 54%; overflow: hidden; }
+.b-pro-cover.has-pic .pc-pic > img, .b-pro-cover.has-pic .pc-pic > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.b-pro-cover.has-pic .pc-fade { position: absolute; z-index: 1; top: 0; bottom: 0; right: 54%; width: 18%; transform: translateX(100%); background: linear-gradient(90deg, var(--bg), transparent); pointer-events: none; }
+.b-pro-cover.has-pic .pro-body, .b-pro-cover.has-pic .pro-foot { max-width: 40%; }
+:is(.look-white, .look-ivory, .look-paper) .b-pro-cover.has-pic .pc-fade { display: none; }
+.b-pro-cover.has-pic .pc-t { max-width: 100%; font-size: calc(var(--hero) * 0.66); }
+.b-pro-cover.has-pic .pc-t.long { font-size: calc(var(--hero) * 0.5); }
+.b-pro-cover.has-pic .pc-s { max-width: 100%; }
+.cs-frame[data-shape="tall"] .b-pro-cover .pc-art { width: 90cqw; height: 90cqw; right: -30%; top: 30%; }
+.cs-frame[data-shape="tall"] .b-pro-cover .pc-t { max-width: 100%; font-size: calc(var(--hero) * 0.9); }
+.cs-frame[data-shape="tall"] .b-pro-cover .pc-s { max-width: 100%; }
+.cs-frame[data-shape="tall"] .b-pro-cover.has-pic .pc-pic { width: 100%; bottom: 52%; }
+.cs-frame[data-shape="tall"] .b-pro-cover.has-pic .pc-fade { right: 0; left: 0; top: auto; bottom: 52%; width: auto; height: 14%; transform: translateY(100%); background: linear-gradient(0deg, var(--bg), transparent); }
+.cs-frame[data-shape="tall"] .b-pro-cover.has-pic .pro-body { max-width: 100%; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, pic = !!p.src;
+  el.classList.toggle('has-pic', pic);
+  const long = String(p.title || '').length > (/[가-힣]/.test(p.title || '') ? 12 : 22);
+  el.innerHTML = `${pic ? `<div class="pc-pic">${P.media(p, 'pc-m', p.title)}</div>${p.face || p.body ? '' : '<i class="pc-fade" aria-hidden="true"></i>'}` : `<svg class="pc-art" viewBox="0 0 100 100" aria-hidden="true" data-deco><circle cx="50" cy="50" r="49" pathLength="1"/><circle cx="50" cy="50" r="38" pathLength="1"/></svg><i class="pro-glow" style="--gx:78%;--gy:30%"></i>`}
+  <div class="pro-wrap"><div class="pro-body">
+    ${p.kicker ? `<div class="pc-k"><i></i><span>${cx.esc(p.kicker)}</span></div>` : ''}
+    <h1 class="pc-t${long ? ' long' : ''}">${P.words(p.title, p.gold)}</h1>
+    ${p.sub ? `<p class="pc-s">${cx.esc(p.sub)}</p>` : ''}
+    ${p.by ? `<div class="pc-by"><i></i><span>${cx.esc(p.by)}</span></div>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  if (pic) {
+    const m = q('.pc-m'); if (p.face) cx.face(m, p.face); if (p.body) cx.face(m, p.body, 'body');
+    tl.fromTo(q('.pc-pic'), {clipPath: 'inset(0 0 0 100%)'}, {clipPath: 'inset(0 0 0 0%)', duration: 1.4, ease: 'expo.inOut'}, 0);
+    tl.fromTo(m, {scale: 1.12}, {scale: 1, duration: 2.4, ease: 'power2.out'}, 0);
+  } else {
+    const cs = el.querySelectorAll('.pc-art circle');
+    tl.fromTo(cs, {strokeDasharray: 1, strokeDashoffset: 1}, {strokeDashoffset: 0, duration: 2.0, ease: 'expo.inOut', stagger: 0.25}, 0);
+  }
+  if (q('.pc-k i')) tl.fromTo(q('.pc-k i'), {scaleX: 0}, {scaleX: 1, duration: 0.9, ease: 'expo.out'}, 0.2);
+  if (q('.pc-k span')) tl.fromTo(q('.pc-k span'), {opacity: 0, x: -14}, {opacity: 1, x: 0, duration: 0.8, ease: 'expo.out'}, 0.3);
+  P.wordsIn(tl, q('.pc-t'), 0.35);
+  P.rise(tl, q('.pc-s'), 0.95);
+  if (q('.pc-by')) { tl.fromTo(q('.pc-by i'), {scaleX: 0}, {scaleX: 1, duration: 0.9, ease: 'expo.out'}, 1.15); P.rise(tl, q('.pc-by span'), 1.25, {y: 12}); }
+  if (q('.pro-foot')) tl.fromTo(q('.pro-foot'), {opacity: 0}, {opacity: 1, duration: 0.8}, 1.2);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/cover", __mount, typeof css === "string" ? css : "", {"kind":"pro/cover","title":"Cover","use":"title","family":"pro-cover","lead":"type","site":null,"dur":2.4,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/equation */
+(function(){
+// pro/equation: a formula set large, terms arrive one by one; cases get a brace that draws; symbols explained under it.
+const css = `
+.b-pro-equation .pro-body { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: calc(var(--gap) * 1.5); }
+.b-pro-equation .eq { justify-content: center; font-size: calc(var(--title) * 1.3); font-weight: var(--thin); color: var(--ink); line-height: 1.2; letter-spacing: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.28em; }
+.b-pro-equation .eq.long { font-size: calc(var(--title) * 0.9); }
+.b-pro-equation .eq .op { color: var(--gold2); }
+.b-pro-equation .cs { display: flex; align-items: center; gap: 0.35em; font-size: calc(var(--title) * 1.0); font-weight: var(--thin); color: var(--ink); }
+.b-pro-equation .cs .lhs { white-space: nowrap; }
+.b-pro-equation .cs svg { flex: none; width: 0.42em; align-self: stretch; overflow: visible; }
+.b-pro-equation .cs path { fill: none; stroke: var(--gold2); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.b-pro-equation .rows { display: grid; grid-template-columns: auto auto; column-gap: 0.9em; row-gap: 0.2em; align-items: baseline; }
+.b-pro-equation .rows .v { color: var(--gold2); text-align: right; }
+.b-pro-equation .rows .w { font-size: 0.78em; color: var(--ivory); white-space: nowrap; }
+.b-pro-equation .rows .w small { font-size: 0.66em; color: var(--dim); margin-right: 0.5em; letter-spacing: 0.08em; }
+.b-pro-equation .tm { display: flex; flex-wrap: wrap; justify-content: center; gap: calc(var(--gap) * 0.6) calc(var(--gap) * 1.4); }
+.b-pro-equation .t { display: flex; flex-direction: column; gap: 0.3em; padding-top: calc(var(--gap) * 0.45); border-top: 1px solid var(--line); min-width: 8em; font-size: var(--body); }
+.b-pro-equation .t .s { font-size: var(--lead); color: var(--gold2); }
+.b-pro-equation .t .x { color: var(--ivory); font-size: var(--lead); }
+.b-pro-equation .nt { text-align: center; font-size: calc(var(--body) * 0.8); color: var(--dim); letter-spacing: 0.04em; }
+.cs-frame[data-shape="tall"] .b-pro-equation .eq { font-size: calc(var(--title) * 0.72); }
+.cs-frame[data-shape="tall"] .b-pro-equation .cs { font-size: calc(var(--title) * 0.62); }
+.cs-frame[data-shape="tall"] .b-pro-equation .rows .w small { font-size: 0.9em; }
+.cs-frame[data-shape="tall"] .b-pro-equation .rows .w { white-space: normal; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  const toks = String(p.eq || '').trim().split(/\s+/).filter(Boolean);
+  const cases = (p.cases || []).slice(0, 3);
+  const isOp = (s) => /^([=+\-·×÷<>≤≥→]|<=|>=|->|\*|≦|≧)$/.test(s);
+  const long = String(p.eq || '').length > 22;
+  const eqHtml = toks.length ? `<div class="eq${long ? ' long' : ''}">${toks.map((s) => `<span class="tok${isOp(s) ? ' op' : ''}">${P.math(s)}</span>`).join('')}</div>` : '';
+  const csHtml = cases.length ? `<div class="cs">${p.lhs ? `<span class="lhs">${P.math(p.lhs)} <span class="pro-gold">=</span></span>` : ''}<svg viewBox="0 0 10 100" preserveAspectRatio="none" aria-hidden="true"><path d="M9 2 C4 2 5 10 5 20 L5 40 C5 47 3 50 1 50 C3 50 5 53 5 60 L5 80 C5 90 4 98 9 98"/></svg><div class="rows">${cases.map((c) => `<span class="v">${P.math(c.value)}</span><span class="w"><small>${/[가-힣]/.test(c.when || '') ? '' : 'if'}</small>${P.math(c.when)}</span>`).join('')}</div></div>` : '';
+  const terms = (p.terms || []).slice(0, 4);
+  el.innerHTML = `<i class="pro-glow" style="--gx:50%;--gy:45%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">${eqHtml}${csHtml}
+    ${terms.length ? `<div class="tm">${terms.map((t) => `<div class="t"><span class="s">${P.math(t.sym)}</span><span class="x">${/[가-힣]/.test(t.text || '') ? cx.esc(t.text || '') : P.math(t.text || '')}</span></div>`).join('')}</div>` : ''}
+    ${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}</div>${P.foot(cx)}</div>`;
+  el.querySelectorAll('.rows .w small').forEach((s) => { if (!s.textContent) s.remove(); });
+  const tl = cx.gsap.timeline({paused: true});
+  let t = P.headIn(tl, el);
+  const tk = el.querySelectorAll('.tok');
+  if (tk.length) { tl.fromTo(tk, {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: Math.min(0.14, 1.1 / tk.length)}, t); t += Math.min(0.14, 1.1 / tk.length) * tk.length + 0.3; }
+  if (cases.length) {
+    P.rise(tl, el.querySelector('.lhs'), t, {y: 20});
+    tl.fromTo(el.querySelector('.cs path'), {opacity: 0, scaleY: 0.2, transformOrigin: '50% 50%'}, {opacity: 1, scaleY: 1, duration: 0.8, ease: 'expo.out'}, t + 0.15);
+    el.querySelectorAll('.rows').forEach((r) => { const kids = r.children; for (let i = 0; i < kids.length; i += 2) P.rise(tl, [kids[i], kids[i + 1]], t + 0.35 + (i / 2) * 0.3, {y: 22, stagger: 0.06}); });
+    t += 0.35 + cases.length * 0.3 + 0.3;
+  }
+  el.querySelectorAll('.t').forEach((x, i) => P.rise(tl, x, t + i * 0.12, {y: 18}));
+  P.rise(tl, el.querySelector('.nt'), t + 0.4, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/equation", __mount, typeof css === "string" ? css : "", {"kind":"pro/equation","title":"Equation","use":"diagram","family":"pro-equation","lead":"picture","site":null,"dur":2.6,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/flow */
+(function(){
+// pro/flow: steps in a row joined by gold arrows that draw; a signal travels the whole way at the end.
+const css = `
+.b-pro-flow .pro-body { display: flex; flex-direction: column; justify-content: center; gap: var(--gap); }
+.b-pro-flow .row { position: relative; display: flex; align-items: stretch; }
+.b-pro-flow .st { flex: 1 1 0; min-width: 0; min-height: 34cqh; display: flex; flex-direction: column; justify-content: flex-end; gap: calc(var(--gap) * 0.35); padding: calc(var(--gap) * 0.8) calc(var(--gap) * 0.7); border: 1px solid var(--line); border-radius: calc(var(--radius) * 0.6); background: var(--card); }
+.b-pro-flow .st.last { border-color: color-mix(in srgb, var(--gold) 60%, transparent); }
+.b-pro-flow .sn { font-size: calc(var(--title) * 0.5); font-weight: var(--thin); color: var(--gold2); line-height: 1; margin-bottom: auto; }
+.b-pro-flow .stt { font-size: var(--lead); color: var(--ink); line-height: 1.15; font-weight: var(--light); }
+.b-pro-flow .stx { font-size: var(--body); color: var(--dim); line-height: 1.38; }
+.b-pro-flow .ar { flex: none; align-self: center; width: calc(var(--gap) * 1.3); height: 1em; font-size: var(--lead); position: relative; }
+.b-pro-flow .ar i { position: absolute; left: 12%; right: 12%; top: 50%; height: 1.5px; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-flow .ar b { position: absolute; right: 12%; top: 50%; width: 0.36em; height: 0.36em; border-top: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); transform: translate(0, -50%) rotate(45deg); }
+.b-pro-flow .sig { position: absolute; top: 0; left: 0; width: 0.5em; height: 0.5em; margin: -0.25em 0 0 -0.25em; border-radius: 50%; background: var(--gold2); font-size: var(--lead); box-shadow: 0 0 0.8em color-mix(in srgb, var(--gold2) 70%, transparent); }
+.b-pro-flow .nt { font-size: calc(var(--body) * 0.8); color: var(--dim); letter-spacing: 0.04em; }
+.cs-frame[data-shape="tall"] .b-pro-flow .row { flex-direction: column; }
+.cs-frame[data-shape="tall"] .b-pro-flow .ar { width: 1em; height: calc(var(--gap) * 1.1); align-self: flex-start; margin-left: 1.2em; }
+.cs-frame[data-shape="tall"] .b-pro-flow .ar i { left: 50%; right: auto; top: 10%; bottom: 10%; width: 1.5px; height: auto; transform-origin: 50% 0; }
+.cs-frame[data-shape="tall"] .b-pro-flow .ar b { right: auto; left: 50%; top: auto; bottom: 10%; transform: translate(-50%, 0) rotate(135deg); }
+.cs-frame[data-shape="tall"] .b-pro-flow .sn { font-size: var(--lead); margin-bottom: 0; }
+.cs-frame[data-shape="tall"] .b-pro-flow .st { flex: none; min-height: 0; padding: calc(var(--gap) * 0.5) calc(var(--gap) * 0.6); }
+.cs-frame[data-shape="tall"] .b-pro-flow .sig { display: none; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  const steps = (p.steps || p.items || []).slice(0, 5).map((it) => { if (typeof it !== 'string') return it; const m = /^([^:：]{1,40})[:：]\s*(.+)$/.exec(it); return m ? {title: m[1], text: m[2]} : {title: it}; });
+  const k = steps.length;
+  el.innerHTML = `<i class="pro-glow" style="--gx:85%;--gy:70%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body"><div class="row">${steps.map((s, i) => `${i ? '<div class="ar" aria-hidden="true"><i></i><b></b></div>' : ''}<div class="st${i === k - 1 ? ' last' : ''}"><div class="sn cs-num">${String(i + 1).padStart(2, '0')}</div><h3 class="stt">${cx.esc(s.title || '')}</h3>${s.text ? `<p class="stx">${cx.esc(s.text)}</p>` : ''}</div>`).join('')}<i class="sig" aria-hidden="true"></i></div>${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}</div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el), tall = cx.shape === 'tall';
+  const sts = el.querySelectorAll('.st'), ars = el.querySelectorAll('.ar');
+  const gap = p.build ? 1.0 : 0.32;
+  sts.forEach((st, i) => {
+    const at = t + i * gap;
+    if (p.build && i > 0) tl.addLabel('step' + i, at - 0.35);
+    if (i > 0) { const a = ars[i - 1]; tl.fromTo(a.querySelector('i'), tall ? {scaleY: 0} : {scaleX: 0}, tall ? {scaleY: 1, duration: 0.45, ease: 'power2.inOut'} : {scaleX: 1, duration: 0.45, ease: 'power2.inOut'}, at - 0.3); tl.fromTo(a.querySelector('b'), {opacity: 0}, {opacity: 1, duration: 0.2}, at - 0.05); }
+    tl.fromTo(st, {opacity: 0, y: 26}, {opacity: 1, y: 0, duration: 0.8, ease: 'expo.out'}, at);
+  });
+  const sig = el.querySelector('.sig'), end = t + (k - 1) * gap + 0.8;
+  if (!tall && k > 1) {
+    const row = el.querySelector('.row'), rr = row.getBoundingClientRect(), sc = rr.width / (row.offsetWidth || 1) || 1;
+    const xs = [...sts].map((s) => { const r = s.getBoundingClientRect(); return [(r.left - rr.left) / sc, (r.left - rr.left + r.width) / sc]; });
+    const y = row.offsetHeight / 2;
+    tl.set(sig, {x: xs[0][0], y, opacity: 0}, 0);
+    tl.to(sig, {opacity: 1, duration: 0.2}, end);
+    tl.to(sig, {x: xs[k - 1][1], duration: 0.5 * k, ease: 'power1.inOut'}, end);
+    tl.to(sig, {opacity: 0, duration: 0.25}, end + 0.5 * k - 0.15);
+    tl.fromTo(sts[k - 1], {backgroundColor: 'var(--card)'}, {backgroundColor: 'color-mix(in srgb, var(--gold) 14%, transparent)', duration: 0.5}, end + 0.5 * k - 0.2);
+  } else tl.set(sig, {opacity: 0}, 0);
+  P.rise(tl, el.querySelector('.nt'), end, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/flow", __mount, typeof css === "string" ? css : "", {"kind":"pro/flow","title":"Process flow","use":"steps","family":"pro-flow","lead":"picture","site":null,"dur":3,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/gallery */
+(function(){
+// pro/gallery: an editorial grid of the user's photos, each wiped in from its own edge, with short captions.
+const css = `
+.b-pro-gallery .pro-body { display: grid; gap: calc(var(--gap) * 0.5); min-height: 0; }
+.b-pro-gallery .pro-body.n2 { grid-template-columns: 1.35fr 1fr; grid-template-rows: 1fr; }
+.b-pro-gallery .pro-body.n3 { grid-template-columns: 1.4fr 1fr; grid-template-rows: 1fr 1fr; }
+.b-pro-gallery .pro-body.n4 { grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.b-pro-gallery .pro-body.n3 .gi:first-child, .b-pro-gallery .pro-body.n4 .gi:first-child { grid-row: 1 / 3; }
+.b-pro-gallery .pro-body.n4 .gi:nth-child(4) { grid-column: 2 / 4; }
+.b-pro-gallery .gi { position: relative; overflow: hidden; border-radius: calc(var(--radius) * 0.35); min-height: 0; background: var(--bg2); }
+.b-pro-gallery .gi > img, .b-pro-gallery .gi > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.b-pro-gallery .gc { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2em 0.9em 0.8em; font-size: var(--body); color: #F6F3EC; background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.55) 55%, transparent); line-height: 1.2; }
+.cs-frame[data-shape="tall"] .b-pro-gallery .pro-body { grid-template-columns: 1fr 1fr !important; grid-template-rows: 1.3fr 1fr !important; }
+.cs-frame[data-shape="tall"] .b-pro-gallery .pro-body .gi:first-child { grid-row: auto; grid-column: 1 / 3; }
+.cs-frame[data-shape="tall"] .b-pro-gallery .pro-body.n4 .gi:nth-child(4) { grid-column: auto; }
+.cs-frame[data-shape="tall"] .b-pro-gallery .pro-body.n4 { grid-template-rows: 1.3fr 1fr 1fr !important; }
+.cs-frame[data-shape="tall"] .b-pro-gallery .pro-body.n4 .gi:nth-child(4) { grid-column: 1 / 3; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, items = (p.items || []).slice(0, 4);
+  el.innerHTML = `<div class="pro-wrap">${P.head(p)}<div class="pro-body n${Math.max(2, items.length)}">${items.map((it) => `<figure class="gi">${P.media(it, 'gm', it.caption)}${it.caption ? `<figcaption class="gc">${cx.esc(it.caption)}</figcaption>` : ''}</figure>`).join('')}</div>${P.foot(cx)}</div>`;
+  el.querySelectorAll('.gm').forEach((m, i) => { const it = items[i]; if (it && it.face) cx.face(m, it.face); });
+  const tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  const dirs = ['inset(0 100% 0 0)', 'inset(100% 0 0 0)', 'inset(0 0 100% 0)', 'inset(0 0 0 100%)'];
+  el.querySelectorAll('.gi').forEach((g, i) => {
+    const at = t + i * 0.16;
+    tl.fromTo(g, {clipPath: dirs[i % 4]}, {clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'expo.inOut'}, at);
+    tl.fromTo(g.querySelector('.gm'), {scale: 1.18}, {scale: 1, duration: 1.9, ease: 'power2.out'}, at);
+    const c = g.querySelector('.gc'); if (c) tl.fromTo(c, {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: 0.6, ease: 'expo.out'}, at + 0.8);
+  });
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/gallery", __mount, typeof css === "string" ? css : "", {"kind":"pro/gallery","title":"Photo gallery","use":"media","family":"pro-gallery","lead":"picture","site":null,"dur":2.4,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/line */
+(function(){
+// pro/line: a gold line draws over quiet grid lines, the area fades in, dots land, the last value counts.
+const css = `
+.b-pro-line .pro-body { display: grid; grid-template-rows: minmax(0, 1fr) auto auto; gap: calc(var(--gap) * 0.45); }
+.b-pro-line .plot { position: relative; min-height: 0; margin-right: 9%; }
+.b-pro-line svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.b-pro-line .ln { fill: none; stroke: var(--gold2); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.b-pro-line .ar { fill: url(#pl-grad); }
+.b-pro-line .gl { stroke: var(--faint); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.b-pro-line .bl { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.b-pro-line .dot { position: absolute; width: 0.7em; height: 0.7em; margin: -0.35em 0 0 -0.35em; border-radius: 50%; background: var(--bg); border: 2px solid var(--gold2); font-size: var(--body); }
+.b-pro-line .dot.last { background: var(--gold2); width: 0.9em; height: 0.9em; margin: -0.45em 0 0 -0.45em; }
+.b-pro-line .end { position: absolute; transform: translate(-100%, calc(-100% - 0.35em)); text-align: right; font-size: var(--title); font-weight: var(--thin); color: var(--ink); white-space: nowrap; line-height: 1; }
+.b-pro-line .end small { font-size: 0.4em; color: var(--gold2); margin-left: 0.12em; }
+.b-pro-line .end.below { transform: translate(-100%, 0.45em); }
+.cs-frame[data-shape="tall"] .b-pro-line .end { background: var(--bg); padding: 0.1em 0.2em; border-radius: 0.12em; }
+.cs-frame[data-shape="tall"] .b-pro-line .end small { font-size: 0.62em; }
+.b-pro-line .pv { position: absolute; transform: translate(-50%, -150%); font-size: var(--body); color: var(--dim); white-space: nowrap; }
+.b-pro-line .xs { position: relative; height: 1.6em; font-size: var(--body); margin-right: 9%; }
+.b-pro-line .x { position: absolute; transform: translateX(-50%); color: var(--dim); white-space: nowrap; line-height: 1.2; }
+.b-pro-line .x.first { transform: none; } .b-pro-line .x.last { transform: translateX(-100%); color: var(--ink); }
+.b-pro-line .nt { font-size: calc(var(--body) * 0.8); color: var(--dim); letter-spacing: 0.04em; }
+.cs-frame[data-shape="tall"] .b-pro-line .end { font-size: var(--lead); }
+.cs-frame[data-shape="tall"] .b-pro-line .xs, .cs-frame[data-shape="tall"] .b-pro-line .pv { font-size: var(--label); }
+.cs-frame[data-shape="tall"] .b-pro-line .plot, .cs-frame[data-shape="tall"] .b-pro-line .xs { margin-right: 22%; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, pts = (p.points || []).slice(0, 12).map((it) => ({label: String(it.label), value: Number(String(it.value).replace(/,/g, '')) || 0}));
+  const n = pts.length, dec = Math.max(0, p.decimals | 0);
+  const vs = pts.map((x) => x.value), lo0 = Math.min(...vs), hi0 = Math.max(...vs);
+  const lo = lo0 >= 0 && lo0 <= hi0 * 0.5 ? 0 : lo0 - (hi0 - lo0) * 0.15, hi = hi0 + (hi0 - lo) * 0.08 || 1;
+  const X = (i) => (n === 1 ? 50 : (i / (n - 1)) * 100), Y = (v) => 100 - ((v - lo) / (hi - lo || 1)) * 90 - 4;
+  const d = pts.map((x, i) => (i ? 'L' : 'M') + X(i).toFixed(2) + ' ' + Y(x.value).toFixed(2)).join(' ');
+  const comma = vs.some((v) => v >= 10000);
+  const last = pts[n - 1] || {value: 0};
+  const showPv = n <= 6;
+  el.innerHTML = `<i class="pro-glow" style="--gx:90%;--gy:30%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">
+    <div class="plot"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="pl-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--gold)" stop-opacity="0.26"/><stop offset="1" stop-color="var(--gold)" stop-opacity="0"/></linearGradient></defs>
+      ${[25, 50, 75].map((g) => `<line class="gl" x1="0" x2="100" y1="${g}" y2="${g}"/>`).join('')}<line class="bl" x1="0" x2="100" y1="100" y2="100"/>
+      <path class="ar" d="${d} L100 100 L0 100 Z"/></svg><svg class="lnw" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="${d}"/></svg>
+      ${pts.map((x, i) => `<i class="dot${i === n - 1 ? ' last' : ''}" style="left:${X(i)}%;top:${Y(x.value)}%" aria-hidden="true"></i>`).join('')}
+      ${showPv ? pts.slice(0, -1).map((x, i) => `<span class="pv cs-num" style="left:${X(i)}%;top:${Y(x.value)}%">${P.fmt(x.value, dec, comma)}</span>`).join('') : ''}
+      <span class="end cs-num${Y(last.value) < 30 ? ' below' : ''}" style="left:100%;top:${Y(last.value)}%"><span class="n">${P.fmt(last.value, dec, comma)}</span>${p.unit ? `<small>${cx.esc(p.unit)}</small>` : ''}</span>
+    </div>
+    <div class="xs">${pts.map((x, i) => (n <= 8 || i % Math.ceil(n / 6) === 0 || i === n - 1) ? `<span class="x${i === 0 ? ' first' : i === n - 1 ? ' last' : ''}" style="left:${X(i)}%">${cx.esc(x.label)}</span>` : '').join('')}</div>
+    ${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el), D = 1.6;
+  tl.fromTo(el.querySelectorAll('.gl, .bl'), {opacity: 0}, {opacity: 1, duration: 0.6}, t - 0.2);
+  P.rise(tl, el.querySelectorAll('.x'), t, {y: 10, stagger: 0.04});
+  tl.fromTo(q('.lnw'), {clipPath: 'inset(-10% 100% -10% -2%)'}, {clipPath: 'inset(-10% -2% -10% -2%)', duration: D, ease: 'power2.inOut'}, t + 0.1);
+  tl.fromTo(q('.ar'), {opacity: 0}, {opacity: 1, duration: 1.0, ease: 'power1.out'}, t + 0.6);
+  el.querySelectorAll('.dot').forEach((dt, i) => tl.fromTo(dt, {scale: 0, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2.2)'}, t + 0.1 + D * (n === 1 ? 1 : i / (n - 1)) * 0.92));
+  el.querySelectorAll('.pv').forEach((pv, i) => tl.fromTo(pv, {opacity: 0}, {opacity: 1, duration: 0.4}, t + 0.2 + D * (i / Math.max(1, n - 1)) * 0.92));
+  tl.fromTo(q('.end'), {opacity: 0}, {opacity: 1, duration: 0.7, ease: 'power2.out'}, t + D - 0.1);   // opacity only: the label's CSS transform places it
+  const en = q('.end .n'), o = {v: lo0}; tl.to(o, {v: last.value, duration: 0.9, ease: 'power3.out', onUpdate: () => { en.textContent = P.fmt(o.v, dec, comma); }}, t + D - 0.1);
+  P.rise(tl, q('.nt'), t + D, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/line", __mount, typeof css === "string" ? css : "", {"kind":"pro/line","title":"Line chart","use":"chart","family":"pro-line","lead":"picture","site":null,"dur":2.8,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/network */
+(function(){
+// pro/network: nodes in layers, hairline edges draw left to right, then gold signals travel through.
+const css = `
+.b-pro-network .pro-body { display: grid; grid-template-rows: minmax(0, 1fr) auto auto; gap: calc(var(--gap) * 0.5); }
+.b-pro-network .net { position: relative; min-height: 0; margin: 0.6em 6%; font-size: var(--body); }
+.b-pro-network svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.b-pro-network .ed { stroke: color-mix(in srgb, var(--ink) 34%, transparent); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.b-pro-network .nd { position: absolute; width: 3em; height: 3em; margin: -1.5em 0 0 -1.5em; border-radius: 50%; border: 1.5px solid var(--gold2); background: var(--bg); display: grid; place-items: center; font-size: var(--body); color: var(--ink); }
+.b-pro-network .nd.mid { border-color: color-mix(in srgb, var(--ink) 55%, transparent); }
+.b-pro-network .nd span { font-size: 1.05em; }
+.b-pro-network .sg { position: absolute; width: 0.55em; height: 0.55em; margin: -0.275em 0 0 -0.275em; border-radius: 50%; background: var(--gold2); font-size: var(--body); box-shadow: 0 0 0.9em color-mix(in srgb, var(--gold2) 70%, transparent); }
+.b-pro-network .ls { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); margin: 0 calc(6% - 2em); }
+.b-pro-network .lb { text-align: center; font-size: var(--label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); }
+.b-pro-network .ls .lb:first-child { text-align: left; } .b-pro-network .ls .lb:last-child { text-align: right; }
+.b-pro-network .nt { font-size: calc(var(--body) * 0.8); color: var(--dim); letter-spacing: 0.04em; }
+.cs-frame[data-shape="tall"] .b-pro-network .nd { font-size: var(--label); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  const layers = (p.layers || []).slice(0, 5).map((L) => { const names = Array.isArray(L.nodes) ? L.nodes.slice(0, 6).map(String) : Array.from({length: Math.max(1, Math.min(6, +L.nodes || 2))}, () => ''); return {label: L.label || '', names}; });
+  const n = layers.length;
+  el.style.setProperty('--n', n || 1);
+  const lx = (i) => (n === 1 ? 50 : (i / (n - 1)) * 100);
+  const ly = (k, m) => (m === 1 ? 50 : 8 + (k / (m - 1)) * 84);
+  const nodes = layers.map((L, i) => L.names.map((nm, k) => ({x: lx(i), y: ly(k, L.names.length), nm, i})));
+  const edges = []; for (let i = 0; i < n - 1; i++) for (const a of nodes[i]) for (const b of nodes[i + 1]) edges.push({a, b, i});
+  // one signal per node of the first layer, following a fixed path (no randomness): node k -> k mod next layer -> ...
+  const paths = (nodes[0] || []).map((st, k) => { const pts = [st]; for (let i = 1; i < n; i++) pts.push(nodes[i][(k + i) % nodes[i].length]); return pts; });
+  el.innerHTML = `<i class="pro-glow" style="--gx:50%;--gy:55%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">
+    <div class="net"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${edges.map((e) => `<line class="ed l${e.i}" x1="${e.a.x}" y1="${e.a.y}" x2="${e.b.x}" y2="${e.b.y}"/>`).join('')}</svg>
+      ${paths.map(() => '<i class="sg" aria-hidden="true"></i>').join('')}
+      ${nodes.flat().map((d) => `<div class="nd${d.i > 0 && d.i < n - 1 ? ' mid' : ''} L${d.i}" style="left:${d.x}%;top:${d.y}%">${d.nm ? `<span>${P.math(d.nm)}</span>` : ''}</div>`).join('')}
+    </div>
+    <div class="ls">${layers.map((L) => `<div class="lb">${cx.esc(L.label)}</div>`).join('')}</div>
+    ${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  for (let i = 0; i < n; i++) {
+    const at = t + i * 0.42;
+    tl.fromTo(el.querySelectorAll('.nd.L' + i), {scale: 0, opacity: 0}, {scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.8)', stagger: 0.05}, at);
+    tl.fromTo(el.querySelectorAll('.lb')[i], {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: 0.6, ease: 'expo.out'}, at + 0.1);
+    if (i < n - 1) tl.fromTo(el.querySelectorAll('.ed.l' + i), {opacity: 0}, {opacity: 1, duration: 0.6, ease: 'power1.out', stagger: 0.01}, at + 0.25);
+  }
+  const s0 = t + n * 0.42 + 0.2, leg = 0.55;
+  el.querySelectorAll('.sg').forEach((sg, k) => {
+    const pts = paths[k];
+    tl.set(sg, {left: pts[0].x + '%', top: pts[0].y + '%', opacity: 0}, 0);
+    tl.to(sg, {opacity: 1, duration: 0.15}, s0 + k * 0.08);
+    for (let j = 1; j < pts.length; j++) tl.to(sg, {left: pts[j].x + '%', top: pts[j].y + '%', duration: leg, ease: 'power1.inOut'}, s0 + k * 0.08 + (j - 1) * leg);
+    tl.to(sg, {opacity: 0, duration: 0.3}, s0 + k * 0.08 + (pts.length - 1) * leg);
+  });
+  const fin = s0 + (paths.length ? (paths.length - 1) * 0.08 + (n - 1) * leg : 0);
+  if (n > 1) tl.fromTo(el.querySelectorAll('.nd.L' + (n - 1)), {backgroundColor: 'rgba(0,0,0,0)'}, {backgroundColor: 'color-mix(in srgb, var(--gold) 28%, var(--bg))', duration: 0.5, stagger: 0.05}, fin - 0.1);
+  P.rise(tl, el.querySelector('.nt'), fin, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/network", __mount, typeof css === "string" ? css : "", {"kind":"pro/network","title":"Network diagram","use":"diagram","family":"pro-network","lead":"picture","site":null,"dur":3.4,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/photo */
+(function(){
+// pro/photo: the picture fills the slide and settles from a gentle zoom; a soft shade on the free side carries the words.
+const css = `
+.b-pro-photo .ph { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.b-pro-photo .ph > img, .b-pro-photo .ph > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.b-pro-photo .sh { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.b-pro-photo[data-side="left"] .sh { background: linear-gradient(90deg, color-mix(in srgb, var(--bg) 94%, transparent) 0%, color-mix(in srgb, var(--bg) 78%, transparent) 30%, color-mix(in srgb, var(--bg) 30%, transparent) 50%, transparent 66%); }
+.b-pro-photo[data-side="right"] .sh { background: linear-gradient(270deg, color-mix(in srgb, var(--bg) 94%, transparent) 0%, color-mix(in srgb, var(--bg) 78%, transparent) 30%, color-mix(in srgb, var(--bg) 30%, transparent) 50%, transparent 66%); }
+.b-pro-photo[data-side="bottom"] .sh { background: linear-gradient(0deg, color-mix(in srgb, var(--bg) 88%, transparent) 0%, color-mix(in srgb, var(--bg) 40%, transparent) 34%, transparent 55%); }
+.b-pro-photo .pro-body { display: flex; flex-direction: column; justify-content: flex-end; gap: calc(var(--gap) * 0.55); padding-bottom: calc(var(--gap) * 0.4); }
+.b-pro-photo[data-side="left"] .pro-body, .b-pro-photo[data-side="right"] .pro-body { justify-content: center; max-width: 44%; }
+.b-pro-photo[data-side="right"] .pro-body { margin-left: auto; }
+.b-pro-photo .pk { display: flex; align-items: center; gap: 0.9em; font-size: var(--label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold2); }
+.b-pro-photo .pk i { display: block; width: 2.2em; height: 1px; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-photo .pt { font-size: calc(var(--title) * 0.92); font-weight: var(--thin); letter-spacing: -0.03em; line-height: 1.06; color: var(--ink); text-wrap: balance; }
+.b-pro-photo .px { font-size: var(--lead); color: var(--ivory); line-height: 1.3; }
+.cs-frame[data-shape="tall"] .b-pro-photo .pro-body { max-width: 100% !important; margin-left: 0 !important; justify-content: flex-end !important; }
+.cs-frame[data-shape="tall"] .b-pro-photo .sh { background: linear-gradient(0deg, color-mix(in srgb, var(--bg) 90%, transparent) 0%, color-mix(in srgb, var(--bg) 40%, transparent) 40%, transparent 62%) !important; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  const side = ['left', 'right', 'bottom'].includes(p.side) ? p.side : P.freeSide(p.face, 'left');
+  el.dataset.side = side;
+  const words = p.title || p.text || p.kicker;
+  el.innerHTML = `<div class="ph">${P.media(p, 'pm', p.title)}</div>${words ? '<i class="sh" aria-hidden="true"></i>' : ''}<div class="pro-wrap"><div class="pro-body">
+    ${p.kicker ? `<div class="pk"><i></i><span>${cx.esc(p.kicker)}</span></div>` : ''}${p.title ? `<h2 class="pt">${P.words(p.title, p.gold)}</h2>` : ''}${p.text ? `<p class="px">${cx.esc(p.text)}</p>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), m = q('.pm'), tl = cx.gsap.timeline({paused: true});
+  if (m) { if (p.face) cx.face(m, p.face); if (p.body) cx.face(m, p.body, 'body'); }
+  tl.fromTo(q('.ph'), {opacity: 0}, {opacity: 1, duration: 0.9, ease: 'power1.out'}, 0);
+  if (m) tl.fromTo(m, {scale: 1.14}, {scale: 1.0, duration: 2.6, ease: 'power2.out'}, 0);
+  if (q('.sh')) tl.fromTo(q('.sh'), {opacity: 0}, {opacity: 1, duration: 1.0}, 0.3);
+  if (q('.pk')) { tl.fromTo(q('.pk i'), {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.out'}, 0.6); P.rise(tl, q('.pk span'), 0.7, {y: 10}); }
+  if (q('.pt')) P.wordsIn(tl, q('.pt'), 0.75);
+  P.rise(tl, q('.px'), 1.3, {y: 16});
+  if (q('.pro-foot')) tl.fromTo(q('.pro-foot'), {opacity: 0}, {opacity: 1, duration: 0.8}, 1.0);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/photo", __mount, typeof css === "string" ? css : "", {"kind":"pro/photo","title":"Full photo","use":"media","family":"pro-photo","lead":"picture","site":null,"dur":2.6,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/plot */
+(function(){
+// pro/plot: built-in functions (no eval) drawn on clean axes, one colour each, the name at the end of each curve.
+const css = `
+.b-pro-plot .pro-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: calc(var(--gap) * 1.2); }
+.b-pro-plot .plot { position: relative; min-height: 0; }
+.b-pro-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.b-pro-plot svg.cvw { overflow: hidden; }
+.b-pro-plot .ax { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.b-pro-plot .tk { stroke: var(--faint); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.b-pro-plot .cv { fill: none; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.b-pro-plot .lg { display: flex; flex-direction: column; justify-content: center; gap: calc(var(--gap) * 0.7); min-width: 0; }
+.b-pro-plot .li { display: flex; align-items: center; gap: 0.7em; font-size: var(--lead); color: var(--ivory); white-space: nowrap; }
+.b-pro-plot .li i { display: block; width: 1.6em; height: 3px; border-radius: 2px; transform-origin: 0 50%; }
+.b-pro-plot .axl { position: absolute; font-size: var(--label); color: var(--dim); letter-spacing: 0.08em; white-space: nowrap; }
+.b-pro-plot .nt { grid-column: 1 / -1; font-size: calc(var(--label) * 0.95); color: var(--dim); letter-spacing: 0.04em; }
+.cs-frame[data-shape="tall"] .b-pro-plot .pro-body { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto auto; }
+.cs-frame[data-shape="tall"] .b-pro-plot .lg { flex-direction: row; flex-wrap: wrap; gap: 0.5em 1.2em; }
+.cs-frame[data-shape="tall"] .b-pro-plot .li { font-size: var(--body); }
+`;
+const FN = {
+  step: (x) => (x > 0 ? 1 : 0), sigmoid: (x) => 1 / (1 + Math.exp(-x)), relu: (x) => Math.max(0, x), tanh: (x) => Math.tanh(x), linear: (x) => x, parabola: (x) => x * x,
+};
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, cols = ['var(--gold2)', 'var(--c2)', 'var(--c3)'];
+  const curves = (p.curves || []).slice(0, 3).map((c, i) => ({fn: FN[String(c.fn || '').toLowerCase()] ? String(c.fn).toLowerCase() : 'linear', label: c.label || c.fn, col: cols[i]}));
+  const [x0, x1] = Array.isArray(p.range) && p.range.length === 2 ? p.range.map(Number) : [-5, 5];
+  const N = 160, xs = Array.from({length: N + 1}, (_, k) => x0 + ((x1 - x0) * k) / N);
+  let ys = []; curves.forEach((c) => xs.forEach((x) => ys.push(FN[c.fn](x))));
+  ys = ys.filter(Number.isFinite);
+  let y0 = Math.min(0, ...ys), y1 = Math.max(1, ...ys);
+  const capY = curves.some((c) => c.fn === 'relu' || c.fn === 'linear' || c.fn === 'parabola') && curves.some((c) => c.fn === 'step' || c.fn === 'sigmoid') ? 2.2 : null;
+  if (capY) { y1 = Math.min(y1, capY); y0 = Math.max(y0, -0.2); }
+  const pad = (y1 - y0) * 0.08; y0 -= pad; y1 += pad;
+  const X = (x) => ((x - x0) / (x1 - x0)) * 100, Y = (y) => 100 - ((Math.max(y0 - (y1 - y0), Math.min(y1 + (y1 - y0), y)) - y0) / (y1 - y0)) * 100;
+  const path = (c) => {
+    let d = '', prev = null;
+    xs.forEach((x, k) => { const y = FN[c.fn](x); const big = prev != null && Math.abs(y - prev) > (y1 - y0) * 0.5; d += (k === 0 ? 'M' : big ? 'L' + X(x).toFixed(2) + ' ' + Y(prev).toFixed(2) + ' L' : 'L') + X(x).toFixed(2) + ' ' + Y(y).toFixed(2) + ' '; prev = y; });
+    return d.trim();
+  };
+  const ax = X(0), ay = Y(0);
+  el.innerHTML = `<i class="pro-glow" style="--gx:40%;--gy:60%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">
+    <div class="plot"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      ${[0.25, 0.5, 0.75].map((g) => `<line class="tk" x1="${g * 100}" x2="${g * 100}" y1="0" y2="100"/><line class="tk" y1="${g * 100}" y2="${g * 100}" x1="0" x2="100"/>`).join('')}
+      <line class="ax" x1="0" x2="100" y1="${ay}" y2="${ay}"/><line class="ax" x1="${ax}" x2="${ax}" y1="0" y2="100"/>
+    </svg>${curves.map((c, i) => `<svg class="cvw" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="cv c${i}" d="${path(c)}" style="stroke:${c.col}"/></svg>`).join('')}${p.xlabel ? `<span class="axl" style="right:0;top:calc(${ay}% + 0.6em)">${cx.esc(p.xlabel)}</span>` : ''}${p.ylabel ? `<span class="axl" style="left:calc(${ax}% + 0.6em);top:0">${cx.esc(p.ylabel)}</span>` : ''}</div>
+    <div class="lg">${curves.map((c) => `<div class="li"><i style="background:${c.col}" aria-hidden="true"></i><span>${cx.esc(c.label)}</span></div>`).join('')}</div>
+    ${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  tl.fromTo(el.querySelectorAll('.ax'), {opacity: 0}, {opacity: 1, duration: 0.6}, t - 0.2);
+  tl.fromTo(el.querySelectorAll('.tk'), {opacity: 0}, {opacity: 1, duration: 0.8}, t);
+  tl.fromTo(el.querySelectorAll('.axl'), {opacity: 0}, {opacity: 1, duration: 0.6}, t + 0.2);
+  el.querySelectorAll('.cvw').forEach((c, i) => {
+    const at = t + 0.2 + i * 0.45;
+    tl.fromTo(c, {clipPath: 'inset(-10% 100% -10% -2%)'}, {clipPath: 'inset(-10% -2% -10% -2%)', duration: 1.3, ease: 'power2.inOut'}, at);
+    const li = el.querySelectorAll('.li')[i];
+    tl.fromTo(li.querySelector('i'), {scaleX: 0}, {scaleX: 1, duration: 0.7, ease: 'expo.out'}, at + 0.1);
+    tl.fromTo(li.querySelector('span'), {opacity: 0, x: -10}, {opacity: 1, x: 0, duration: 0.7, ease: 'expo.out'}, at + 0.2);
+  });
+  P.rise(tl, el.querySelector('.nt'), t + 1.6, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/plot", __mount, typeof css === "string" ? css : "", {"kind":"pro/plot","title":"Function plot","use":"diagram","family":"pro-plot","lead":"picture","site":null,"dur":2.8,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/points */
+(function(){
+// pro/points: columns under gold index numbers and hairlines; with build, one click per point.
+const css = `
+.b-pro-points .pro-body { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(var(--gap) * 1.3); align-content: center; }
+.b-pro-points .pt { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.45); min-width: 0; }
+.b-pro-points .pt-n { font-size: calc(var(--title) * 0.6); font-weight: var(--thin); color: var(--gold2); line-height: 1; letter-spacing: -0.02em; }
+.b-pro-points .pt-l { display: block; height: 1px; background: var(--line); transform-origin: 0 50%; margin: calc(var(--gap) * 0.25) 0 calc(var(--gap) * 0.2); }
+.b-pro-points .pt-l::after { content: ""; display: block; width: 22%; height: 100%; background: var(--gold); }
+.b-pro-points .pt-t { font-size: var(--lead); color: var(--ink); font-weight: var(--light); line-height: 1.2; }
+.b-pro-points .pt-x { font-size: var(--body); color: var(--dim); line-height: 1.42; }
+.cs-frame[data-shape="tall"] .b-pro-points .pro-body { grid-template-columns: 1fr; gap: calc(var(--gap) * 0.9); align-content: start; }
+.cs-frame[data-shape="tall"] .b-pro-points .pt { gap: calc(var(--gap) * 0.25); }
+.cs-frame[data-shape="tall"] .b-pro-points .pt-n { font-size: calc(var(--title) * 0.5); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  const items = (p.items || []).slice(0, 4).map((it) => { if (typeof it !== 'string') return it; const m = /^([^:：]{1,40})[:：]\s*(.+)$/.exec(it); return m ? {title: m[1], text: m[2]} : {title: it}; });
+  el.style.setProperty('--n', items.length || 1);
+  el.innerHTML = `<i class="pro-glow" style="--gx:90%;--gy:16%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">${items.map((it, i) => `<div class="pt"><div class="pt-n cs-num">${String(i + 1).padStart(2, '0')}</div><i class="pt-l" aria-hidden="true"></i><h3 class="pt-t">${cx.esc(it.title || '')}</h3>${it.text ? `<p class="pt-x">${cx.esc(it.text)}</p>` : ''}</div>`).join('')}</div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true});
+  let t = P.headIn(tl, el);
+  el.querySelectorAll('.pt').forEach((pt, i) => {
+    const at = p.build ? t + i * 1.0 : t + i * 0.16;
+    if (p.build && i > 0) tl.addLabel('step' + i, at);
+    tl.fromTo(pt.querySelector('.pt-n'), {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.8, ease: 'expo.out'}, at);
+    tl.fromTo(pt.querySelector('.pt-l'), {scaleX: 0}, {scaleX: 1, duration: 0.9, ease: 'expo.inOut'}, at + 0.05);
+    P.rise(tl, pt.querySelectorAll('.pt-t, .pt-x'), at + 0.2, {y: 20});
+  });
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/points", __mount, typeof css === "string" ? css : "", {"kind":"pro/points","title":"Points","use":"list","family":"pro-points","lead":"type","site":null,"dur":2.4,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/quote */
+(function(){
+// pro/quote: a thin gold quotation mark draws itself, the words rise, the name sits on a hairline.
+const css = `
+.b-pro-quote .pro-body { display: flex; flex-direction: column; justify-content: center; gap: calc(var(--gap) * 0.9); max-width: 84%; }
+.b-pro-quote.has-pic .pro-body { max-width: 56%; }
+.b-pro-quote .qm { width: calc(var(--title) * 1.5); height: calc(var(--title) * 1.0); overflow: visible; }
+.b-pro-quote .qm path { fill: none; stroke: var(--gold2); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.b-pro-quote .qt { font-size: calc(var(--title) * 0.9); font-weight: var(--thin); letter-spacing: -0.02em; line-height: 1.22; color: var(--ink); text-wrap: balance; }
+.b-pro-quote .qt.long { font-size: calc(var(--title) * 0.6); line-height: 1.28; }
+.b-pro-quote .qb { display: flex; align-items: center; gap: 1em; }
+.b-pro-quote .qb i { display: block; width: 3em; height: 1px; background: var(--gold); transform-origin: 0 50%; font-size: var(--lead); }
+.b-pro-quote .qn { font-size: var(--lead); color: var(--ink); }
+.b-pro-quote .qr { font-size: var(--body); letter-spacing: 0.12em; color: var(--dim); }
+.b-pro-quote .qp { position: absolute; z-index: 0; top: 0; right: 0; bottom: 0; width: 38%; overflow: hidden; }
+.b-pro-quote .qp > img, .b-pro-quote .qp > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.b-pro-quote .qp::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg), transparent 30%); }
+.cs-frame[data-shape="tall"] .b-pro-quote .pro-body, .cs-frame[data-shape="tall"] .b-pro-quote.has-pic .pro-body { max-width: 100%; }
+.cs-frame[data-shape="tall"] .b-pro-quote .qp { width: 100%; bottom: 55%; }
+.cs-frame[data-shape="tall"] .b-pro-quote .qp::after { background: linear-gradient(0deg, var(--bg), transparent 40%); }
+.cs-frame[data-shape="tall"] .b-pro-quote.has-pic .pro-body { justify-content: flex-end; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, pic = !!p.src, long = String(p.text || '').length > (/[가-힣]/.test(p.text || '') ? 40 : 80);
+  el.classList.toggle('has-pic', pic);
+  el.innerHTML = `${pic ? `<div class="qp">${P.media(p, 'qpm', p.by)}</div>` : '<i class="pro-glow" style="--gx:10%;--gy:20%"></i>'}<div class="pro-wrap">${P.head({kicker: p.kicker})}<div class="pro-body">
+    <svg class="qm" viewBox="0 0 60 40" aria-hidden="true"><path d="M22 4 C10 8 4 16 4 26 C4 32 8 36 13 36 C18 36 21 32 21 28 C21 23 17 20 12 20 C11 20 10 20 9 21 C10 14 15 9 22 6" pathLength="1"/><path d="M52 4 C40 8 34 16 34 26 C34 32 38 36 43 36 C48 36 51 32 51 28 C51 23 47 20 42 20 C41 20 40 20 39 21 C40 14 45 9 52 6" pathLength="1"/></svg>
+    <blockquote class="qt${long ? ' long' : ''}">${P.words(p.text, p.gold)}</blockquote>
+    ${p.by || p.role ? `<div class="qb"><i aria-hidden="true"></i>${p.by ? `<span class="qn">${cx.esc(p.by)}</span>` : ''}${p.role ? `<span class="qr">${cx.esc(p.role)}</span>` : ''}</div>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  if (pic) { const m = q('.qpm'); if (p.face) cx.face(m, p.face); if (p.body) cx.face(m, p.body, 'body'); tl.fromTo(q('.qp'), {opacity: 0}, {opacity: 1, duration: 1.0}, 0); tl.fromTo(m, {scale: 1.1}, {scale: 1, duration: 2.3, ease: 'power2.out'}, 0); }
+  const t = P.headIn(tl, el);
+  tl.fromTo(el.querySelectorAll('.qm path'), {strokeDasharray: 1, strokeDashoffset: 1}, {strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut', stagger: 0.15}, t);
+  P.wordsIn(tl, q('.qt'), t + 0.35);
+  if (q('.qb')) { tl.fromTo(q('.qb i'), {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.out'}, t + 1.2); P.rise(tl, el.querySelectorAll('.qn, .qr'), t + 1.3, {y: 10}); }
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/quote", __mount, typeof css === "string" ? css : "", {"kind":"pro/quote","title":"Quote","use":"quote","family":"pro-quote","lead":"type","site":null,"dur":2.3,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/ring */
+(function(){
+// pro/ring: a thin gold ring draws to the share while the percentage counts inside.
+const css = `
+.b-pro-ring .pro-body { display: flex; align-items: center; gap: calc(var(--gap) * 1.8); }
+.b-pro-ring .rg { position: relative; flex: none; height: min(100%, 34cqw); aspect-ratio: 1; }
+.b-pro-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.b-pro-ring .tr { fill: none; stroke: var(--line); stroke-width: 1.2; }
+.b-pro-ring .ac { fill: none; stroke: var(--gold2); stroke-width: 2.4; stroke-linecap: round; }
+.b-pro-ring .in { position: absolute; inset: 0; display: grid; place-items: center; }
+.b-pro-ring .pc { display: flex; align-items: baseline; font-size: calc(var(--hero) * 0.92); }
+.b-pro-ring .pc .u { font-size: 0.4em; color: var(--gold2); font-weight: var(--thin); margin-left: 0.04em; }
+.b-pro-ring .sm { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.55); max-width: 42%; }
+.b-pro-ring .sm i { display: block; width: 4em; height: 1px; background: var(--gold); transform-origin: 0 50%; font-size: var(--lead); }
+.b-pro-ring .sl { font-size: var(--lead); color: var(--ivory); line-height: 1.3; }
+.b-pro-ring .sx { font-size: var(--label); color: var(--dim); letter-spacing: 0.04em; line-height: 1.4; }
+.cs-frame[data-shape="tall"] .b-pro-ring .pro-body { flex-direction: column; align-items: flex-start; justify-content: center; }
+.cs-frame[data-shape="tall"] .b-pro-ring .rg { height: auto; width: 70%; }
+.cs-frame[data-shape="tall"] .b-pro-ring .sm { max-width: 100%; }
+.cs-frame[data-shape="tall"] .b-pro-ring .pc { font-size: calc(var(--hero) * 0.8); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, v = Math.max(0, Math.min(100, Number(String(p.value).replace('%', '')) || 0)), dec = (String(p.value).split('.')[1] || '').replace('%', '').length;
+  el.innerHTML = `<i class="pro-glow" style="--gx:26%;--gy:50%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">
+    <div class="rg"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="tr" cx="50" cy="50" r="46"/><circle class="ac" cx="50" cy="50" r="46" pathLength="100"/></svg><div class="in"><div class="pc"><span class="pro-num cs-num n">${P.fmt(v, dec)}</span><span class="u">%</span></div></div></div>
+    <div class="sm"><i aria-hidden="true"></i><p class="sl">${cx.esc(p.label || '')}</p>${p.note ? `<p class="sx">${cx.esc(p.note)}</p>` : ''}</div>
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  tl.fromTo(q('.tr'), {opacity: 0}, {opacity: 1, duration: 0.6}, t - 0.2);
+  tl.fromTo(q('.ac'), {strokeDasharray: '0 100'}, {strokeDasharray: v + ' 100', duration: 1.6, ease: 'expo.inOut'}, t);
+  const n = q('.n'), o = {v: 0}; tl.to(o, {v, duration: 1.6, ease: 'expo.inOut', onUpdate: () => { n.textContent = P.fmt(o.v, dec); }}, t);
+  tl.fromTo(q('.pc'), {opacity: 0, scale: 0.92}, {opacity: 1, scale: 1, duration: 0.9, ease: 'expo.out'}, t);
+  tl.fromTo(q('.sm i'), {scaleX: 0}, {scaleX: 1, duration: 0.9, ease: 'expo.inOut'}, t + 0.5);
+  P.rise(tl, el.querySelectorAll('.sl, .sx'), t + 0.7, {y: 16});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/ring", __mount, typeof css === "string" ? css : "", {"kind":"pro/ring","title":"Share ring","use":"chart","family":"pro-ring","lead":"picture","site":null,"dur":2.3,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/split */
+(function(){
+// pro/split: half photo (wiped in from the edge), half words on hairlines.
+const css = `
+.b-pro-split .sp { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 0; overflow: hidden; }
+.b-pro-split[data-side="left"] .sp { left: 0; } .b-pro-split[data-side="right"] .sp { right: 0; }
+.b-pro-split .sp > img, .b-pro-split .sp > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.b-pro-split .pro-wrap { left: 50%; } .b-pro-split[data-side="right"] .pro-wrap { left: 0; right: 50%; }
+.b-pro-split .pro-wrap { padding-left: calc(var(--pad) * 0.8); padding-right: calc(var(--pad) * 0.8); }
+.b-pro-split .pro-body { display: flex; flex-direction: column; justify-content: center; gap: calc(var(--gap) * 0.8); }
+.b-pro-split .sk { display: flex; align-items: center; gap: 0.9em; font-size: var(--label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold2); }
+.b-pro-split .sk i { display: block; width: 2.2em; height: 1px; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-split .stt { font-size: calc(var(--title) * 0.8); font-weight: var(--thin); letter-spacing: -0.028em; line-height: 1.08; color: var(--ink); text-wrap: balance; }
+.b-pro-split .sx { font-size: var(--lead); color: var(--ivory); line-height: 1.32; }
+.b-pro-split ul { display: flex; flex-direction: column; }
+.b-pro-split li { position: relative; display: grid; grid-template-columns: 2.4em 1fr; column-gap: 0.6em; padding: 0.7em 0; font-size: var(--body); }
+.b-pro-split li .rl { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line); transform-origin: 0 50%; }
+.b-pro-split li .n { color: var(--gold2); font-size: var(--body); }
+.b-pro-split li .tt { font-size: var(--lead); color: var(--ink); line-height: 1.2; }
+.b-pro-split li .tx { grid-column: 2; color: var(--dim); line-height: 1.38; margin-top: 0.2em; }
+.cs-frame[data-shape="tall"] .b-pro-split .sp { width: 100%; height: 42%; bottom: auto; }
+.cs-frame[data-shape="tall"] .b-pro-split .pro-wrap { left: 0; right: 0; top: 42%; padding-top: calc(var(--pad) * 0.5); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro;
+  let side = ['left', 'right'].includes(p.side) ? p.side : 'left';
+  el.dataset.side = side;
+  const items = (p.items || []).slice(0, 4).map((it) => { if (typeof it !== 'string') return it; const m = /^([^:：]{1,40})[:：]\s*(.+)$/.exec(it); return m ? {title: m[1], text: m[2]} : {title: it}; });
+  el.innerHTML = `<div class="sp">${P.media(p, 'sm', p.title)}</div><div class="pro-wrap"><div class="pro-body">
+    ${p.kicker ? `<div class="sk"><i></i><span>${cx.esc(p.kicker)}</span></div>` : ''}<h2 class="stt">${P.words(p.title, p.gold)}</h2>
+    ${items.length ? `<ul>${items.map((it, i) => `<li><i class="rl" aria-hidden="true"></i><span class="n cs-num">${String(i + 1).padStart(2, '0')}</span><span class="tt">${cx.esc(it.title || '')}</span>${it.text ? `<span class="tx">${cx.esc(it.text)}</span>` : ''}</li>`).join('')}</ul>` : ''}
+    ${p.text ? `<p class="sx">${cx.esc(p.text)}</p>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), m = q('.sm'), tl = cx.gsap.timeline({paused: true}), tall = cx.shape === 'tall';
+  if (m) { if (p.face) cx.face(m, p.face); if (p.body) cx.face(m, p.body, 'body'); }
+  const from = tall ? 'inset(0 0 100% 0)' : side === 'left' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)';
+  tl.fromTo(q('.sp'), {clipPath: from}, {clipPath: 'inset(0 0% 0 0%)', duration: 1.2, ease: 'expo.inOut'}, 0);
+  if (m) tl.fromTo(m, {scale: 1.15}, {scale: 1, duration: 2.2, ease: 'power2.out'}, 0);
+  if (q('.sk')) { tl.fromTo(q('.sk i'), {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.out'}, 0.5); P.rise(tl, q('.sk span'), 0.6, {y: 10}); }
+  P.wordsIn(tl, q('.stt'), 0.65);
+  el.querySelectorAll('li').forEach((li, i) => { const at = 1.1 + i * 0.14; tl.fromTo(li.querySelector('.rl'), {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.inOut'}, at); P.rise(tl, li.querySelectorAll('.n, .tt, .tx'), at + 0.1, {y: 14, stagger: 0.04}); });
+  P.rise(tl, q('.sx'), 1.1, {y: 14});
+  if (q('.pro-foot')) tl.fromTo(q('.pro-foot'), {opacity: 0}, {opacity: 1, duration: 0.8}, 0.9);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/split", __mount, typeof css === "string" ? css : "", {"kind":"pro/split","title":"Photo and words","use":"media","family":"pro-split","lead":"picture","site":null,"dur":2.4,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/stat */
+(function(){
+// pro/stat: one number counts up, thin and very large, the unit in gold, the meaning beside it.
+const css = `
+.b-pro-stat .pro-body { display: flex; align-items: center; gap: calc(var(--gap) * 1.6); }
+.b-pro-stat .sn { flex: none; display: flex; align-items: baseline; font-size: calc(var(--hero) * 1.5); }
+.b-pro-stat .sn .pro-num { font-size: 1em; }
+.b-pro-stat .sn .u { font-size: 0.42em; font-weight: var(--thin); color: var(--gold2); margin-left: 0.08em; letter-spacing: -0.02em; }
+.b-pro-stat .sm { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.55); min-width: 0; max-width: 40%; }
+.b-pro-stat .sm i { display: block; width: 100%; height: 1px; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-stat .sl { font-size: var(--lead); color: var(--ivory); line-height: 1.28; }
+.b-pro-stat .sx { font-size: calc(var(--label) * 1.0); color: var(--dim); letter-spacing: 0.04em; line-height: 1.4; }
+.cs-frame[data-shape="tall"] .b-pro-stat .pro-body { flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--gap); }
+.cs-frame[data-shape="tall"] .b-pro-stat .sm { max-width: 100%; }
+.cs-frame[data-shape="tall"] .b-pro-stat .sn { font-size: calc(var(--hero) * 1.3); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, info = P.num(p.value);
+  const raw = String(p.value == null ? '' : p.value);
+  const shown = info ? info.pre + P.fmt(info.n, info.dec, info.comma) : raw;
+  const unit = info ? info.suf : '';
+  el.innerHTML = `<i class="pro-glow" style="--gx:24%;--gy:50%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body">
+    <div class="sn"><span class="pro-num cs-num">${cx.esc(shown)}</span>${unit ? `<span class="u">${cx.esc(unit)}</span>` : ''}</div>
+    <div class="sm"><i aria-hidden="true"></i><p class="sl">${cx.esc(p.label || '')}</p>${p.note ? `<p class="sx">${cx.esc(p.note)}</p>` : ''}</div>
+  </div>${P.foot(cx)}</div>`;
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  tl.fromTo(q('.sn'), {opacity: 0, y: 50}, {opacity: 1, y: 0, duration: 1.1, ease: 'expo.out'}, t);
+  if (info) { const n = q('.sn .pro-num'); const o = {v: 0}; tl.to(o, {v: info.n, duration: 1.5, ease: 'power3.out', onUpdate: () => { n.textContent = info.pre + P.fmt(o.v, info.dec, info.comma); }}, t); }
+  tl.fromTo(q('.sm i'), {scaleX: 0}, {scaleX: 1, duration: 1.0, ease: 'expo.inOut'}, t + 0.4);
+  P.rise(tl, el.querySelectorAll('.sl, .sx'), t + 0.6, {y: 18});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/stat", __mount, typeof css === "string" ? css : "", {"kind":"pro/stat","title":"Big number","use":"number","family":"pro-stat","lead":"type","site":null,"dur":2.2,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/statement */
+(function(){
+// pro/statement: a large thin sentence, word by word; gold words get a hairline under them that draws itself.
+const css = `
+.b-pro-statement .pro-body { display: flex; flex-direction: column; justify-content: center; gap: calc(var(--gap) * 0.9); }
+.b-pro-statement .st-t { font-size: calc(var(--title) * 0.95); font-weight: var(--thin); letter-spacing: -0.028em; line-height: 1.12; color: var(--ink); max-width: 84%; text-wrap: balance; }
+.b-pro-statement .st-t.mid { font-size: calc(var(--title) * 0.84); }
+.b-pro-statement .st-t.long { font-size: calc(var(--title) * 0.7); max-width: 90%; }
+.b-pro-statement .st-t.short { font-size: calc(var(--title) * 1.45); letter-spacing: -0.04em; line-height: 1.04; }
+.b-pro-statement .st-t .pro-gold { position: relative; }
+.b-pro-statement .st-ul { position: absolute; left: 0; right: 0; bottom: 0.02em; height: 1px; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-statement .st-by { display: flex; align-items: center; gap: 1em; font-size: var(--label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
+.b-pro-statement .st-by i { display: block; width: 3em; height: 1px; background: var(--gold); transform-origin: 0 50%; }
+.cs-frame[data-shape="tall"] .b-pro-statement .st-t { max-width: 100%; font-size: calc(var(--title) * 0.9); }
+.cs-frame[data-shape="tall"] .b-pro-statement .st-t.long { font-size: calc(var(--title) * 0.7); }
+.cs-frame[data-shape="tall"] .b-pro-statement .st-t.short { font-size: calc(var(--title) * 1.05); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, n = String(p.text || '').length, ko = /[가-힣]/.test(p.text || '');
+  const size = n > (ko ? 44 : 80) ? ' long' : n > (ko ? 24 : 44) ? ' mid' : n <= (ko ? 18 : 28) ? ' short' : '';
+  el.innerHTML = `<i class="pro-glow" style="--gx:12%;--gy:88%"></i><div class="pro-wrap">${P.head({kicker: p.kicker, title: p.title})}<div class="pro-body">
+    <p class="st-t${size}">${P.words(p.text, p.gold)}</p>
+    ${p.by ? `<div class="st-by"><i></i><span>${cx.esc(p.by)}</span></div>` : ''}
+  </div>${P.foot(cx)}</div>`;
+  el.querySelectorAll('.st-t .pro-wm .pro-gold').forEach((g) => { const u = document.createElement('i'); u.className = 'st-ul'; u.setAttribute('aria-hidden', 'true'); g.parentNode.style.position = 'relative'; g.parentNode.appendChild(u); });
+  const q = (s) => el.querySelector(s), tl = cx.gsap.timeline({paused: true});
+  const t0 = P.headIn(tl, el);
+  P.wordsIn(tl, q('.st-t'), t0 + 0.05);
+  const ul = el.querySelectorAll('.st-ul');
+  if (ul.length) tl.fromTo(ul, {scaleX: 0}, {scaleX: 1, duration: 0.9, ease: 'expo.inOut', stagger: 0.05}, t0 + 0.95);
+  if (q('.st-by')) { tl.fromTo(q('.st-by i'), {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.out'}, t0 + 1.0); P.rise(tl, q('.st-by span'), t0 + 1.1, {y: 10}); }
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/statement", __mount, typeof css === "string" ? css : "", {"kind":"pro/statement","title":"Statement","use":"statement","family":"pro-statement","lead":"type","site":null,"dur":2.2,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/stats */
+(function(){
+// pro/stats: two to four numbers count up in a row, each over a hairline and its meaning.
+const css = `
+.b-pro-stats .pro-body { display: flex; flex-direction: column; justify-content: center; gap: calc(var(--gap) * 1.1); }
+.b-pro-stats .row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(var(--gap) * 1.2); }
+.b-pro-stats .it { display: flex; flex-direction: column; gap: calc(var(--gap) * 0.45); min-width: 0; }
+.b-pro-stats .v { display: flex; align-items: baseline; font-size: calc(var(--hero) * 0.86); }
+.b-pro-stats .v .u { font-size: 0.42em; color: var(--gold2); font-weight: var(--thin); margin-left: 0.06em; }
+.b-pro-stats .it i { display: block; height: 1px; background: var(--line); transform-origin: 0 50%; }
+.b-pro-stats .it i::after { content: ""; display: block; width: 30%; height: 100%; background: var(--gold); }
+.b-pro-stats .l { font-size: var(--body); color: var(--ivory); line-height: 1.35; }
+.b-pro-stats .nt { font-size: calc(var(--body) * 0.8); color: var(--dim); letter-spacing: 0.04em; }
+.cs-frame[data-shape="tall"] .b-pro-stats .row { grid-template-columns: 1fr; gap: calc(var(--gap) * 0.9); }
+.cs-frame[data-shape="tall"] .b-pro-stats .v { font-size: calc(var(--hero) * 0.8); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, items = (p.items || []).slice(0, 4);
+  el.style.setProperty('--n', items.length || 1);
+  const parts = items.map((it) => { const info = P.num(it.value); return {info, shown: info ? info.pre + P.fmt(info.n, info.dec, info.comma) : String(it.value), unit: info ? info.suf : '', label: it.label}; });
+  el.innerHTML = `<i class="pro-glow" style="--gx:50%;--gy:100%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body"><div class="row">${parts.map((x) => `<div class="it"><div class="v"><span class="pro-num cs-num">${cx.esc(x.shown)}</span>${x.unit ? `<span class="u">${cx.esc(x.unit)}</span>` : ''}</div><i aria-hidden="true"></i><p class="l">${cx.esc(x.label || '')}</p></div>`).join('')}</div>${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}</div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  el.querySelectorAll('.it').forEach((it, i) => {
+    const at = t + i * 0.18, x = parts[i];
+    tl.fromTo(it.querySelector('.v'), {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 1.0, ease: 'expo.out'}, at);
+    if (x.info) { const n = it.querySelector('.pro-num'), o = {v: 0}; tl.to(o, {v: x.info.n, duration: 1.4, ease: 'power3.out', onUpdate: () => { n.textContent = x.info.pre + P.fmt(o.v, x.info.dec, x.info.comma); }}, at); }
+    tl.fromTo(it.querySelector('i'), {scaleX: 0}, {scaleX: 1, duration: 0.9, ease: 'expo.inOut'}, at + 0.25);
+    P.rise(tl, it.querySelector('.l'), at + 0.4, {y: 14});
+  });
+  P.rise(tl, el.querySelector('.nt'), t + 1.2, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/stats", __mount, typeof css === "string" ? css : "", {"kind":"pro/stats","title":"Numbers in a row","use":"number","family":"pro-stats","lead":"type","site":null,"dur":2.3,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/table */
+(function(){
+// pro/table: one or two tables, hairline rows draw in one by one, numbers line up, one column can be gold.
+const css = `
+.b-pro-table .pro-body { display: flex; flex-direction: column; justify-content: center; gap: calc(var(--gap) * 0.8); }
+.b-pro-table .tbs { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(var(--gap) * 2); }
+.b-pro-table .tb { min-width: 0; display: flex; flex-direction: column; gap: calc(var(--gap) * 0.4); }
+.b-pro-table .tt { font-size: var(--lead); color: var(--gold2); font-weight: var(--light); letter-spacing: 0.02em; }
+.b-pro-table table { width: 100%; border-collapse: collapse; font-size: var(--lead); font-variant-numeric: tabular-nums lining-nums; }
+.b-pro-table.dense table { font-size: var(--body); }
+.b-pro-table th { text-align: left; font-weight: 400; font-size: var(--body); letter-spacing: 0.04em; color: var(--ivory); padding: 0 0.8em 0.6em 0; }
+.b-pro-table td { padding: 0.55em 0.8em 0.55em 0; color: var(--ivory); position: relative; line-height: 1.25; }
+.b-pro-table .rl { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); transform-origin: 0 50%; }
+.b-pro-table thead .rl { background: color-mix(in srgb, var(--ink) 45%, transparent); }
+.b-pro-table td.g, .b-pro-table th.g { color: var(--gold2); }
+.b-pro-table td.num, .b-pro-table th.num { text-align: right; }
+.b-pro-table .nt { font-size: calc(var(--body) * 0.8); color: var(--dim); letter-spacing: 0.04em; }
+.cs-frame[data-shape="tall"] .b-pro-table .tbs { grid-template-columns: 1fr; gap: var(--gap); }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, tables = (p.tables || (p.rows ? [{title: '', head: p.head, rows: p.rows}] : [])).slice(0, 2);
+  el.style.setProperty('--n', tables.length || 1);
+  const isNum = (v) => /^[-+]?[$₩€£]?\d[\d,.]*\s*[%원$€k만억]?$/.test(String(v).trim());
+  const dense = tables.some((t) => (t.rows || []).length > 6);
+  el.classList.toggle('dense', dense);
+  const gi = (cols) => (p.gold == null ? -1 : +p.gold === 0 ? cols - 1 : +p.gold - 1);
+  el.innerHTML = `<i class="pro-glow" style="--gx:88%;--gy:80%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body"><div class="tbs">${tables.map((t) => {
+    const head = (t.head || []).slice(0, 5), rows = (t.rows || []).slice(0, 8).map((r) => [].concat(r).slice(0, 5)), cols = Math.max(head.length, ...rows.map((r) => r.length)), g = gi(cols);
+    const numCol = Array.from({length: cols}, (_, c) => rows.length > 0 && rows.every((r) => r[c] == null || isNum(r[c])) && !rows.every((r) => /^[01]$/.test(String(r[c]))));
+    return `<div class="tb">${t.title ? `<div class="tt">${cx.esc(t.title)}</div>` : ''}<table>${head.length ? `<thead><tr>${head.map((h, c) => `<th class="${c === g ? 'g' : ''}${numCol[c] ? ' num' : ''}">${P.math(h)}<i class="rl" aria-hidden="true"></i></th>`).join('')}</tr></thead>` : ''}<tbody>${rows.map((r) => `<tr>${Array.from({length: cols}, (_, c) => `<td class="${c === g ? 'g' : ''}${numCol[c] ? ' num' : ''}">${cx.esc(r[c] == null ? '' : r[c])}${c === 0 ? '<i class="rl" aria-hidden="true"></i>' : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }).join('')}</div>${p.note ? `<p class="nt">${cx.esc(p.note)}</p>` : ''}</div>${P.foot(cx)}</div>`;
+  // one hairline per row spans the whole table: stretch the first cell's line to the row width
+  el.querySelectorAll('tbody tr').forEach((tr) => { const l = tr.querySelector('.rl'); if (l) { l.style.right = 'auto'; l.style.width = (tr.offsetWidth || 0) + 'px'; } });
+  el.querySelectorAll('thead tr').forEach((tr) => { const ls = tr.querySelectorAll('.rl'); ls.forEach((l, i) => { if (i) l.remove(); else { l.style.right = 'auto'; l.style.width = (tr.offsetWidth || 0) + 'px'; } }); });
+  const tl = cx.gsap.timeline({paused: true});
+  const t = P.headIn(tl, el);
+  el.querySelectorAll('.tb').forEach((tb, k) => {
+    const at = t + k * 0.25;
+    P.rise(tl, tb.querySelector('.tt'), at, {y: 14});
+    P.rise(tl, tb.querySelectorAll('th'), at + 0.1, {y: 10, stagger: 0.03});
+    tb.querySelectorAll('tbody tr').forEach((tr, i) => {
+      const a = at + 0.3 + i * 0.12;
+      const l = tr.querySelector('.rl'); if (l) tl.fromTo(l, {scaleX: 0}, {scaleX: 1, duration: 0.7, ease: 'expo.inOut'}, a);
+      tl.fromTo(tr.querySelectorAll('td'), {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: 0.6, ease: 'expo.out', stagger: 0.04}, a + 0.1);
+    });
+    const hl = tb.querySelector('thead .rl'); if (hl) tl.fromTo(hl, {scaleX: 0}, {scaleX: 1, duration: 0.8, ease: 'expo.inOut'}, at + 0.15);
+  });
+  P.rise(tl, el.querySelector('.nt'), t + 1.4, {y: 10});
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/table", __mount, typeof css === "string" ? css : "", {"kind":"pro/table","title":"Table","use":"compare","family":"pro-table","lead":"picture","site":null,"dur":2.4,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
+})();
+
+/* pro/timeline */
+(function(){
+// pro/timeline: one gold line draws left to right; nodes land, dates and words rise; one moment can be marked.
+const css = `
+.b-pro-timeline .pro-body { display: flex; flex-direction: column; justify-content: center; }
+.b-pro-timeline .tlw { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(var(--gap) * 0.8); padding-top: calc(var(--gap) * 1.4); }
+.b-pro-timeline .ln { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line); }
+.b-pro-timeline .ln i { position: absolute; inset: 0; background: var(--gold); transform-origin: 0 50%; }
+.b-pro-timeline .it { position: relative; display: flex; flex-direction: column; gap: calc(var(--gap) * 0.3); min-width: 0; }
+.b-pro-timeline .nd { position: absolute; top: calc(var(--gap) * -1.4); left: 0; width: 1.1em; height: 1.1em; margin: -0.55em 0 0 0; border-radius: 50%; border: 1.5px solid var(--gold2); background: var(--bg); font-size: var(--body); }
+.b-pro-timeline .it.now .nd { background: var(--gold2); box-shadow: 0 0 0 0.45em color-mix(in srgb, var(--gold) 22%, transparent); }
+.b-pro-timeline .w { font-size: var(--label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold2); }
+.b-pro-timeline .tt { font-size: var(--lead); color: var(--ivory); line-height: 1.2; word-break: keep-all; overflow-wrap: normal; }
+.b-pro-timeline .many .tt { font-size: calc(var(--lead) * 0.8); }
+.b-pro-timeline .many .w { letter-spacing: 0.1em; white-space: nowrap; }
+.b-pro-timeline .it.now .tt { color: var(--ink); }
+.b-pro-timeline .tx { font-size: var(--body); color: var(--dim); line-height: 1.38; }
+.cs-frame[data-shape="tall"] .b-pro-timeline .tlw { grid-template-columns: 1fr; padding-top: 0; padding-left: calc(var(--gap) * 1.3); gap: calc(var(--gap) * 0.9); }
+.cs-frame[data-shape="tall"] .b-pro-timeline .ln { left: 0; top: 0; bottom: 0; width: 1px; height: auto; right: auto; }
+.cs-frame[data-shape="tall"] .b-pro-timeline .ln i { transform-origin: 50% 0; }
+.cs-frame[data-shape="tall"] .b-pro-timeline .nd { top: 0.35em; left: calc(var(--gap) * -1.3); margin: 0 0 0 -0.55em; }
+`;
+const __mount = function mount(el, p, cx) {
+  const P = cx.pro, items = (p.items || []).slice(0, 6), now = (p.now | 0) - 1;
+  el.style.setProperty('--n', items.length || 1);
+  el.innerHTML = `<i class="pro-glow" style="--gx:50%;--gy:90%"></i><div class="pro-wrap">${P.head(p)}<div class="pro-body"><div class="tlw${items.length > 4 ? ' many' : ''}"><div class="ln" aria-hidden="true"><i></i></div>${items.map((it, i) => `<div class="it${i === now ? ' now' : ''}"><i class="nd" aria-hidden="true"></i>${it.when ? `<div class="w">${cx.esc(it.when)}</div>` : ''}<div class="tt">${cx.esc(it.title || '')}</div>${it.text ? `<div class="tx">${cx.esc(it.text)}</div>` : ''}</div>`).join('')}</div></div>${P.foot(cx)}</div>`;
+  const tl = cx.gsap.timeline({paused: true}), tall = cx.shape === 'tall';
+  const t = P.headIn(tl, el), n = items.length, per = p.build ? 1.0 : 0.3;
+  const line = el.querySelector('.ln i');
+  el.querySelectorAll('.it').forEach((it, i) => {
+    const at = t + i * per;
+    if (p.build && i > 0) tl.addLabel('step' + i, at - 0.2);
+    const frac = n === 1 ? 1 : (i + (i === n - 1 ? 1 : 0.5)) / n;
+    tl.to(line, tall ? {scaleY: frac, duration: per, ease: 'none'} : {scaleX: frac, duration: per, ease: 'none'}, at - (i ? per : 0));
+    tl.fromTo(it.querySelector('.nd'), {scale: 0}, {scale: 1, duration: 0.5, ease: 'back.out(2.4)'}, at);
+    P.rise(tl, it.querySelectorAll('.w, .tt, .tx'), at + 0.08, {y: 16, stagger: 0.06});
+  });
+  tl.set(line, tall ? {scaleY: 0} : {scaleX: 0}, 0);
+  return P.clip(cx, tl, el);
+}
+
+CS.register("pro/timeline", __mount, typeof css === "string" ? css : "", {"kind":"pro/timeline","title":"Timeline","use":"timeline","family":"pro-timeline","lead":"picture","site":null,"dur":2.8,"source":{"type":"gsap","package":"gsap","version":"3.15.0","uses":[]},"license":"GSAP standard license","data":{}});
 })();
 
 /* remotion/kinetic-words */

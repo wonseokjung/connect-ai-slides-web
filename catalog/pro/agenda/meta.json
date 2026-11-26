@@ -1,0 +1,32 @@
+{
+  "kind": "pro/agenda",
+  "title": "Agenda",
+  "description": "The parts of the talk as a numbered list on hairlines, next to a large heading. The current part is gold and the others step back, so the same slide can return between chapters.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "list",
+  "family": "pro-agenda",
+  "lead": "type",
+  "dur": 2.2,
+  "props": {
+    "items": "required, 3-7 parts of the talk, a few words each",
+    "now": "which part is current, counted from 1 (default: none)",
+    "title": "the large heading (default: none)",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "Today",
+    "title": "Three parts",
+    "now": 1,
+    "items": [
+      "Bring an old file",
+      "Start from a sample",
+      "Your own business deck"
+    ]
+  }
+}

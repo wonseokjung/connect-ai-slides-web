@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>connect-ai-slides-web: one story, a deck and a website | Open source by CONNECT AI LAB</title>
-<meta name="description" content="Tell your coding agent the story. Get a deck you present and a website that moves, from the same story, checked on the real screen. 67 motion blocks from GSAP, Motion, anime.js, Lottie, CSS, HyperFrames and Remotion.">
+<meta name="description" content="Tell your coding agent the story. Get a deck you present and a website that moves, from the same story, checked on the real screen. 89 motion blocks from GSAP, Motion, anime.js, Lottie, CSS, HyperFrames and Remotion.">
 <meta property="og:title" content="connect-ai-slides-web: one story, a deck and a website">
-<meta property="og:description" content="Open source by CONNECT AI LAB. 67 motion blocks, one seekable contract, a check that measures the real screen.">
+<meta property="og:description" content="Open source by CONNECT AI LAB. 89 motion blocks, one seekable contract, a check that measures the real screen.">
 <meta name="theme-color" content="#0B0A08">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0A08'/%3E%3Cpath d='M8 21h16' stroke='%23D6892A' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
@@ -138,7 +138,7 @@ footer a:hover { color: var(--gold2); }
   </div>
   <div class="shot montage"><video src="demo/montage.mp4" poster="demo/montage_poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The same story as a deck in English and a website on a phone in Korean"></video></div>
   <p class="lead">Tell your coding agent the story. You get a deck you present in the browser and a one-page website that moves as you scroll, from the same story, checked on the real screen.</p>
-  <div class="facts"><div><b>67</b>motion blocks</div><div><b>34</b>led by a picture</div><div><b>9</b>sources, one contract</div><div><b>3</b>screens measured: slide, web, phone</div></div>
+  <div class="facts"><div><b>89</b>motion blocks</div><div><b>47</b>led by a picture</div><div><b>9</b>sources, one contract</div><div><b>3</b>screens measured: slide, web, phone</div></div>
 </div>
 
 <section><div class="wrap">
@@ -165,33 +165,22 @@ footer a:hover { color: var(--gold2); }
     <figure class="ph"><div class="shot"><video src="demo/en/phone.mp4" poster="demo/en/phone_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Phone</b></figcaption></figure>
   </div>
   <div class="demo two" data-lang="ko" hidden lang="ko">
-    <figure><div class="shot"><video src="demo/ko/deck.mp4" poster="demo/ko/deck_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Deck</b><a href="demo/ko/deck/index.html">Open the live deck</a><a href="demo/ko/deck.pdf">PDF</a><a href="demo/ko/deck.pptx">PPTX</a><a href="demo/ko/site/index.html">Open the live website</a><a href="demo/ko/story.json">story.json</a></figcaption></figure>
+    <figure><div class="shot"><video src="demo/ko/deck.mp4" poster="demo/ko/deck_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Deck</b><a href="demo/ko/deck/index.html">Open the live deck</a><a href="demo/ko/deck.pdf">PDF</a><a href="demo/ko/site/index.html">Open the live website</a><a href="demo/ko/story.json">story.json</a></figcaption></figure>
     
     <figure class="ph"><div class="shot"><video src="demo/ko/phone.mp4" poster="demo/ko/phone_poster.jpg" muted loop playsinline controls preload="none"></video></div><figcaption><b>Phone</b></figcaption></figure>
   </div>
 </div></section>
 
-<section id="pptx"><div class="wrap two">
-  <div>
-    <div class="kicker">Lesson 4</div>
-    <h2>A real PowerPoint file</h2>
-    <p class="text">Write what you want to say in a few lines of markdown. One command gives you the moving deck and a .pptx: the words are real text boxes you can edit, the motion of each slide is a video clip behind them that starts by itself, each box fades in when its words appear in the deck, and your speaker notes come along. A second copy with pictures instead of clips is there for Google Slides.</p>
-    <div class="pre-wrap"><pre class="block" id="c0">npx connect-ai-slides-web ppt my-talk.md</pre><button class="copy ghost" data-copy="#c0">Copy</button></div>
-    <p class="note">The frames on the right are read from the text box positions inside the file and drawn over Apple's own Office rendering of it. Open the file in PowerPoint or Keynote before you present.</p>
-  </div>
-  <div><div class="shot"><img src="pptx/hero.webp" alt="The deck.pptx this tool wrote, opened with Apple's Office engine, then the same slides with every editable text box framed in gold" style="display:block;width:100%;height:auto" loading="lazy"></div></div>
-</div></section>
-
 <section id="catalog"><div class="wrap">
   <div class="kicker">Catalog</div>
-  <h2>67 blocks, each one line</h2>
+  <h2>89 blocks, each one line</h2>
   <p class="text">Every clip below is the real block, recorded from the browser. Switch a card to Web or Phone to see the same block in the other frames. Copy the line into <code style="font-family:var(--mono);color:var(--gold2)">story.json</code>, or copy the prompt and give it to your agent. All of them live: <a href="live/deck/index.html" style="color:var(--gold2)">as a deck</a> and <a href="live/site/index.html" style="color:var(--gold2)">as one long page</a>.</p>
   <div class="row-label" id="l-src">Source</div>
-  <div class="tools" role="group" aria-labelledby="l-src"><button class="chip" data-f="src" data-v="" aria-pressed="true">All<small>67</small></button><button class="chip" data-f="src" data-v="kit" aria-pressed="false">Kit (no library)<small>15</small></button><button class="chip" data-f="src" data-v="gsap" aria-pressed="false">GSAP<small>18</small></button><button class="chip" data-f="src" data-v="motion" aria-pressed="false">Motion<small>9</small></button><button class="chip" data-f="src" data-v="anime" aria-pressed="false">anime.js<small>7</small></button><button class="chip" data-f="src" data-v="css" aria-pressed="false">CSS<small>6</small></button><button class="chip" data-f="src" data-v="lottie" aria-pressed="false">Lottie<small>3</small></button><button class="chip" data-f="src" data-v="hyperframes" aria-pressed="false">HyperFrames<small>4</small></button><button class="chip" data-f="src" data-v="remotion" aria-pressed="false">Remotion<small>3</small></button><button class="chip" data-f="src" data-v="clip" aria-pressed="false">Video clip<small>2</small></button></div>
+  <div class="tools" role="group" aria-labelledby="l-src"><button class="chip" data-f="src" data-v="" aria-pressed="true">All<small>89</small></button><button class="chip" data-f="src" data-v="kit" aria-pressed="false">Kit (no library)<small>15</small></button><button class="chip" data-f="src" data-v="gsap" aria-pressed="false">GSAP<small>40</small></button><button class="chip" data-f="src" data-v="motion" aria-pressed="false">Motion<small>9</small></button><button class="chip" data-f="src" data-v="anime" aria-pressed="false">anime.js<small>7</small></button><button class="chip" data-f="src" data-v="css" aria-pressed="false">CSS<small>6</small></button><button class="chip" data-f="src" data-v="lottie" aria-pressed="false">Lottie<small>3</small></button><button class="chip" data-f="src" data-v="hyperframes" aria-pressed="false">HyperFrames<small>4</small></button><button class="chip" data-f="src" data-v="remotion" aria-pressed="false">Remotion<small>3</small></button><button class="chip" data-f="src" data-v="clip" aria-pressed="false">Video clip<small>2</small></button></div>
   <div class="row-label" id="l-use">Use</div>
-  <div class="tools" role="group" aria-labelledby="l-use"><button class="chip" data-f="use" data-v="" aria-pressed="true">Any</button><button class="chip" data-f="use" data-v="media" aria-pressed="false">media<small>16</small></button><button class="chip" data-f="use" data-v="statement" aria-pressed="false">statement<small>7</small></button><button class="chip" data-f="use" data-v="list" aria-pressed="false">list<small>6</small></button><button class="chip" data-f="use" data-v="number" aria-pressed="false">number<small>5</small></button><button class="chip" data-f="use" data-v="person" aria-pressed="false">person<small>4</small></button><button class="chip" data-f="use" data-v="chart" aria-pressed="false">chart<small>4</small></button><button class="chip" data-f="use" data-v="timeline" aria-pressed="false">timeline<small>4</small></button><button class="chip" data-f="use" data-v="title" aria-pressed="false">title<small>4</small></button><button class="chip" data-f="use" data-v="diagram" aria-pressed="false">diagram<small>3</small></button><button class="chip" data-f="use" data-v="steps" aria-pressed="false">steps<small>3</small></button><button class="chip" data-f="use" data-v="chapter" aria-pressed="false">chapter<small>3</small></button><button class="chip" data-f="use" data-v="cta" aria-pressed="false">cta<small>2</small></button><button class="chip" data-f="use" data-v="quote" aria-pressed="false">quote<small>2</small></button><button class="chip" data-f="use" data-v="compare" aria-pressed="false">compare<small>2</small></button><button class="chip" data-f="use" data-v="ident" aria-pressed="false">ident<small>1</small></button><button class="chip" data-f="use" data-v="background" aria-pressed="false">background<small>1</small></button></div>
+  <div class="tools" role="group" aria-labelledby="l-use"><button class="chip" data-f="use" data-v="" aria-pressed="true">Any</button><button class="chip" data-f="use" data-v="media" aria-pressed="false">media<small>19</small></button><button class="chip" data-f="use" data-v="statement" aria-pressed="false">statement<small>8</small></button><button class="chip" data-f="use" data-v="list" aria-pressed="false">list<small>8</small></button><button class="chip" data-f="use" data-v="chart" aria-pressed="false">chart<small>7</small></button><button class="chip" data-f="use" data-v="number" aria-pressed="false">number<small>7</small></button><button class="chip" data-f="use" data-v="diagram" aria-pressed="false">diagram<small>6</small></button><button class="chip" data-f="use" data-v="timeline" aria-pressed="false">timeline<small>5</small></button><button class="chip" data-f="use" data-v="title" aria-pressed="false">title<small>5</small></button><button class="chip" data-f="use" data-v="person" aria-pressed="false">person<small>4</small></button><button class="chip" data-f="use" data-v="compare" aria-pressed="false">compare<small>4</small></button><button class="chip" data-f="use" data-v="steps" aria-pressed="false">steps<small>4</small></button><button class="chip" data-f="use" data-v="chapter" aria-pressed="false">chapter<small>4</small></button><button class="chip" data-f="use" data-v="cta" aria-pressed="false">cta<small>3</small></button><button class="chip" data-f="use" data-v="quote" aria-pressed="false">quote<small>3</small></button><button class="chip" data-f="use" data-v="ident" aria-pressed="false">ident<small>1</small></button><button class="chip" data-f="use" data-v="background" aria-pressed="false">background<small>1</small></button></div>
   <div class="row-label" id="l-lead">Lead</div>
-  <div class="tools" role="group" aria-labelledby="l-lead"><button class="chip" data-f="lead" data-v="" aria-pressed="true">Any</button><button class="chip" data-f="lead" data-v="picture" aria-pressed="false">Picture first<small>34</small></button><button class="chip" data-f="lead" data-v="type" aria-pressed="false">Type first<small>33</small></button></div>
+  <div class="tools" role="group" aria-labelledby="l-lead"><button class="chip" data-f="lead" data-v="" aria-pressed="true">Any</button><button class="chip" data-f="lead" data-v="picture" aria-pressed="false">Picture first<small>47</small></button><button class="chip" data-f="lead" data-v="type" aria-pressed="false">Type first<small>42</small></button></div>
   <div class="grid" id="grid">
   <article class="card" data-src="kit" data-use="media" data-lead="picture" data-v="deck">
     <div class="view">
@@ -653,6 +642,314 @@ footer a:hover { color: var(--gold2); }
       <p>One or two very large words fill the width of the frame and their letters are windows: a clip runs inside the letter shapes. The letters come out of a blur one after another (GSAP stagger from the centre) and one line of text settles under them. For result clips and graphics: do not use a clip that shows a person's face, the letters would cut it up. A bright clip reads best.</p>
       <div class="props"><b>src</b>* · <b>word</b>* · <b>kicker</b> · <b>tag</b> · <b>sub</b> · <b>note</b> · <b>poster</b> · <b>alt</b></div>
       <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;gsap/video-in-type&quot;,&quot;src&quot;:&quot;media/reel-1.mp4&quot;,&quot;word&quot;:&quot;MOTION&quot;,&quot;kicker&quot;:&quot;Lesson 3&quot;,&quot;tag&quot;:&quot;Visual Vibe Coding&quot;,&quot;sub&quot;:&quot;Motion graphics only&quot;,&quot;note&quot;:&quot;connect-ai-motion&quot;,&quot;alt&quot;:&quot;Stand-in clip: layered waves under a sun&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;gsap/video-in-type&quot; (Video in type: One or two very large words fill the width of the frame and their letters are windows: a clip runs inside the letter shapes). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;gsap/video-in-type&quot;,&quot;src&quot;:&quot;media/reel-1.mp4&quot;,&quot;word&quot;:&quot;MOTION&quot;,&quot;kicker&quot;:&quot;Lesson 3&quot;,&quot;tag&quot;:&quot;Visual Vibe Coding&quot;,&quot;sub&quot;:&quot;Motion graphics only&quot;,&quot;note&quot;:&quot;connect-ai-motion&quot;,&quot;alt&quot;:&quot;Stand-in clip: layered waves under a sun&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="list" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-agenda.mp4" poster="stills/pro-agenda_deck.jpg" muted loop playsinline preload="none" aria-label="Agenda"></video>
+      <img class="alt site" data-src="stills/pro-agenda_site.jpg" alt="Agenda on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-agenda_phone.jpg" alt="Agenda on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/agenda</div>
+      <div class="meta"><span class="tag g">list</span><span class="tag">GSAP</span><span class="tag">1.7 s</span><span class="tag">GSAP standard license</span></div>
+      <p>The parts of the talk as a numbered list on hairlines, next to a large heading. The current part is gold and the others step back, so the same slide can return between chapters.</p>
+      <div class="props"><b>items</b>* · <b>now</b> · <b>title</b> · <b>kicker</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/agenda&quot;,&quot;kicker&quot;:&quot;Today&quot;,&quot;title&quot;:&quot;Three parts&quot;,&quot;now&quot;:1,&quot;items&quot;:[&quot;Bring an old file&quot;,&quot;Start from a sample&quot;,&quot;Your own business deck&quot;]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/agenda&quot; (Agenda: The parts of the talk as a numbered list on hairlines, next to a large heading). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/agenda&quot;,&quot;kicker&quot;:&quot;Today&quot;,&quot;title&quot;:&quot;Three parts&quot;,&quot;now&quot;:1,&quot;items&quot;:[&quot;Bring an old file&quot;,&quot;Start from a sample&quot;,&quot;Your own business deck&quot;]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="chart" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-bars.mp4" poster="stills/pro-bars_deck.jpg" muted loop playsinline preload="none" aria-label="Column chart"></video>
+      <img class="alt site" data-src="stills/pro-bars_site.jpg" alt="Column chart on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-bars_phone.jpg" alt="Column chart on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/bars</div>
+      <div class="meta"><span class="tag g">chart</span><span class="tag">GSAP</span><span class="tag">2.5 s</span><span class="tag">GSAP standard license</span></div>
+      <p>A real column chart from the user's numbers: columns grow from a hairline baseline, the value counts above each, the highlighted column is gold and the rest are quiet. Labels are real text.</p>
+      <div class="props"><b>items</b>* · <b>unit</b> · <b>highlight</b> · <b>title</b> · <b>kicker</b> · <b>note</b> · <b>decimals</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/bars&quot;,&quot;kicker&quot;:&quot;One block, three frames&quot;,&quot;title&quot;:&quot;Width the check measures&quot;,&quot;unit&quot;:&quot;px&quot;,&quot;items&quot;:[{&quot;label&quot;:&quot;Slide&quot;,&quot;value&quot;:1920},{&quot;label&quot;:&quot;Web page&quot;,&quot;value&quot;:1440},{&quot;label&quot;:&quot;Phone&quot;,&quot;value&quot;:390}],&quot;note&quot;:&quot;The check opens every scene at these three sizes&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/bars&quot; (Column chart: A real column chart from the user's numbers: columns grow from a hairline baseline, the value counts above each, the highlighted column is gold and the rest are quiet). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/bars&quot;,&quot;kicker&quot;:&quot;One block, three frames&quot;,&quot;title&quot;:&quot;Width the check measures&quot;,&quot;unit&quot;:&quot;px&quot;,&quot;items&quot;:[{&quot;label&quot;:&quot;Slide&quot;,&quot;value&quot;:1920},{&quot;label&quot;:&quot;Web page&quot;,&quot;value&quot;:1440},{&quot;label&quot;:&quot;Phone&quot;,&quot;value&quot;:390}],&quot;note&quot;:&quot;The check opens every scene at these three sizes&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="chapter" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-chapter.mp4" poster="stills/pro-chapter_deck.jpg" muted loop playsinline preload="none" aria-label="Chapter"></video>
+      <img class="alt site" data-src="stills/pro-chapter_site.jpg" alt="Chapter on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-chapter_phone.jpg" alt="Chapter on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/chapter</div>
+      <div class="meta"><span class="tag g">chapter</span><span class="tag">GSAP</span><span class="tag">1.9 s</span><span class="tag">GSAP standard license</span></div>
+      <p>A section opener: a very large thin gold number, a vertical hairline that grows, and the chapter title rising word by word beside it.</p>
+      <div class="props"><b>title</b>* · <b>number</b> · <b>kicker</b> · <b>sub</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/chapter&quot;,&quot;number&quot;:&quot;02&quot;,&quot;kicker&quot;:&quot;Part two&quot;,&quot;title&quot;:&quot;From markdown to PowerPoint&quot;,&quot;sub&quot;:&quot;Every word stays editable&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/chapter&quot; (Chapter: A section opener: a very large thin gold number, a vertical hairline that grows, and the chapter title rising word by word beside it.). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/chapter&quot;,&quot;number&quot;:&quot;02&quot;,&quot;kicker&quot;:&quot;Part two&quot;,&quot;title&quot;:&quot;From markdown to PowerPoint&quot;,&quot;sub&quot;:&quot;Every word stays editable&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="cta" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-closing.mp4" poster="stills/pro-closing_deck.jpg" muted loop playsinline preload="none" aria-label="Closing"></video>
+      <img class="alt site" data-src="stills/pro-closing_site.jpg" alt="Closing on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-closing_phone.jpg" alt="Closing on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/closing</div>
+      <div class="meta"><span class="tag g">cta</span><span class="tag">GSAP</span><span class="tag">2.2 s</span><span class="tag">GSAP standard license</span></div>
+      <p>The last slide: a large thin line of thanks or a call to action, the thin gold circle of the cover drawing itself again, and up to three buttons that link to the user's own pages.</p>
+      <div class="props"><b>title</b>* · <b>sub</b> · <b>links</b> · <b>kicker</b> · <b>contact</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/closing&quot;,&quot;kicker&quot;:&quot;CONNECT AI LAB&quot;,&quot;title&quot;:&quot;Thank you&quot;,&quot;sub&quot;:&quot;Open source, made to be used&quot;,&quot;links&quot;:[{&quot;label&quot;:&quot;Catalog&quot;,&quot;href&quot;:&quot;https://example.com&quot;},{&quot;label&quot;:&quot;Contact&quot;,&quot;href&quot;:&quot;mailto:hello@example.com&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/closing&quot; (Closing: The last slide: a large thin line of thanks or a call to action, the thin gold circle of the cover drawing itself again, and up to three buttons that link to the user's own pages.). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/closing&quot;,&quot;kicker&quot;:&quot;CONNECT AI LAB&quot;,&quot;title&quot;:&quot;Thank you&quot;,&quot;sub&quot;:&quot;Open source, made to be used&quot;,&quot;links&quot;:[{&quot;label&quot;:&quot;Catalog&quot;,&quot;href&quot;:&quot;https://example.com&quot;},{&quot;label&quot;:&quot;Contact&quot;,&quot;href&quot;:&quot;mailto:hello@example.com&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="compare" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-compare.mp4" poster="stills/pro-compare_deck.jpg" muted loop playsinline preload="none" aria-label="Before and after"></video>
+      <img class="alt site" data-src="stills/pro-compare_site.jpg" alt="Before and after on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-compare_phone.jpg" alt="Before and after on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/compare</div>
+      <div class="meta"><span class="tag g">compare</span><span class="tag">GSAP</span><span class="tag">2.9 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Two columns side by side: the left one quiet, the right one in gold, a hairline between them that draws itself and a small gold arrow crossing over. For before and after, old and new, us and the usual way.</p>
+      <div class="props"><b>left</b>* · <b>right</b>* · <b>title</b> · <b>kicker</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/compare&quot;,&quot;kicker&quot;:&quot;An old talk, remade&quot;,&quot;title&quot;:&quot;One file, two lives&quot;,&quot;left&quot;:{&quot;label&quot;:&quot;Before&quot;,&quot;title&quot;:&quot;Static slides&quot;,&quot;items&quot;:[&quot;Words only&quot;,&quot;No motion&quot;,&quot;No notes&quot;]},&quot;right&quot;:{&quot;label&quot;:&quot;After&quot;,&quot;title&quot;:&quot;A motion deck&quot;,&quot;items&quot;:[&quot;Editable words&quot;,&quot;A clip on every slide&quot;,&quot;Speaker notes&quot;]}}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/compare&quot; (Before and after: Two columns side by side: the left one quiet, the right one in gold, a hairline between them that draws itself and a small gold arrow crossing over). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/compare&quot;,&quot;kicker&quot;:&quot;An old talk, remade&quot;,&quot;title&quot;:&quot;One file, two lives&quot;,&quot;left&quot;:{&quot;label&quot;:&quot;Before&quot;,&quot;title&quot;:&quot;Static slides&quot;,&quot;items&quot;:[&quot;Words only&quot;,&quot;No motion&quot;,&quot;No notes&quot;]},&quot;right&quot;:{&quot;label&quot;:&quot;After&quot;,&quot;title&quot;:&quot;A motion deck&quot;,&quot;items&quot;:[&quot;Editable words&quot;,&quot;A clip on every slide&quot;,&quot;Speaker notes&quot;]}} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="title" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-cover.mp4" poster="stills/pro-cover_deck.jpg" muted loop playsinline preload="none" aria-label="Cover"></video>
+      <img class="alt site" data-src="stills/pro-cover_site.jpg" alt="Cover on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-cover_phone.jpg" alt="Cover on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/cover</div>
+      <div class="meta"><span class="tag g">title</span><span class="tag">GSAP</span><span class="tag">2.3 s</span><span class="tag">GSAP standard license</span></div>
+      <p>The first slide of a pro deck: a large thin title that rises word by word out of its own line, a gold hairline and a thin gold circle that draws itself. With a picture or a clip it fills the right half and the words keep the left.</p>
+      <div class="props"><b>title</b>* · <b>sub</b> · <b>kicker</b> · <b>by</b> · <b>src</b> · <b>poster</b> · <b>alt</b> · <b>face</b> · <b>body</b> · <b>pos</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/cover&quot;,&quot;kicker&quot;:&quot;CONNECT AI LAB&quot;,&quot;title&quot;:&quot;Motion graphics on a slide&quot;,&quot;sub&quot;:&quot;A real PowerPoint file, made from a few lines&quot;,&quot;by&quot;:&quot;connect-ai-slides-web&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/cover&quot; (Cover: The first slide of a pro deck: a large thin title that rises word by word out of its own line, a gold hairline and a thin gold circle that draws itself). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/cover&quot;,&quot;kicker&quot;:&quot;CONNECT AI LAB&quot;,&quot;title&quot;:&quot;Motion graphics on a slide&quot;,&quot;sub&quot;:&quot;A real PowerPoint file, made from a few lines&quot;,&quot;by&quot;:&quot;connect-ai-slides-web&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="diagram" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-equation.mp4" poster="stills/pro-equation_deck.jpg" muted loop playsinline preload="none" aria-label="Equation"></video>
+      <img class="alt site" data-src="stills/pro-equation_site.jpg" alt="Equation on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-equation_phone.jpg" alt="Equation on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/equation</div>
+      <div class="meta"><span class="tag g">diagram</span><span class="tag">GSAP</span><span class="tag">2.7 s</span><span class="tag">GSAP standard license</span></div>
+      <p>A formula set large: x1 becomes x with a small 1, theta becomes the Greek letter, letters are set in italic. The terms arrive one by one, a cases form gets a brace that draws itself, and the symbols can be explained underneath.</p>
+      <div class="props"><b>eq</b> · <b>lhs</b> · <b>cases</b> · <b>terms</b> · <b>title</b> · <b>kicker</b> · <b>note</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/equation&quot;,&quot;kicker&quot;:&quot;A step function&quot;,&quot;title&quot;:&quot;The output is 0 or 1&quot;,&quot;lhs&quot;:&quot;y&quot;,&quot;cases&quot;:[{&quot;value&quot;:&quot;0&quot;,&quot;when&quot;:&quot;w1x1 + w2x2 &lt;= theta&quot;},{&quot;value&quot;:&quot;1&quot;,&quot;when&quot;:&quot;w1x1 + w2x2 &gt; theta&quot;}],&quot;terms&quot;:[{&quot;sym&quot;:&quot;w1, w2&quot;,&quot;text&quot;:&quot;weights&quot;},{&quot;sym&quot;:&quot;theta&quot;,&quot;text&quot;:&quot;threshold&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/equation&quot; (Equation: A formula set large: x1 becomes x with a small 1, theta becomes the Greek letter, letters are set in italic). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/equation&quot;,&quot;kicker&quot;:&quot;A step function&quot;,&quot;title&quot;:&quot;The output is 0 or 1&quot;,&quot;lhs&quot;:&quot;y&quot;,&quot;cases&quot;:[{&quot;value&quot;:&quot;0&quot;,&quot;when&quot;:&quot;w1x1 + w2x2 &lt;= theta&quot;},{&quot;value&quot;:&quot;1&quot;,&quot;when&quot;:&quot;w1x1 + w2x2 &gt; theta&quot;}],&quot;terms&quot;:[{&quot;sym&quot;:&quot;w1, w2&quot;,&quot;text&quot;:&quot;weights&quot;},{&quot;sym&quot;:&quot;theta&quot;,&quot;text&quot;:&quot;threshold&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="steps" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-flow.mp4" poster="stills/pro-flow_deck.jpg" muted loop playsinline preload="none" aria-label="Process flow"></video>
+      <img class="alt site" data-src="stills/pro-flow_site.jpg" alt="Process flow on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-flow_phone.jpg" alt="Process flow on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/flow</div>
+      <div class="meta"><span class="tag g">steps</span><span class="tag">GSAP</span><span class="tag">2.2 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Two to five steps in a row, joined by gold arrows that draw themselves; at the end one gold signal travels the whole way. For a process, a pipeline or a customer journey. With &quot;build&quot;: true each step comes on its own click.</p>
+      <div class="props"><b>steps</b>* · <b>title</b> · <b>kicker</b> · <b>note</b> · <b>build</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/flow&quot;,&quot;kicker&quot;:&quot;The pipeline&quot;,&quot;title&quot;:&quot;From a few lines to a file&quot;,&quot;steps&quot;:[{&quot;title&quot;:&quot;Markdown&quot;,&quot;text&quot;:&quot;Your words&quot;},{&quot;title&quot;:&quot;Blocks&quot;,&quot;text&quot;:&quot;Motion per slide&quot;},{&quot;title&quot;:&quot;Check&quot;,&quot;text&quot;:&quot;Measured in a browser&quot;},{&quot;title&quot;:&quot;PowerPoint&quot;,&quot;text&quot;:&quot;Editable words and clips&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/flow&quot; (Process flow: Two to five steps in a row, joined by gold arrows that draw themselves; at the end one gold signal travels the whole way). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/flow&quot;,&quot;kicker&quot;:&quot;The pipeline&quot;,&quot;title&quot;:&quot;From a few lines to a file&quot;,&quot;steps&quot;:[{&quot;title&quot;:&quot;Markdown&quot;,&quot;text&quot;:&quot;Your words&quot;},{&quot;title&quot;:&quot;Blocks&quot;,&quot;text&quot;:&quot;Motion per slide&quot;},{&quot;title&quot;:&quot;Check&quot;,&quot;text&quot;:&quot;Measured in a browser&quot;},{&quot;title&quot;:&quot;PowerPoint&quot;,&quot;text&quot;:&quot;Editable words and clips&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="media" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-gallery.mp4" poster="stills/pro-gallery_deck.jpg" muted loop playsinline preload="none" aria-label="Photo gallery"></video>
+      <img class="alt site" data-src="stills/pro-gallery_site.jpg" alt="Photo gallery on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-gallery_phone.jpg" alt="Photo gallery on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/gallery</div>
+      <div class="meta"><span class="tag g">media</span><span class="tag">GSAP</span><span class="tag">2.7 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Two to four of the user's photos in an editorial grid: one large, the others beside it, each wiped in from its own edge with a short caption. For a shop, a product line or a project's results.</p>
+      <div class="props"><b>items</b>* · <b>title</b> · <b>kicker</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/gallery&quot;,&quot;kicker&quot;:&quot;A day at the shop&quot;,&quot;title&quot;:&quot;What we bake&quot;,&quot;items&quot;:[{&quot;src&quot;:&quot;media/photo-croissant.jpg&quot;,&quot;alt&quot;:&quot;A croissant on a wooden table&quot;,&quot;caption&quot;:&quot;Croissant&quot;},{&quot;src&quot;:&quot;media/photo-cake.jpg&quot;,&quot;alt&quot;:&quot;A carrot cake&quot;,&quot;caption&quot;:&quot;Carrot cake&quot;},{&quot;src&quot;:&quot;media/photo-tea.jpg&quot;,&quot;alt&quot;:&quot;A tea set on a marble table&quot;,&quot;caption&quot;:&quot;Tea&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/gallery&quot; (Photo gallery: Two to four of the user's photos in an editorial grid: one large, the others beside it, each wiped in from its own edge with a short caption). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/gallery&quot;,&quot;kicker&quot;:&quot;A day at the shop&quot;,&quot;title&quot;:&quot;What we bake&quot;,&quot;items&quot;:[{&quot;src&quot;:&quot;media/photo-croissant.jpg&quot;,&quot;alt&quot;:&quot;A croissant on a wooden table&quot;,&quot;caption&quot;:&quot;Croissant&quot;},{&quot;src&quot;:&quot;media/photo-cake.jpg&quot;,&quot;alt&quot;:&quot;A carrot cake&quot;,&quot;caption&quot;:&quot;Carrot cake&quot;},{&quot;src&quot;:&quot;media/photo-tea.jpg&quot;,&quot;alt&quot;:&quot;A tea set on a marble table&quot;,&quot;caption&quot;:&quot;Tea&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="chart" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-line.mp4" poster="stills/pro-line_deck.jpg" muted loop playsinline preload="none" aria-label="Line chart"></video>
+      <img class="alt site" data-src="stills/pro-line_site.jpg" alt="Line chart on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-line_phone.jpg" alt="Line chart on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/line</div>
+      <div class="meta"><span class="tag g">chart</span><span class="tag">GSAP</span><span class="tag">3 s</span><span class="tag">GSAP standard license</span></div>
+      <p>A line chart from the user's numbers: a gold line draws itself over quiet grid lines, the area under it fades in, a dot lands on every point and the last value counts up at the end of the line.</p>
+      <div class="props"><b>points</b>* · <b>unit</b> · <b>title</b> · <b>kicker</b> · <b>note</b> · <b>decimals</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/line&quot;,&quot;kicker&quot;:&quot;One story, three frames&quot;,&quot;title&quot;:&quot;The width of each frame the check opens&quot;,&quot;unit&quot;:&quot;px&quot;,&quot;points&quot;:[{&quot;label&quot;:&quot;Slide&quot;,&quot;value&quot;:1920},{&quot;label&quot;:&quot;Web page&quot;,&quot;value&quot;:1440},{&quot;label&quot;:&quot;Phone&quot;,&quot;value&quot;:390}],&quot;note&quot;:&quot;Measured in a real browser&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/line&quot; (Line chart: A line chart from the user's numbers: a gold line draws itself over quiet grid lines, the area under it fades in, a dot lands on every point and the last value counts up at the end of the line.). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/line&quot;,&quot;kicker&quot;:&quot;One story, three frames&quot;,&quot;title&quot;:&quot;The width of each frame the check opens&quot;,&quot;unit&quot;:&quot;px&quot;,&quot;points&quot;:[{&quot;label&quot;:&quot;Slide&quot;,&quot;value&quot;:1920},{&quot;label&quot;:&quot;Web page&quot;,&quot;value&quot;:1440},{&quot;label&quot;:&quot;Phone&quot;,&quot;value&quot;:390}],&quot;note&quot;:&quot;Measured in a real browser&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="diagram" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-network.mp4" poster="stills/pro-network_deck.jpg" muted loop playsinline preload="none" aria-label="Network diagram"></video>
+      <img class="alt site" data-src="stills/pro-network_site.jpg" alt="Network diagram on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-network_phone.jpg" alt="Network diagram on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/network</div>
+      <div class="meta"><span class="tag g">diagram</span><span class="tag">GSAP</span><span class="tag">3.5 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Layers of nodes joined by hairlines, drawn left to right; then a wave of gold signals travels from the first layer to the last. For a neural network, a pipeline of models, or any layered system.</p>
+      <div class="props"><b>layers</b>* · <b>title</b> · <b>kicker</b> · <b>note</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/network&quot;,&quot;kicker&quot;:&quot;A layered system&quot;,&quot;title&quot;:&quot;Input, hidden and output&quot;,&quot;layers&quot;:[{&quot;label&quot;:&quot;Input&quot;,&quot;nodes&quot;:[&quot;x1&quot;,&quot;x2&quot;]},{&quot;label&quot;:&quot;Hidden&quot;,&quot;nodes&quot;:[&quot;a1&quot;,&quot;a2&quot;,&quot;a3&quot;]},{&quot;label&quot;:&quot;Output&quot;,&quot;nodes&quot;:[&quot;y1&quot;,&quot;y2&quot;]}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/network&quot; (Network diagram: Layers of nodes joined by hairlines, drawn left to right; then a wave of gold signals travels from the first layer to the last). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/network&quot;,&quot;kicker&quot;:&quot;A layered system&quot;,&quot;title&quot;:&quot;Input, hidden and output&quot;,&quot;layers&quot;:[{&quot;label&quot;:&quot;Input&quot;,&quot;nodes&quot;:[&quot;x1&quot;,&quot;x2&quot;]},{&quot;label&quot;:&quot;Hidden&quot;,&quot;nodes&quot;:[&quot;a1&quot;,&quot;a2&quot;,&quot;a3&quot;]},{&quot;label&quot;:&quot;Output&quot;,&quot;nodes&quot;:[&quot;y1&quot;,&quot;y2&quot;]}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="media" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-photo.mp4" poster="stills/pro-photo_deck.jpg" muted loop playsinline preload="none" aria-label="Full photo"></video>
+      <img class="alt site" data-src="stills/pro-photo_site.jpg" alt="Full photo on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-photo_phone.jpg" alt="Full photo on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/photo</div>
+      <div class="meta"><span class="tag g">media</span><span class="tag">GSAP</span><span class="tag">2.6 s</span><span class="tag">GSAP standard license</span></div>
+      <p>The user's photo or clip fills the whole slide and settles slowly from a gentle zoom; a soft shade on the free side carries a large title and one line. With a face box the words go to the side away from the face.</p>
+      <div class="props"><b>src</b>* · <b>alt</b>* · <b>title</b> · <b>text</b> · <b>kicker</b> · <b>side</b> · <b>face</b> · <b>body</b> · <b>poster</b> · <b>pos</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/photo&quot;,&quot;src&quot;:&quot;media/photo-croissant.jpg&quot;,&quot;alt&quot;:&quot;A croissant on a wooden table in soft morning light&quot;,&quot;kicker&quot;:&quot;Every morning&quot;,&quot;title&quot;:&quot;Baked before we open&quot;,&quot;side&quot;:&quot;left&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/photo&quot; (Full photo: The user's photo or clip fills the whole slide and settles slowly from a gentle zoom; a soft shade on the free side carries a large title and one line). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/photo&quot;,&quot;src&quot;:&quot;media/photo-croissant.jpg&quot;,&quot;alt&quot;:&quot;A croissant on a wooden table in soft morning light&quot;,&quot;kicker&quot;:&quot;Every morning&quot;,&quot;title&quot;:&quot;Baked before we open&quot;,&quot;side&quot;:&quot;left&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="diagram" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-plot.mp4" poster="stills/pro-plot_deck.jpg" muted loop playsinline preload="none" aria-label="Function plot"></video>
+      <img class="alt site" data-src="stills/pro-plot_site.jpg" alt="Function plot on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-plot_phone.jpg" alt="Function plot on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/plot</div>
+      <div class="meta"><span class="tag g">diagram</span><span class="tag">GSAP</span><span class="tag">2.9 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Mathematical functions drawn on clean axes: step, sigmoid, ReLU, tanh, a line or a parabola. Each curve draws itself in its own colour and its name lands at its end. For a lesson or a technical talk.</p>
+      <div class="props"><b>curves</b>* · <b>range</b> · <b>title</b> · <b>kicker</b> · <b>note</b> · <b>xlabel</b> · <b>ylabel</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/plot&quot;,&quot;kicker&quot;:&quot;Activation functions&quot;,&quot;title&quot;:&quot;Step, sigmoid and ReLU&quot;,&quot;curves&quot;:[{&quot;fn&quot;:&quot;step&quot;,&quot;label&quot;:&quot;Step&quot;},{&quot;fn&quot;:&quot;sigmoid&quot;,&quot;label&quot;:&quot;Sigmoid&quot;},{&quot;fn&quot;:&quot;relu&quot;,&quot;label&quot;:&quot;ReLU&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/plot&quot; (Function plot: Mathematical functions drawn on clean axes: step, sigmoid, ReLU, tanh, a line or a parabola). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/plot&quot;,&quot;kicker&quot;:&quot;Activation functions&quot;,&quot;title&quot;:&quot;Step, sigmoid and ReLU&quot;,&quot;curves&quot;:[{&quot;fn&quot;:&quot;step&quot;,&quot;label&quot;:&quot;Step&quot;},{&quot;fn&quot;:&quot;sigmoid&quot;,&quot;label&quot;:&quot;Sigmoid&quot;},{&quot;fn&quot;:&quot;relu&quot;,&quot;label&quot;:&quot;ReLU&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="list" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-points.mp4" poster="stills/pro-points_deck.jpg" muted loop playsinline preload="none" aria-label="Points"></video>
+      <img class="alt site" data-src="stills/pro-points_site.jpg" alt="Points on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-points_phone.jpg" alt="Points on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/points</div>
+      <div class="meta"><span class="tag g">list</span><span class="tag">GSAP</span><span class="tag">1.9 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Two to four key points side by side, each under a gold index number and a hairline that draws itself. With &quot;build&quot;: true each point comes on its own click.</p>
+      <div class="props"><b>items</b>* · <b>title</b> · <b>kicker</b> · <b>build</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/points&quot;,&quot;kicker&quot;:&quot;How it works&quot;,&quot;title&quot;:&quot;Three things in one file&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;Editable words&quot;,&quot;text&quot;:&quot;Every word is a real text box&quot;},{&quot;title&quot;:&quot;Motion clips&quot;,&quot;text&quot;:&quot;Each slide's motion plays by itself&quot;},{&quot;title&quot;:&quot;Speaker notes&quot;,&quot;text&quot;:&quot;What you will say comes along&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/points&quot; (Points: Two to four key points side by side, each under a gold index number and a hairline that draws itself). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/points&quot;,&quot;kicker&quot;:&quot;How it works&quot;,&quot;title&quot;:&quot;Three things in one file&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;Editable words&quot;,&quot;text&quot;:&quot;Every word is a real text box&quot;},{&quot;title&quot;:&quot;Motion clips&quot;,&quot;text&quot;:&quot;Each slide's motion plays by itself&quot;},{&quot;title&quot;:&quot;Speaker notes&quot;,&quot;text&quot;:&quot;What you will say comes along&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="quote" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-quote.mp4" poster="stills/pro-quote_deck.jpg" muted loop playsinline preload="none" aria-label="Quote"></video>
+      <img class="alt site" data-src="stills/pro-quote_site.jpg" alt="Quote on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-quote_phone.jpg" alt="Quote on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/quote</div>
+      <div class="meta"><span class="tag g">quote</span><span class="tag">GSAP</span><span class="tag">2.3 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Someone's own words, large and light, under a thin gold quotation mark that draws itself, with the name on a hairline. Optionally the speaker's photo or clip on the side, words kept off the face.</p>
+      <div class="props"><b>text</b>* · <b>by</b> · <b>role</b> · <b>gold</b> · <b>kicker</b> · <b>src</b> · <b>alt</b> · <b>face</b> · <b>poster</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/quote&quot;,&quot;text&quot;:&quot;A slide carries one message.&quot;,&quot;by&quot;:&quot;connect-ai-slides-web&quot;,&quot;role&quot;:&quot;the rule behind every block&quot;,&quot;gold&quot;:&quot;one message&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/quote&quot; (Quote: Someone's own words, large and light, under a thin gold quotation mark that draws itself, with the name on a hairline). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/quote&quot;,&quot;text&quot;:&quot;A slide carries one message.&quot;,&quot;by&quot;:&quot;connect-ai-slides-web&quot;,&quot;role&quot;:&quot;the rule behind every block&quot;,&quot;gold&quot;:&quot;one message&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="chart" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-ring.mp4" poster="stills/pro-ring_deck.jpg" muted loop playsinline preload="none" aria-label="Share ring"></video>
+      <img class="alt site" data-src="stills/pro-ring_site.jpg" alt="Share ring on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-ring_phone.jpg" alt="Share ring on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/ring</div>
+      <div class="meta"><span class="tag g">chart</span><span class="tag">GSAP</span><span class="tag">2.1 s</span><span class="tag">GSAP standard license</span></div>
+      <p>A share out of a hundred: a thin gold ring draws itself around a quiet track while the percentage counts up inside it, with what it means beside the ring.</p>
+      <div class="props"><b>value</b>* · <b>label</b>* · <b>title</b> · <b>kicker</b> · <b>note</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/ring&quot;,&quot;kicker&quot;:&quot;Pictures lead&quot;,&quot;value&quot;:50,&quot;label&quot;:&quot;of the catalog at least is led by a picture, not by words&quot;,&quot;note&quot;:&quot;A rule the kit's own tests keep&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/ring&quot; (Share ring: A share out of a hundred: a thin gold ring draws itself around a quiet track while the percentage counts up inside it, with what it means beside the ring.). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/ring&quot;,&quot;kicker&quot;:&quot;Pictures lead&quot;,&quot;value&quot;:50,&quot;label&quot;:&quot;of the catalog at least is led by a picture, not by words&quot;,&quot;note&quot;:&quot;A rule the kit's own tests keep&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="media" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-split.mp4" poster="stills/pro-split_deck.jpg" muted loop playsinline preload="none" aria-label="Photo and words"></video>
+      <img class="alt site" data-src="stills/pro-split_site.jpg" alt="Photo and words on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-split_phone.jpg" alt="Photo and words on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/split</div>
+      <div class="meta"><span class="tag g">media</span><span class="tag">GSAP</span><span class="tag">2.3 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Half the slide is the user's photo or clip, revealed by a clean wipe from the edge; the other half carries the heading and two or three points on hairlines. The most useful business slide.</p>
+      <div class="props"><b>src</b>* · <b>alt</b>* · <b>title</b>* · <b>items</b> · <b>text</b> · <b>kicker</b> · <b>side</b> · <b>face</b> · <b>body</b> · <b>poster</b> · <b>pos</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/split&quot;,&quot;src&quot;:&quot;media/photo-cake.jpg&quot;,&quot;alt&quot;:&quot;A carrot cake on a wooden table&quot;,&quot;kicker&quot;:&quot;Our menu&quot;,&quot;title&quot;:&quot;Made in small batches&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;Morning&quot;,&quot;text&quot;:&quot;Bread and pastry&quot;},{&quot;title&quot;:&quot;Afternoon&quot;,&quot;text&quot;:&quot;Cake and tea&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/split&quot; (Photo and words: Half the slide is the user's photo or clip, revealed by a clean wipe from the edge; the other half carries the heading and two or three points on hairlines). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/split&quot;,&quot;src&quot;:&quot;media/photo-cake.jpg&quot;,&quot;alt&quot;:&quot;A carrot cake on a wooden table&quot;,&quot;kicker&quot;:&quot;Our menu&quot;,&quot;title&quot;:&quot;Made in small batches&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;Morning&quot;,&quot;text&quot;:&quot;Bread and pastry&quot;},{&quot;title&quot;:&quot;Afternoon&quot;,&quot;text&quot;:&quot;Cake and tea&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="number" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-stat.mp4" poster="stills/pro-stat_deck.jpg" muted loop playsinline preload="none" aria-label="Big number"></video>
+      <img class="alt site" data-src="stills/pro-stat_site.jpg" alt="Big number on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-stat_phone.jpg" alt="Big number on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/stat</div>
+      <div class="meta"><span class="tag g">number</span><span class="tag">GSAP</span><span class="tag">2 s</span><span class="tag">GSAP standard license</span></div>
+      <p>One number the size of the slide counts up to its value in thin type, with a gold unit, a hairline and what it means beside it. Only a real number from the user.</p>
+      <div class="props"><b>value</b>* · <b>label</b>* · <b>kicker</b> · <b>title</b> · <b>note</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/stat&quot;,&quot;kicker&quot;:&quot;A phone in this kit&quot;,&quot;value&quot;:&quot;390&quot;,&quot;label&quot;:&quot;pixels wide, the phone every website is checked on&quot;,&quot;note&quot;:&quot;Measured by the check in a real browser&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/stat&quot; (Big number: One number the size of the slide counts up to its value in thin type, with a gold unit, a hairline and what it means beside it). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/stat&quot;,&quot;kicker&quot;:&quot;A phone in this kit&quot;,&quot;value&quot;:&quot;390&quot;,&quot;label&quot;:&quot;pixels wide, the phone every website is checked on&quot;,&quot;note&quot;:&quot;Measured by the check in a real browser&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="statement" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-statement.mp4" poster="stills/pro-statement_deck.jpg" muted loop playsinline preload="none" aria-label="Statement"></video>
+      <img class="alt site" data-src="stills/pro-statement_site.jpg" alt="Statement on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-statement_phone.jpg" alt="Statement on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/statement</div>
+      <div class="meta"><span class="tag g">statement</span><span class="tag">GSAP</span><span class="tag">2.4 s</span><span class="tag">GSAP standard license</span></div>
+      <p>One sentence the room should remember, large and thin, rising word by word. The words you mark in gold get a hairline that draws itself under them.</p>
+      <div class="props"><b>text</b>* · <b>gold</b> · <b>kicker</b> · <b>by</b> · <b>title</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/statement&quot;,&quot;kicker&quot;:&quot;Lesson four&quot;,&quot;text&quot;:&quot;The same motion becomes a slide you can still edit&quot;,&quot;gold&quot;:&quot;still edit&quot;}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/statement&quot; (Statement: One sentence the room should remember, large and thin, rising word by word). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/statement&quot;,&quot;kicker&quot;:&quot;Lesson four&quot;,&quot;text&quot;:&quot;The same motion becomes a slide you can still edit&quot;,&quot;gold&quot;:&quot;still edit&quot;} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="number" data-lead="type" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-stats.mp4" poster="stills/pro-stats_deck.jpg" muted loop playsinline preload="none" aria-label="Numbers in a row"></video>
+      <img class="alt site" data-src="stills/pro-stats_site.jpg" alt="Numbers in a row on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-stats_phone.jpg" alt="Numbers in a row on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/stats</div>
+      <div class="meta"><span class="tag g">number</span><span class="tag">GSAP</span><span class="tag">2.2 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Two to four real numbers side by side, each counting up above a hairline with what it means. For the facts of a talk: lessons, hours, people, results the user really has.</p>
+      <div class="props"><b>items</b>* · <b>title</b> · <b>kicker</b> · <b>note</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/stats&quot;,&quot;kicker&quot;:&quot;In one deck&quot;,&quot;title&quot;:&quot;What the kit checks&quot;,&quot;items&quot;:[{&quot;value&quot;:&quot;3&quot;,&quot;label&quot;:&quot;screen sizes&quot;},{&quot;value&quot;:&quot;28&quot;,&quot;label&quot;:&quot;words on a slide, the advice limit&quot;},{&quot;value&quot;:&quot;1,500 KB&quot;,&quot;label&quot;:&quot;first screen on a phone, the advice limit&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/stats&quot; (Numbers in a row: Two to four real numbers side by side, each counting up above a hairline with what it means). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/stats&quot;,&quot;kicker&quot;:&quot;In one deck&quot;,&quot;title&quot;:&quot;What the kit checks&quot;,&quot;items&quot;:[{&quot;value&quot;:&quot;3&quot;,&quot;label&quot;:&quot;screen sizes&quot;},{&quot;value&quot;:&quot;28&quot;,&quot;label&quot;:&quot;words on a slide, the advice limit&quot;},{&quot;value&quot;:&quot;1,500 KB&quot;,&quot;label&quot;:&quot;first screen on a phone, the advice limit&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="compare" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-table.mp4" poster="stills/pro-table_deck.jpg" muted loop playsinline preload="none" aria-label="Table"></video>
+      <img class="alt site" data-src="stills/pro-table_site.jpg" alt="Table on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-table_phone.jpg" alt="Table on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/table</div>
+      <div class="meta"><span class="tag g">compare</span><span class="tag">GSAP</span><span class="tag">2.1 s</span><span class="tag">GSAP standard license</span></div>
+      <p>One or two clean tables side by side: hairline rows draw in one after another, numbers line up, one column can be gold. For a truth table, a menu with prices, a plan comparison. Every cell is real text.</p>
+      <div class="props"><b>tables</b>* · <b>gold</b> · <b>title</b> · <b>kicker</b> · <b>note</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/table&quot;,&quot;kicker&quot;:&quot;Logic gates&quot;,&quot;title&quot;:&quot;AND and NAND&quot;,&quot;gold&quot;:0,&quot;tables&quot;:[{&quot;title&quot;:&quot;AND&quot;,&quot;head&quot;:[&quot;x1&quot;,&quot;x2&quot;,&quot;y&quot;],&quot;rows&quot;:[[&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],[&quot;1&quot;,&quot;0&quot;,&quot;0&quot;],[&quot;0&quot;,&quot;1&quot;,&quot;0&quot;],[&quot;1&quot;,&quot;1&quot;,&quot;1&quot;]]},{&quot;title&quot;:&quot;NAND&quot;,&quot;head&quot;:[&quot;x1&quot;,&quot;x2&quot;,&quot;y&quot;],&quot;rows&quot;:[[&quot;0&quot;,&quot;0&quot;,&quot;1&quot;],[&quot;1&quot;,&quot;0&quot;,&quot;1&quot;],[&quot;0&quot;,&quot;1&quot;,&quot;1&quot;],[&quot;1&quot;,&quot;1&quot;,&quot;0&quot;]]}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/table&quot; (Table: One or two clean tables side by side: hairline rows draw in one after another, numbers line up, one column can be gold). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/table&quot;,&quot;kicker&quot;:&quot;Logic gates&quot;,&quot;title&quot;:&quot;AND and NAND&quot;,&quot;gold&quot;:0,&quot;tables&quot;:[{&quot;title&quot;:&quot;AND&quot;,&quot;head&quot;:[&quot;x1&quot;,&quot;x2&quot;,&quot;y&quot;],&quot;rows&quot;:[[&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],[&quot;1&quot;,&quot;0&quot;,&quot;0&quot;],[&quot;0&quot;,&quot;1&quot;,&quot;0&quot;],[&quot;1&quot;,&quot;1&quot;,&quot;1&quot;]]},{&quot;title&quot;:&quot;NAND&quot;,&quot;head&quot;:[&quot;x1&quot;,&quot;x2&quot;,&quot;y&quot;],&quot;rows&quot;:[[&quot;0&quot;,&quot;0&quot;,&quot;1&quot;],[&quot;1&quot;,&quot;0&quot;,&quot;1&quot;],[&quot;0&quot;,&quot;1&quot;,&quot;1&quot;],[&quot;1&quot;,&quot;1&quot;,&quot;0&quot;]]}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
+    </div>
+  </article>
+  <article class="card" data-src="gsap" data-use="timeline" data-lead="picture" data-v="deck">
+    <div class="view">
+      <video data-src="clips/pro-timeline.mp4" poster="stills/pro-timeline_deck.jpg" muted loop playsinline preload="none" aria-label="Timeline"></video>
+      <img class="alt site" data-src="stills/pro-timeline_site.jpg" alt="Timeline on a web page" loading="lazy"><img class="alt phone" data-src="stills/pro-timeline_phone.jpg" alt="Timeline on a phone" loading="lazy">
+      <div class="tabs"><button data-v="deck" aria-pressed="true">Slide</button><button data-v="site" aria-pressed="false">Web</button><button data-v="phone" aria-pressed="false">Phone</button></div>
+    </div>
+    <div class="body">
+      <div class="kind">pro/timeline</div>
+      <div class="meta"><span class="tag g">timeline</span><span class="tag">GSAP</span><span class="tag">2.4 s</span><span class="tag">GSAP standard license</span></div>
+      <p>Three to six moments on one gold line that draws left to right; at each moment a node lands and its date and words rise. With &quot;now&quot; one moment is marked, with &quot;build&quot;: true each moment comes on its own click.</p>
+      <div class="props"><b>items</b>* · <b>now</b> · <b>title</b> · <b>kicker</b> · <b>build</b></div>
+      <div class="act"><button class="copy ghost" data-text="{&quot;kind&quot;:&quot;pro/timeline&quot;,&quot;kicker&quot;:&quot;Lesson map&quot;,&quot;title&quot;:&quot;Visual Vibe Coding&quot;,&quot;now&quot;:3,&quot;items&quot;:[{&quot;when&quot;:&quot;Lesson 2&quot;,&quot;title&quot;:&quot;Motion on your video&quot;},{&quot;when&quot;:&quot;Lesson 3&quot;,&quot;title&quot;:&quot;Motion without footage&quot;},{&quot;when&quot;:&quot;Lesson 4&quot;,&quot;title&quot;:&quot;Motion on slides&quot;},{&quot;when&quot;:&quot;Lesson 5&quot;,&quot;title&quot;:&quot;Motion on a website&quot;}]}">Copy line</button><button class="copy" data-text="In my connect-ai-slides-web project, add a scene with the block &quot;pro/timeline&quot; (Timeline: Three to six moments on one gold line that draws left to right; at each moment a node lands and its date and words rise). Fill its props from what I tell you: &lt;my words&gt;. Example line: {&quot;kind&quot;:&quot;pro/timeline&quot;,&quot;kicker&quot;:&quot;Lesson map&quot;,&quot;title&quot;:&quot;Visual Vibe Coding&quot;,&quot;now&quot;:3,&quot;items&quot;:[{&quot;when&quot;:&quot;Lesson 2&quot;,&quot;title&quot;:&quot;Motion on your video&quot;},{&quot;when&quot;:&quot;Lesson 3&quot;,&quot;title&quot;:&quot;Motion without footage&quot;},{&quot;when&quot;:&quot;Lesson 4&quot;,&quot;title&quot;:&quot;Motion on slides&quot;},{&quot;when&quot;:&quot;Lesson 5&quot;,&quot;title&quot;:&quot;Motion on a website&quot;}]} Then run build and check, and fix what the report says.">Copy prompt</button></div>
     </div>
   </article>
   <article class="card" data-src="motion" data-use="statement" data-lead="type" data-v="deck">
@@ -1180,7 +1477,7 @@ Then show me the three sheets (deck, web, phone).</pre><button class="copy ghost
 </main>
 
 <footer><div class="wrap">
-  <div><span class="brand">CONNECT AI LAB</span><br>AI education for everyone. connect-ai-slides-web 0.1.0, MIT.</div>
+  <div><span class="brand">CONNECT AI LAB</span><br>AI education for everyone. connect-ai-slides-web 0.5.0, MIT.</div>
   <nav aria-label="Footer"><a href="https://www.youtube.com/@CONNECT-AI-LAB" target="_blank" rel="noopener">YouTube: CONNECT AI LAB</a> &nbsp;·&nbsp; <a href="https://www.aicitybuilders.com" target="_blank" rel="noopener">Courses: aicitybuilders.com</a> &nbsp;·&nbsp; <a href="https://github.com/wonseokjung/connect-ai-slides-web" target="_blank" rel="noopener">GitHub</a></nav>
 </div></footer>
 <div id="toast" role="status" aria-live="polite">Copied</div>

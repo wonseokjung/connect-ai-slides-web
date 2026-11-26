@@ -19,6 +19,20 @@ Paste that line into your agent's chat (Claude Code, Codex, Antigravity, Cursor)
 
 You need [Node.js](https://nodejs.org) 18.18 or newer, Chrome and a coding agent. With ffmpeg, the motion goes into PowerPoint as video clips. Use the agent you already have; this tool itself needs no paid API key.
 
+## 0.5: a big design update
+
+Tables become tables or charts, and formulas and a neural network come out as drawings. Every slide puts the title, the footer and the motion in the same place, so a deck reads as one piece. Black and gold by default, with light looks too (white, ivory, paper).
+
+<img src="docs/showcase/v05/perceptron_before_after.jpg" width="100%" alt="The 2017 original, 0.4 and 0.5 Perceptron decks">
+
+From the top: the 2017 original, 0.4, 0.5. Write a table in the markdown and you get a chart or a table, `$$` gives a formula, `A -> B` gives a flow.
+
+<img src="docs/showcase/v05/business_decks.jpg" width="100%" alt="A cafe deck and a course intro deck">
+
+The cafe and the course intro use sample content. The cafe numbers are examples. The photos are renders of CC0 3D models.
+
+Before the agent shows you anything, it checks itself: an empty slide, a crowded one, words on top of words, the same design again and again. It fixes those first.
+
 ## What it does
 
 Every picture here is from a real run.
@@ -40,7 +54,7 @@ Every picture here is from a real run.
 
 ## I tried it on my 2017 deck
 
-This is a Perceptron deck I made in 2017 and put on GitHub. I gave it all 14 slides. The titles, sentences and table contents came in. The neural network drawn with shapes, and the small labels on it (x1, w2), stayed in the old file, and the import told me so, slide by slide. Then the agent cut it down to 9 slides using only my words. Nothing I didn't say went in.
+This is a Perceptron deck I made in 2017 and put on GitHub. I gave it all 14 slides. The titles, sentences and table contents came in. The neural network drawn with shapes, and the small labels on it (x1, w2), stayed in the old file, and the import told me so, slide by slide. In 0.4 the agent cut it down to 9 slides using only my words; in 0.5 the same words became 12 slides, with the truth tables as tables, the formulas with their braces and the network as a drawing. Nothing I didn't say went in.
 
 ## Inside the PowerPoint file
 
@@ -49,9 +63,10 @@ This is a Perceptron deck I made in 2017 and put on GitHub. I gave it all 14 sli
 | Words | Real text boxes. Click and edit |
 | Motion | One video clip per slide, set to start when the slide opens (`--click`: start on a click). Without ffmpeg you get a still picture instead |
 | Notes | Speaker notes on every slide |
+| Slide change | A soft fade |
 | Google Slides | `--google` adds a copy with still pictures instead of clips |
 
-I checked what's inside the files with `inspect` and looked at them in Quick Look on a Mac. I haven't played them in the PowerPoint app yet, so open yours once on the computer you will present from. Try them: [Korean deck.pptx](docs/demo/ko/deck.pptx) · [English deck.pptx](docs/demo/en/deck.pptx). All 67 motion blocks are on the [catalog page](docs/index.html).
+I checked what's inside the files with `inspect` and looked at them in Quick Look on a Mac. I haven't played them in the PowerPoint app yet, so open yours once on the computer you will present from. Try them: [Korean deck.pptx](docs/demo/ko/deck.pptx) · [English deck.pptx](docs/demo/en/deck.pptx). All 89 motion blocks are on the [catalog page](docs/index.html).
 
 <!-- team:start -->
 ## CONNECT AI LAB's AI employees

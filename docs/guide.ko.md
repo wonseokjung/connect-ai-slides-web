@@ -35,7 +35,7 @@ flowchart LR
 
 | | 어디 | 볼 것 |
 |---|---|---|
-| 카탈로그 페이지 | [docs/index.html](index.html) | 블록 67개 전부의 살아 있는 클립, 복사할 한 줄과 프롬프트. 출처, 쓰임새, 그림이 주인공인 블록으로 거르기 |
+| 카탈로그 페이지 | [docs/index.html](index.html) | 블록 89개 전부의 살아 있는 클립, 복사할 한 줄과 프롬프트. 출처, 쓰임새, 그림이 주인공인 블록으로 거르기 |
 | 데모 덱 | [한국어](demo/ko/deck/index.html) · [영어](demo/en/deck/index.html) | 화살표 키, `S` 발표자 노트, `Esc` 전체 보기 |
 | 데모 웹사이트 | [한국어](demo/ko/site/index.html) · [영어](demo/en/site/index.html) | 스크롤해 보기, 폰으로도 열어 보기 |
 | 블록 전부, 살아 있는 것 | [덱으로](live/deck/index.html) · [한 장으로](live/site/index.html) | 카탈로그 예제 그대로 |
@@ -86,12 +86,34 @@ Then show me the three sheets (deck, web, phone).
 - `out/deck/index.html`: 장면 하나 = 슬라이드 하나. 들어오면 재생되고, 단계가 있는 블록은 클릭을 기다립니다. `"notes"` 는 발표자 노트입니다.
 - `out/site/index.html`: 장면 하나 = 화면 한 칸. 스크롤해 들어오면 한 번 재생되거나, 고정된 채 스크롤을 따라 움직입니다(`"site": {"mode": "scrub", "len": 2}`). 폰에서는 같은 블록이 세로 배치로 바뀝니다.
 
-## 카탈로그: 블록 67개, 출처 9가지
+## 이렇게 쓰면 이렇게 나와요 (`ppt talk.md`)
 
-`npx connect-ai-slides-web catalog` 가 props 와 함께 보여 줍니다. 이름 뒤의 낱말은 쓰임새입니다. **굵은** 이름은 그림이 주인공인 블록입니다(영상, 사진, 기기, 차트, 도식이 화면을 채움). 나머지는 글자가 주인공입니다. 67개 중 34개가 그림이 주인공이고, 글자만 있는 화면이 3장 연속이면 검사가 권합니다.
+| 마크다운에 | 슬라이드에 (프로 디자인) |
+|---|---|
+| `# 제목` 과 그 밑 한 줄, 그 밑에 `![..](사진.jpg)` | 표지, 사진은 오른쪽 |
+| 밑에 아무것도 없는 `## 제목` | 챕터 장 (01, 02 ...) |
+| 한 문장, 안에 `**금색 낱말**` | 큰 문장, 그 낱말만 금색 |
+| `- 가` `- 나` `- 다` | 포인트(4개까지), 더 많으면 번호 목록 |
+| `1. 가` `2. 나` | 흐름도. `2강: ...`, `Q1: ...` 처럼 시간 이름이면 타임라인 |
+| `**42%** 무슨 뜻` (한 줄이나 여러 줄) | 큰 숫자, 숫자 한 줄 |
+| 두 번째 칸이 숫자인 표 | 막대 그래프, 이름이 시간 순서면 꺾은선 |
+| 글자 표 | 깔끔한 표, 표 두 개는 나란히 |
+| `$$ y = w1 x1 + b $$`, `0 if ...` 줄이 있는 `$$` 묶음 | 수식, 중괄호가 있는 경우 나누기 |
+| `plot: step, sigmoid, relu` | 축 위의 함수 곡선 |
+| `A -> B -> C`, `Input [x1 x2] -> Output [y]` | 흐름도, 신경망 그림 |
+| `지금: 가, 나` 와 `다음: 다, 라` | 전과 후를 나란히 |
+| 사진 하나와 목록 / 사진 2~4장 | 사진과 글 나란히 / 갤러리 |
+| `> 한 말` 그 밑에 `- 누가` | 인용 |
+| 마지막 장의 `[이름](https://...)` | 버튼 |
+| `Note: ...` | 발표자 노트(없으면 그 장의 글이 노트) |
+
+## 카탈로그: 블록 89개, 출처 10가지
+
+`npx connect-ai-slides-web catalog` 가 props 와 함께 보여 줍니다. 이름 뒤의 낱말은 쓰임새입니다. **굵은** 이름은 그림이 주인공인 블록입니다(영상, 사진, 기기, 차트, 도식이 화면을 채움). 나머지는 글자가 주인공입니다. 89개 중 47개가 그림이 주인공이고, 글자만 있는 화면이 3장 연속이면 검사가 권합니다.
 
 | 출처 | 블록 |
 |---|---|
+| **프로 디자인 세트**, GSAP (22): 덱 전체가 같은 머리글, 바닥글, 움직임을 써요. 0.5부터 `ppt` 의 기본 | `agenda` list · **`bars`** chart · `chapter` chapter · `closing` cta · **`compare`** compare · `cover` title · **`equation`** diagram · **`flow`** steps · **`gallery`** media · **`line`** chart · **`network`** diagram · **`photo`** media · **`plot`** diagram · `points` list · `quote` quote · **`ring`** chart · **`split`** media · `stat` number · `statement` statement · `stats` number · **`table`** compare · **`timeline`** timeline |
 | **GSAP** (18) | **`bars`** chart · `compare-wipe` compare · `counter` number · `draw-mark` statement · `flip-grid` list · `horizontal-cards` list · `kinetic-type` statement · **`lesson-map`** timeline · **`line-chart`** chart · `marquee-band` background · **`morph-shapes`** steps · `parallax-words` statement · **`path-journey`** timeline · **`pin-showcase`** media · `pin-steps` steps · `scramble-tags` list · `split-title` title · **`video-in-type`** title |
 | **Motion** (9) | `blur-words` statement · **`compare-bars`** chart · **`media-card`** media · **`number-ring`** number · **`path-diagram`** diagram · **`photo-stack`** media · `quote` quote · `spring-cards` list · `timeline-years` timeline |
 | **anime.js v4** (7) | **`donut-chart`** chart · `draw-icons` list · **`filmstrip`** timeline · **`grid-reveal`** media · `letter-wave` title · `line-steps` steps · **`orbit`** diagram |
@@ -153,7 +175,7 @@ eye check: 16 pictures of people measured (poster, first frame, finished screen)
 | `check <project> [--deck] [--site] [--phone]` | `out/report.md`, `out/report.json` |
 | `serve <project> [--port 4173]` | 내 컴퓨터 주소, 폰에서도 |
 | `record <project> [--deck] [--site] [--phone] [--sheet]` | `out/deck.mp4`, `out/site.mp4`, `out/phone.mp4`, `out/sheet_*.jpg`. 프레임마다 정확히 되감아 찍어서 빠지는 프레임이 없음 |
-| `ppt [talk.md] [--ko] [--google] [--click] [--no-video] [--still-words] [--pdf]` | 마크다운이나 텍스트 파일에서 `<이름>-deck/out/deck.pptx` 까지 한 번에. 파일이 없으면 견본 `my-talk.md` 를 써 줍니다 |
+| `ppt [talk.md] [--ko] [--look connect\|night\|white\|ivory\|paper] [--google] [--click] [--no-video] [--still-words] [--pdf] [--classic]` | 마크다운이나 텍스트 파일에서 `<이름>-deck/out/deck.pptx` 까지 한 번에, 프로 디자인으로(`--classic` 은 0.4 방식). 파일이 없으면 견본 `my-talk.md` 를 써 줍니다 |
 | `ppt old.pptx` · `import old.pptx [--out talk.md] [--no-pictures] [--hidden] [--labels]` | 예전 PowerPoint 파일에서 글, 사진, 발표자 노트를 꺼내 `old.md` + `old-media/` 로. `ppt` 는 이어서 새 덱과 .pptx 까지. 도형으로 그린 도표, 차트, 수식, EMF 그림, 숨긴 장은 장마다 보고만 하고 옛 파일에 둡니다 |
 | Marp · Slidev · reveal.js 마크다운 | `---` 로 장을 나눈 파일을 그대로 `ppt` 에. 주석은 발표자 노트, 설정(theme, layout, class)은 화면에 안 올라갑니다 |
 | `export <project> [--pdf] [--pptx] [--google] [--click] [--no-video] [--still-words] [--pptx-pictures]` | `out/deck.pdf`, `out/deck.pptx`(고칠 수 있는 글상자, 모션은 클립, 페이드, 노트), `out/deck_google.pptx` |

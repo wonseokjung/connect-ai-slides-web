@@ -57,6 +57,7 @@ Your `out/deck` and `out/site` folders contain copies of the libraries your stor
 ## Sample material
 
 - `examples/media/person.svg` and `examples/media/person.mp4` are a drawn stand-in for a person on camera, made by us. CC0. No real person is in the npm package.
+- `examples/media/photo-croissant.jpg`, `photo-cake.jpg`, `photo-tea.jpg` and `photo-table.jpg` are our own Blender Cycles renders of Poly Haven models (croissant, carrot_cake, tea_set_01, coffee_table_round_01) lit by the Poly Haven HDRI brown_photostudio_02. Models and HDRI are CC0 (polyhaven.com/license); the renders are CC0 too.
 - The demo videos and pictures in `docs/` (repository only) show the author. They are there with his permission, to show the kit working. They are not licensed for reuse.
 
 ## Fonts

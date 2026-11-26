@@ -1,0 +1,50 @@
+{
+  "kind": "pro/equation",
+  "title": "Equation",
+  "description": "A formula set large: x1 becomes x with a small 1, theta becomes the Greek letter, letters are set in italic. The terms arrive one by one, a cases form gets a brace that draws itself, and the symbols can be explained underneath.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "diagram",
+  "family": "pro-equation",
+  "lead": "picture",
+  "dur": 2.6,
+  "props": {
+    "eq": "the formula as plain text, for example A = XW + B (or use cases)",
+    "lhs": "with cases: the left side, for example y",
+    "cases": "2-3 of {value, when}: y is value when the condition holds",
+    "terms": "up to 4 of {sym, text}: a symbol and what it means, shown under the formula",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {
+    "kicker": "A step function",
+    "title": "The output is 0 or 1",
+    "lhs": "y",
+    "cases": [
+      {
+        "value": "0",
+        "when": "w1x1 + w2x2 <= theta"
+      },
+      {
+        "value": "1",
+        "when": "w1x1 + w2x2 > theta"
+      }
+    ],
+    "terms": [
+      {
+        "sym": "w1, w2",
+        "text": "weights"
+      },
+      {
+        "sym": "theta",
+        "text": "threshold"
+      }
+    ]
+  }
+}

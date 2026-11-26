@@ -1,0 +1,38 @@
+{
+  "kind": "pro/closing",
+  "title": "Closing",
+  "description": "The last slide: a large thin line of thanks or a call to action, the thin gold circle of the cover drawing itself again, and up to three buttons that link to the user's own pages.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "cta",
+  "family": "pro-closing",
+  "lead": "type",
+  "dur": 2.2,
+  "props": {
+    "title": "required, the last line, 1-6 words",
+    "sub": "one line under it",
+    "links": "up to 3 of {label, href}: buttons",
+    "kicker": "small caps above",
+    "contact": "one small line at the bottom, for example a site or a handle"
+  },
+  "example": {
+    "kicker": "CONNECT AI LAB",
+    "title": "Thank you",
+    "sub": "Open source, made to be used",
+    "links": [
+      {
+        "label": "Catalog",
+        "href": "https://example.com"
+      },
+      {
+        "label": "Contact",
+        "href": "mailto:hello@example.com"
+      }
+    ]
+  }
+}

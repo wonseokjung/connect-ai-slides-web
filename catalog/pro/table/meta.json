@@ -1,0 +1,90 @@
+{
+  "kind": "pro/table",
+  "title": "Table",
+  "description": "One or two clean tables side by side: hairline rows draw in one after another, numbers line up, one column can be gold. For a truth table, a menu with prices, a plan comparison. Every cell is real text.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "compare",
+  "family": "pro-table",
+  "lead": "picture",
+  "dur": 2.4,
+  "props": {
+    "tables": "required, 1-2 of {title, head, rows}: head is a list of column names, rows is a list of lists (up to 8 rows, 5 columns)",
+    "gold": "which column is gold, counted from 1 (default: none; 0 = the last)",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {
+    "kicker": "Logic gates",
+    "title": "AND and NAND",
+    "gold": 0,
+    "tables": [
+      {
+        "title": "AND",
+        "head": [
+          "x1",
+          "x2",
+          "y"
+        ],
+        "rows": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "1",
+            "0"
+          ],
+          [
+            "1",
+            "1",
+            "1"
+          ]
+        ]
+      },
+      {
+        "title": "NAND",
+        "head": [
+          "x1",
+          "x2",
+          "y"
+        ],
+        "rows": [
+          [
+            "0",
+            "0",
+            "1"
+          ],
+          [
+            "1",
+            "0",
+            "1"
+          ],
+          [
+            "0",
+            "1",
+            "1"
+          ],
+          [
+            "1",
+            "1",
+            "0"
+          ]
+        ]
+      }
+    ]
+  }
+}

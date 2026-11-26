@@ -185,6 +185,90 @@
   }
   function cls(kind) { return 'b-' + kind.replace(/[^a-z0-9]+/gi, '-'); }
 
+  // ---------- pro: the shared design system of the pro/* blocks (one header, one footer, one motion language) ----------
+  var GREEK = { theta: 'θ', sigma: 'σ', alpha: 'α', beta: 'β', lambda: 'λ', mu: 'μ', pi: 'π', delta: 'Δ', sum: 'Σ' };
+  var SUB = { '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉' };
+  var pro = {
+    // kicker + title, always at the same place on every slide: the first thing that makes a deck look designed
+    head: function (p, o) {
+      o = o || {}; var k = p.kicker, t = o.title === false ? '' : p.title;
+      if (!k && !t) return '';
+      return '<header class="pro-head">' + (k ? '<div class="pro-kicker"><i class="pro-tick"></i><span>' + esc(k) + '</span></div>' : '') + (t ? '<h2 class="pro-title">' + esc(t) + '</h2>' : '') + '</header>';
+    },
+    // brand + page number, deck only, decoration (it goes into the picture of the slide, not into a text box)
+    foot: function (cx) {
+      var st = cx.story || {}; if (cx.stage !== 'deck' || st.footer === false) return '';
+      var name = (st.brand && st.brand.name) || st.title || '';
+      return '<footer class="pro-foot" aria-hidden="true" data-deco><span class="pro-brand">' + esc(name) + '</span><i class="pro-hair"></i><span class="pro-page cs-num">' + (cx.index < 10 ? '0' : '') + cx.index + '</span></footer>';
+    },
+    // a formula in plain text: x1 -> x₁, theta -> θ, <= -> ≤, single letters in italic
+    math: function (str) {
+      var s = String(str == null ? '' : str).replace(/<=|≦/g, '≤').replace(/>=|≧/g, '≥').replace(/!=/g, '≠').replace(/->/g, '→').replace(/\*/g, '·');
+      s = s.replace(/\b(theta|sigma|alpha|beta|lambda|mu|pi|delta)\b/gi, function (m) { return GREEK[m.toLowerCase()]; });
+      s = s.replace(/([A-Za-zθσαβλμπ])(\d{1,3})(?![\d.])/g, function (m, a, d) { return a + d.split('').map(function (c) { return SUB[c]; }).join(''); });
+      // a run of letters is a product of variables when it has small numbers inside (w₁x₁), is one letter, or 2-3 capitals (XW)
+      return esc(s).replace(/[A-Za-zθσαβλμπ₀-₉]+/g, function (run) {
+        var letters = run.replace(/[₀-₉]/g, '');
+        if (!letters) return run;
+        if (letters.length === 1 || /[₀-₉]/.test(run) && /^[A-Za-zθσαβλμπ]$/.test(run.split(/[₀-₉]+/).filter(Boolean)[0] || '') && run.split(/[₀-₉]+/).filter(Boolean).every(function (x) { return x.length === 1; }) || /^[A-Z]{2,3}$/.test(run)) {
+          return run.replace(/([A-Za-zθσαβλμπ])([₀-₉]*)/g, '<span class="pro-var">$1$2</span>');
+        }
+        return run;
+      });
+    },
+    // "1,200" "42%" "$3.5M" "3배" -> {n, dec, pre, suf}; null when it is not one number (a date, 1.2.3)
+    num: function (v) {
+      var m = /^([^\d\-]*?)(-?\d{1,3}(?:,\d{3})+(?:\.\d+)?|-?\d+(?:\.\d+)?)([^\d]*)$/.exec(String(v == null ? '' : v).trim());
+      if (!m) return null;
+      var n = +m[2].replace(/,/g, ''); if (!isFinite(n)) return null;
+      return { n: n, dec: (m[2].split('.')[1] || '').length, comma: /,/.test(m[2]) || Math.abs(n) >= 10000, pre: m[1], suf: m[3] };
+    },
+    fmt: function (n, dec, comma) { var s = (+n).toFixed(dec || 0); if (comma) { var a = s.split('.'); a[0] = a[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); s = a.join('.'); } return s; },
+    // the one motion language: rise and fade, lines that draw, numbers that count
+    rise: function (tl, els, at, o) { o = o || {}; if (!els || (els.length === 0)) return tl; return tl.fromTo(els, { opacity: 0, y: o.y == null ? 30 : o.y }, { opacity: 1, y: 0, duration: o.d || 0.9, ease: o.ease || 'expo.out', stagger: o.stagger == null ? 0.08 : o.stagger }, at); },
+    draw: function (tl, els, at, o) { o = o || {}; if (!els || els.length === 0) return tl; return tl.fromTo(els, { scaleX: 0 }, { scaleX: 1, duration: o.d || 1.0, ease: o.ease || 'expo.inOut', stagger: o.stagger == null ? 0.08 : o.stagger, transformOrigin: o.origin || '0% 50%' }, at); },
+    headIn: function (tl, el, at) {
+      at = at || 0; var k = el.querySelector('.pro-kicker'), t = el.querySelector('.pro-title'), tick = el.querySelector('.pro-tick'), f = el.querySelector('.pro-foot');
+      if (tick) tl.fromTo(tick, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'expo.out', transformOrigin: '0% 50%' }, at);
+      if (k) tl.fromTo(k.querySelector('span'), { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.7, ease: 'expo.out' }, at + 0.1);
+      if (t) tl.fromTo(t, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 1.0, ease: 'expo.out' }, at + 0.16);
+      if (f) tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power1.out' }, at + 0.2);
+      return (k || t) ? at + 0.45 : at;
+    },
+    count: function (tl, el, info, at, d) {
+      if (!info) return tl; var o = { v: 0 };
+      el.textContent = info.pre + pro.fmt(0, info.dec, info.comma) + info.suf;
+      return tl.to(o, { v: info.n, duration: d || 1.4, ease: 'power3.out', onUpdate: function () { el.textContent = info.pre + pro.fmt(o.v, info.dec, info.comma) + info.suf; } }, at);
+    },
+    // words that rise out of their own line (a mask per word). gold: a word or a list of words to colour
+    words: function (text, gold) {
+      var g = [].concat(gold || []).filter(Boolean).map(String);
+      var t = String(text == null ? '' : text), marks = [];
+      g.forEach(function (w) { var i = t.indexOf(w); if (i >= 0) marks.push([i, i + w.length]); });
+      var out = '', pos = 0;
+      t.split(/(\s+)/).forEach(function (w) {
+        var a = pos, b = pos + w.length; pos = b;
+        if (/^\s+$/.test(w)) { out += ' '; return; } if (!w) return;
+        var on = marks.some(function (m) { return a < m[1] && b > m[0]; });
+        out += '<span class="pro-wm"><span class="pro-wi' + (on ? ' pro-gold' : '') + '">' + esc(w) + '</span></span>';
+      });
+      return out;
+    },
+    wordsIn: function (tl, root, at, o) { o = o || {}; var w = root.querySelectorAll('.pro-wi'); if (!w.length) return tl; return tl.fromTo(w, { yPercent: 108, opacity: 0 }, { yPercent: 0, opacity: 1, duration: o.d || 1.05, ease: 'expo.out', stagger: o.stagger == null ? Math.min(0.07, 0.9 / w.length) : o.stagger }, at); },
+    // a picture or a clip that fills its box. Returns the html; pro.clip() joins its clock to the timeline
+    media: function (p, cls, alt) {
+      var src = p.src || ''; if (!src) return '';
+      var pos = p.pos ? ' style="object-position:' + esc(p.pos) + '"' : '';
+      return /\.(mp4|webm|mov)$/i.test(src)
+        ? '<video class="' + cls + '" src="' + esc(src) + '"' + (p.poster ? ' poster="' + esc(p.poster) + '"' : '') + ' muted loop playsinline preload="auto" aria-label="' + esc(p.alt || alt || '') + '"' + pos + '></video>'
+        : '<img class="' + cls + '" src="' + esc(src) + '" alt="' + esc(p.alt || alt || '') + '"' + pos + '>';
+    },
+    clip: function (cx, tl, el) { var g = A.fromGsap(tl), vs = [].slice.call(el.querySelectorAll('video')); return vs.length ? A.all.apply(null, [g].concat(vs.map(function (v) { return A.fromVideo(v); }))) : g; },
+    // which side of a picture is free of the face: 'left' or 'right'
+    freeSide: function (face, fallback) { if (!face) return fallback || 'left'; var c = face[0] + face[2] / 2; return c > 0.5 ? 'left' : 'right'; }
+  };
+  CS.pro = pro;
+
   CS.mount = function (frame, scene, stage, story) {
     var b = blocks[scene.kind];
     frame.innerHTML = '';
@@ -197,8 +281,10 @@
     frame.appendChild(el);
     if (!b) { el.innerHTML = '<div class="cs-missing">Unknown block "' + esc(scene.kind) + '"</div>'; return A.fromFn(0.5, function () {}); }
     addCss(scene.kind, b.css);
+    var idx = (function () { var l = ((story && story.scenes) || []).filter(function (x) { return x.only !== (stage === 'deck' ? 'site' : 'deck'); }); var i = l.indexOf(scene); return { i: i < 0 ? 1 : i + 1, n: l.length || 1 }; })();
     var cx = Object.assign({
-      stage: stage, shape: shape, w: w, h: h, look: (story && story.look) || 'connect', story: story || {}, meta: b.meta,
+      stage: stage, shape: shape, w: w, h: h, look: (story && story.look) || 'connect', story: story || {}, meta: b.meta, pro: pro,
+      index: idx.i, total: idx.n,
       gsap: W.gsap, motion: W.Motion, anime: W.anime, lottie: W.lottie,
       esc: esc, clamp: clamp, spans: spans, prog: prog, eases: eases, coverRect: coverRect,
       media: function (src) { return /^(https?:|data:|\/)/.test(src) ? src : src; },
@@ -476,6 +562,9 @@
       out.frames[i].pic = Math.min(1, sum / area);
     });
     function chainOpacity(el, stop) { var o = 1; while (el && el !== stop && el.nodeType === 1) { var cs = el.ownerDocument.defaultView.getComputedStyle(el); if (cs.display === 'none' || cs.visibility === 'hidden') return 0; o *= parseFloat(cs.opacity); el = el.parentElement; } return o; }
+    // the nearest block box around a text: words of one paragraph share it, words that only overlap by accident do not
+    var boxIds = new WeakMap(), boxN = 0;
+    function boxOf(el, view) { var b = el; while (b && b.parentElement && /^inline/.test(view.getComputedStyle(b).display)) b = b.parentElement; if (!boxIds.has(b)) boxIds.set(b, ++boxN); return boxIds.get(b); }
     function walk(doc, base, T, hostFrame) {
       var view = doc.defaultView, walker = doc.createTreeWalker(base, NodeFilter.SHOW_TEXT, null), n;
       while ((n = walker.nextNode())) {
@@ -502,7 +591,7 @@
         if (el.ownerSVGElement && el.getScreenCTM) { var mx = el.getScreenCTM(); k = mx ? Math.hypot(mx.a, mx.b) : kf; }
         else { var ow = el.offsetWidth || 0, oh = el.offsetHeight || 0, ke = kf; if (Math.max(ow, oh) >= 4) { var rr = el.getBoundingClientRect(); ke = ow >= oh ? rr.width / ow : rr.height / oh; } k = isFinite(ke) && ke > 0 && Math.abs(ke / kf - 1) >= 0.04 ? ke : kf; }
         out.texts.push({ text: txt.slice(0, 400), chars: txt.length, x: T.ox + x0 * sc, y: T.oy + y0 * sc, w: (x1 - x0) * sc, h: (y1 - y0) * sc, size: parseFloat(cs.fontSize) * k * sc, weight: parseInt(cs.fontWeight, 10) || 400,
-          color: col.slice(0, 3), alpha: op * col[3], cut: area > 0 ? 1 - seen / area : 0, cutX: 1 - Math.max(0, cx1 - cx0) / (x1 - x0), cutY: inkCut, outline: outline, gradient: clipText && fc[3] < 0.05, deco: !!el.closest('[data-deco]'), tap: !!el.closest('a,button'), frame: fi, kind: blk ? blk.dataset.kind : '' });
+          color: col.slice(0, 3), alpha: op * col[3], cut: area > 0 ? 1 - seen / area : 0, cutX: 1 - Math.max(0, cx1 - cx0) / (x1 - x0), cutY: inkCut, outline: outline, gradient: clipText && fc[3] < 0.05, deco: !!el.closest('[data-deco]'), tap: !!el.closest('a,button'), frame: fi, kind: blk ? blk.dataset.kind : '', box: boxOf(el, view) });
       }
     }
     walk(D, root, { ox: 0, oy: 0, sc: 1 }, null);
@@ -546,7 +635,7 @@
   };
   // hide every glyph but keep what is behind it, so a screenshot shows the real background under the text
   function hideCss(pre) {
-    var off = '{color:transparent!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke-color:transparent!important;text-shadow:none!important;caret-color:transparent!important;text-decoration-color:transparent!important}';
+    var off = '{transition:none!important;color:transparent!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke-color:transparent!important;text-shadow:none!important;caret-color:transparent!important;text-decoration-color:transparent!important}';
     return pre + '*,' + pre + '*::before,' + pre + '*::after' + off + pre + 'svg text,' + pre + 'svg tspan{fill:transparent!important;stroke:transparent!important}' + pre + '[data-cs-gradtext]{background-image:none!important}';
   }
   CS.hideText = function (on) {

@@ -27,8 +27,9 @@ const HELP = `${NAME} ${VERSION}
 Not on npm yet: type ${RUN} where it says npx ${NAME}.
 One story, a deck and a website. Motion from GSAP, Motion, anime.js, Lottie, CSS, HyperFrames and Remotion, checked on the real screen.
 
-  npx ${NAME} ppt [talk.md] [--google] [--open]
+  npx ${NAME} ppt [talk.md] [--look connect|night|white|ivory|paper] [--google] [--open] [--classic]
                                             a markdown or text file -> a PowerPoint file (no file: a sample)
+                                            tables become charts, $$ formulas, plot:, A -> B flows, pictures get layouts
   npx ${NAME} ppt old-talk.pptx            an old PowerPoint -> its words, pictures and notes -> a new motion deck
   npx ${NAME} import old-talk.pptx [--out talk.md] [--no-pictures] [--hidden] [--labels]
                                             only the first half: old-talk.md + old-talk-media/ to read and tidy
@@ -245,7 +246,7 @@ async function main() {
     }
     const talk = parseTalk(fs.readFileSync(src, 'utf8'), {name: path.basename(src).replace(/\.[^.]+$/, '')});
     if (!talk.title && !talk.slides.length) throw new Error(`${file} has no words in it. Write a # title and a few ## slides.`);
-    const story = talkToStory(talk, {look});
+    const story = talkToStory(talk, {look, design: has('--classic') ? 'classic' : 'pro'});
     const dir = path.resolve(outOpt || src.replace(/\.[^.]+$/, '') + '-deck');
     fs.mkdirSync(path.join(dir, 'media'), {recursive: true});
     const missing = bringMedia(story, path.dirname(src), dir);

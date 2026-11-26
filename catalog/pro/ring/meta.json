@@ -1,0 +1,29 @@
+{
+  "kind": "pro/ring",
+  "title": "Share ring",
+  "description": "A share out of a hundred: a thin gold ring draws itself around a quiet track while the percentage counts up inside it, with what it means beside the ring.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "pro-ring",
+  "lead": "picture",
+  "dur": 2.3,
+  "props": {
+    "value": "required, a percentage from 0 to 100",
+    "label": "required, what the share means, one line",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under, for example the source"
+  },
+  "example": {
+    "kicker": "Pictures lead",
+    "value": 50,
+    "label": "of the catalog at least is led by a picture, not by words",
+    "note": "A rule the kit's own tests keep"
+  }
+}

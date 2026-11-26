@@ -62,7 +62,7 @@ for (const {lang, dir} of DEMOS) {
   demos.push(d);
 }
 const demo = demos[0] || {};
-if (MONT && fs.existsSync(MONT)) { cp(MONT, path.join(DOCS, 'demo', 'montage.mp4')); demo.montage = 'demo/montage.mp4'; const webp = MONT.replace(/\.mp4$/i, '.webp'); if (fs.existsSync(webp)) cp(webp, path.join(DOCS, 'demo', 'montage.webp'));  // the README shows the webp if (await posterOf(MONT, path.join(DOCS, 'demo', 'montage_poster.jpg'), [2.5, 2.0, 1.5, 3.5])) demo['montage:poster'] = 'demo/montage_poster.jpg'; }
+if (MONT && fs.existsSync(MONT)) { cp(MONT, path.join(DOCS, 'demo', 'montage.mp4')); demo.montage = 'demo/montage.mp4'; const webp = MONT.replace(/\.mp4$/i, '.webp'); if (fs.existsSync(webp)) cp(webp, path.join(DOCS, 'demo', 'montage.webp')); /* the README shows the webp */ if (await posterOf(MONT, path.join(DOCS, 'demo', 'montage_poster.jpg'), [2.5, 2.0, 1.5, 3.5])) demo['montage:poster'] = 'demo/montage_poster.jpg'; }
 
 // every built stage carries its own media/ folder; on the page they share one, so the same clip is stored once
 const SHARED = path.join(DOCS, 'media');

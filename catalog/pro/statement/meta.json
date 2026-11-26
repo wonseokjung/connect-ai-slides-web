@@ -1,0 +1,28 @@
+{
+  "kind": "pro/statement",
+  "title": "Statement",
+  "description": "One sentence the room should remember, large and thin, rising word by word. The words you mark in gold get a hairline that draws itself under them.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "statement",
+  "family": "pro-statement",
+  "lead": "type",
+  "dur": 2.2,
+  "props": {
+    "text": "required, one sentence, up to about 16 words",
+    "gold": "a word or a list of words from the text to colour gold",
+    "kicker": "small caps above",
+    "by": "who said it or where it comes from, one short line",
+    "title": "a small heading above instead of a kicker"
+  },
+  "example": {
+    "kicker": "Lesson four",
+    "text": "The same motion becomes a slide you can still edit",
+    "gold": "still edit"
+  }
+}

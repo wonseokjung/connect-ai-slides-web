@@ -1,0 +1,35 @@
+{
+  "kind": "pro/photo",
+  "title": "Full photo",
+  "description": "The user's photo or clip fills the whole slide and settles slowly from a gentle zoom; a soft shade on the free side carries a large title and one line. With a face box the words go to the side away from the face.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "media",
+  "family": "pro-photo",
+  "lead": "picture",
+  "dur": 2.6,
+  "props": {
+    "src": "required, a photo or an mp4 of the user's own",
+    "alt": "required, what the picture shows",
+    "title": "a large line on the picture, 1-8 words",
+    "text": "one line under the title",
+    "kicker": "small caps above the title",
+    "side": "left, right or bottom: where the words go (default: away from the face, else left)",
+    "face": "[x, y, w, h] of a face, 0 to 1",
+    "body": "[x, y, w, h] of the person",
+    "poster": "still for a video",
+    "pos": "object-position, for example 50% 40%"
+  },
+  "example": {
+    "src": "media/photo-croissant.jpg",
+    "alt": "A croissant on a wooden table in soft morning light",
+    "kicker": "Every morning",
+    "title": "Baked before we open",
+    "side": "left"
+  }
+}

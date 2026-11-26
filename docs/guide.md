@@ -35,7 +35,7 @@ Like mixed martial arts took the best moves of every style and made them work to
 
 | | Where | What to look at |
 |---|---|---|
-| Catalog page | [docs/index.html](index.html) | all 67 blocks as live clips, with a line and a prompt to copy; filter by source, use, or picture first |
+| Catalog page | [docs/index.html](index.html) | all 89 blocks as live clips, with a line and a prompt to copy; filter by source, use, or picture first |
 | Demo deck | [English](demo/en/deck/index.html) · [Korean](demo/ko/deck/index.html) | arrow keys, `S` for speaker notes, `Esc` for the overview |
 | Demo website | [English](demo/en/site/index.html) · [Korean](demo/ko/site/index.html) | scroll it; open it on a phone too |
 | Every block, live | [as a deck](live/deck/index.html) · [as one page](live/site/index.html) | the catalog examples themselves |
@@ -86,12 +86,34 @@ A project is a folder with `story.json` and `media/`. One scene is one line: a `
 - `out/deck/index.html`: one scene = one slide. It plays when you arrive, blocks with steps wait for your click, `"notes"` are the speaker notes.
 - `out/site/index.html`: one scene = one screen. It plays once when you scroll to it, or it stays pinned and follows the scroll (`"site": {"mode": "scrub", "len": 2}`). On a phone the same block switches to its tall layout.
 
-## The catalog: 67 blocks, 9 sources
+## What you write, what you get (`ppt talk.md`)
 
-`npx connect-ai-slides-web catalog` prints them with their props. The word after each name is what it is for. A **bold** name is led by a picture (a video, a photo, a device, a chart or a diagram fills the screen); the others are led by type. 34 of the 67 are led by a picture, and the check advises when three text-only screens come in a row.
+| In the markdown | On the slide (pro design) |
+|---|---|
+| `# Title` and a line under it, `![..](photo.jpg)` under that | the cover, with the picture on the right |
+| `## Heading` with nothing under it | a chapter slide (01, 02 ...) |
+| one sentence, `**gold words**` inside | a large statement, those words in gold |
+| `- a` `- b` `- c` | points (up to 4), more: a numbered list |
+| `1. a` `2. b` | a flow; `Lesson 2: ...`, `2강: ...`, `Q1: ...` labels: a timeline |
+| `**42%** what it means` (one or more lines) | a big number, or a row of numbers |
+| a table with numbers in the second column | columns; a line when the labels are in time order |
+| a table with words | a clean table; two tables side by side |
+| `$$ y = w1 x1 + b $$`, or a `$$` block with `0 if ...` lines | a formula; cases with a brace |
+| `plot: step, sigmoid, relu` | function curves on axes |
+| `A -> B -> C`, `Input [x1 x2] -> Output [y]` | a flow, a network diagram |
+| `Before: a, b` and `After: x, y` | before and after, side by side |
+| one picture and a list / 2 to 4 pictures | photo and words side by side / a gallery |
+| `> words` then `- who` | a quote |
+| `[Label](https://...)` on the last slide | buttons |
+| `Note: ...` | speaker notes (without it, the slide's own words are the notes) |
+
+## The catalog: 89 blocks, 10 sources
+
+`npx connect-ai-slides-web catalog` prints them with their props. The word after each name is what it is for. A **bold** name is led by a picture (a video, a photo, a device, a chart or a diagram fills the screen); the others are led by type. 47 of the 89 are led by a picture, and the check advises when three text-only screens come in a row.
 
 | Source | Blocks |
 |---|---|
+| **Pro design set**, GSAP (22): one header, footer and motion language for a whole deck; the default for `ppt` since 0.5 | `agenda` list · **`bars`** chart · `chapter` chapter · `closing` cta · **`compare`** compare · `cover` title · **`equation`** diagram · **`flow`** steps · **`gallery`** media · **`line`** chart · **`network`** diagram · **`photo`** media · **`plot`** diagram · `points` list · `quote` quote · **`ring`** chart · **`split`** media · `stat` number · `statement` statement · `stats` number · **`table`** compare · **`timeline`** timeline |
 | **GSAP** (18) | **`bars`** chart · `compare-wipe` compare · `counter` number · `draw-mark` statement · `flip-grid` list · `horizontal-cards` list · `kinetic-type` statement · **`lesson-map`** timeline · **`line-chart`** chart · `marquee-band` background · **`morph-shapes`** steps · `parallax-words` statement · **`path-journey`** timeline · **`pin-showcase`** media · `pin-steps` steps · `scramble-tags` list · `split-title` title · **`video-in-type`** title |
 | **Motion** (9) | `blur-words` statement · **`compare-bars`** chart · **`media-card`** media · **`number-ring`** number · **`path-diagram`** diagram · **`photo-stack`** media · `quote` quote · `spring-cards` list · `timeline-years` timeline |
 | **anime.js v4** (7) | **`donut-chart`** chart · `draw-icons` list · **`filmstrip`** timeline · **`grid-reveal`** media · `letter-wave` title · `line-steps` steps · **`orbit`** diagram |
@@ -153,7 +175,7 @@ If a scene shows a person, write the face box once: `"face": [x, y, w, h]`, each
 | `check <project> [--deck] [--site] [--phone]` | `out/report.md`, `out/report.json` |
 | `serve <project> [--port 4173]` | a local address, also for your phone |
 | `record <project> [--deck] [--site] [--phone] [--sheet]` | `out/deck.mp4`, `out/site.mp4`, `out/phone.mp4`, `out/sheet_*.jpg`. Each frame is seeked exactly, nothing is dropped |
-| `ppt [talk.md] [--ko] [--google] [--click] [--no-video] [--still-words] [--pdf]` | from a markdown or text file to `<name>-deck/out/deck.pptx` in one go; with no file it writes a sample `my-talk.md` |
+| `ppt [talk.md] [--ko] [--look connect\|night\|white\|ivory\|paper] [--google] [--click] [--no-video] [--still-words] [--pdf] [--classic]` | from a markdown or text file to `<name>-deck/out/deck.pptx` in one go, in the pro design (`--classic`: the 0.4 mapping); with no file it writes a sample `my-talk.md` |
 | `ppt old.pptx` · `import old.pptx [--out talk.md] [--no-pictures] [--hidden] [--labels]` | An old PowerPoint file: its words, pictures and speaker notes into `old.md` + `old-media/`; `ppt` goes on to the new deck and .pptx. Diagrams drawn with shapes, charts, equations, EMF pictures and hidden slides are reported per slide and stay in the old file |
 | Marp · Slidev · reveal.js markdown | A file with `---` between slides goes straight into `ppt`. Comments become speaker notes; settings (theme, layout, class) stay off the slides |
 | `export <project> [--pdf] [--pptx] [--google] [--click] [--no-video] [--still-words] [--pptx-pictures]` | `out/deck.pdf`, `out/deck.pptx` (editable text boxes, the motion as clips, fades, notes), `out/deck_google.pptx` |

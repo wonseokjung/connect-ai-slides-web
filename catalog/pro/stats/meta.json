@@ -1,0 +1,40 @@
+{
+  "kind": "pro/stats",
+  "title": "Numbers in a row",
+  "description": "Two to four real numbers side by side, each counting up above a hairline with what it means. For the facts of a talk: lessons, hours, people, results the user really has.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "number",
+  "family": "pro-stats",
+  "lead": "type",
+  "dur": 2.3,
+  "props": {
+    "items": "required, 2-4 of {value, label}: value as written (42%, 1,200, 3배)",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under, for example where the numbers come from"
+  },
+  "example": {
+    "kicker": "In one deck",
+    "title": "What the kit checks",
+    "items": [
+      {
+        "value": "3",
+        "label": "screen sizes"
+      },
+      {
+        "value": "28",
+        "label": "words on a slide, the advice limit"
+      },
+      {
+        "value": "1,500 KB",
+        "label": "first screen on a phone, the advice limit"
+      }
+    ]
+  }
+}

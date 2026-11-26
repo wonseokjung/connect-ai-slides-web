@@ -1,0 +1,50 @@
+{
+  "kind": "pro/network",
+  "title": "Network diagram",
+  "description": "Layers of nodes joined by hairlines, drawn left to right; then a wave of gold signals travels from the first layer to the last. For a neural network, a pipeline of models, or any layered system.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "diagram",
+  "family": "pro-network",
+  "lead": "picture",
+  "dur": 3.4,
+  "props": {
+    "layers": "required, 2-5 of {label, nodes}: nodes is a number (2-6) or a list of short names like [\"x1\", \"x2\"]",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {
+    "kicker": "A layered system",
+    "title": "Input, hidden and output",
+    "layers": [
+      {
+        "label": "Input",
+        "nodes": [
+          "x1",
+          "x2"
+        ]
+      },
+      {
+        "label": "Hidden",
+        "nodes": [
+          "a1",
+          "a2",
+          "a3"
+        ]
+      },
+      {
+        "label": "Output",
+        "nodes": [
+          "y1",
+          "y2"
+        ]
+      }
+    ]
+  }
+}

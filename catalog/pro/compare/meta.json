@@ -1,0 +1,44 @@
+{
+  "kind": "pro/compare",
+  "title": "Before and after",
+  "description": "Two columns side by side: the left one quiet, the right one in gold, a hairline between them that draws itself and a small gold arrow crossing over. For before and after, old and new, us and the usual way.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "compare",
+  "family": "pro-compare",
+  "lead": "picture",
+  "dur": 2.5,
+  "props": {
+    "left": "required, {label, title, items or text, src, alt}: the old way, before",
+    "right": "required, {label, title, items or text, src, alt}: the new way, after",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "An old talk, remade",
+    "title": "One file, two lives",
+    "left": {
+      "label": "Before",
+      "title": "Static slides",
+      "items": [
+        "Words only",
+        "No motion",
+        "No notes"
+      ]
+    },
+    "right": {
+      "label": "After",
+      "title": "A motion deck",
+      "items": [
+        "Editable words",
+        "A clip on every slide",
+        "Speaker notes"
+      ]
+    }
+  }
+}

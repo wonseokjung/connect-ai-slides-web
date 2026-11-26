@@ -1,0 +1,46 @@
+{
+  "kind": "pro/timeline",
+  "title": "Timeline",
+  "description": "Three to six moments on one gold line that draws left to right; at each moment a node lands and its date and words rise. With \"now\" one moment is marked, with \"build\": true each moment comes on its own click.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "timeline",
+  "family": "pro-timeline",
+  "lead": "picture",
+  "dur": 2.8,
+  "props": {
+    "items": "required, 3-6 of {when, title, text}",
+    "now": "which moment is marked, counted from 1",
+    "title": "heading",
+    "kicker": "small caps above",
+    "build": "true: one moment per click"
+  },
+  "example": {
+    "kicker": "Lesson map",
+    "title": "Visual Vibe Coding",
+    "now": 3,
+    "items": [
+      {
+        "when": "Lesson 2",
+        "title": "Motion on your video"
+      },
+      {
+        "when": "Lesson 3",
+        "title": "Motion without footage"
+      },
+      {
+        "when": "Lesson 4",
+        "title": "Motion on slides"
+      },
+      {
+        "when": "Lesson 5",
+        "title": "Motion on a website"
+      }
+    ]
+  }
+}

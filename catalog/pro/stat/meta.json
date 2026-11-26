@@ -1,0 +1,29 @@
+{
+  "kind": "pro/stat",
+  "title": "Big number",
+  "description": "One number the size of the slide counts up to its value in thin type, with a gold unit, a hairline and what it means beside it. Only a real number from the user.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "number",
+  "family": "pro-stat",
+  "lead": "type",
+  "dur": 2.2,
+  "props": {
+    "value": "required, the real number as written: 42%, 1,200, 3.5, 12x, 3배",
+    "label": "required, what the number means, one line",
+    "kicker": "small caps above",
+    "title": "heading",
+    "note": "one small line under, for example where it comes from"
+  },
+  "example": {
+    "kicker": "A phone in this kit",
+    "value": "390",
+    "label": "pixels wide, the phone every website is checked on",
+    "note": "Measured by the check in a real browser"
+  }
+}

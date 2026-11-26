@@ -1,0 +1,45 @@
+{
+  "kind": "pro/bars",
+  "title": "Column chart",
+  "description": "A real column chart from the user's numbers: columns grow from a hairline baseline, the value counts above each, the highlighted column is gold and the rest are quiet. Labels are real text.",
+  "source": {
+    "type": "gsap",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": []
+  },
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "pro-columns",
+  "lead": "picture",
+  "dur": 2.6,
+  "props": {
+    "items": "required, 2-8 of {label, value}",
+    "unit": "short unit after each value",
+    "highlight": "which column is gold, counted from 1 (default: the largest)",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under, for example the source",
+    "decimals": "digits after the point"
+  },
+  "example": {
+    "kicker": "One block, three frames",
+    "title": "Width the check measures",
+    "unit": "px",
+    "items": [
+      {
+        "label": "Slide",
+        "value": 1920
+      },
+      {
+        "label": "Web page",
+        "value": 1440
+      },
+      {
+        "label": "Phone",
+        "value": 390
+      }
+    ],
+    "note": "The check opens every scene at these three sizes"
+  }
+}
