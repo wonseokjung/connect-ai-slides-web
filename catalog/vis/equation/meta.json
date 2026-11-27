@@ -1,0 +1,21 @@
+{
+  "kind": "vis/equation",
+  "title": "Formula in depth",
+  "description": "A formula that assembles in depth: every term flies in from far away and out of focus into its place, a band of light passes over it, a cases brace draws and each case lights in turn, and each symbol is tied to its meaning by a line that draws itself. x1 becomes x with a small 1, theta becomes the Greek letter.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "diagram",
+  "family": "vis-formula",
+  "lead": "picture",
+  "dur": 3.6,
+  "props": {
+    "eq": "the formula as plain text, for example A = XW + B (or use cases)",
+    "lhs": "with cases: the left side, for example y",
+    "cases": "2-3 of {value, when}",
+    "terms": "up to 4 of {sym, text}: a symbol and what it means",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {"kicker": "A step function", "title": "The output is 0 or 1", "lhs": "y", "cases": [{"value": "0", "when": "w1x1 + w2x2 <= theta"}, {"value": "1", "when": "w1x1 + w2x2 > theta"}], "terms": [{"sym": "w1", "text": "weight"}, {"sym": "theta", "text": "threshold"}]}
+}

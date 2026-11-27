@@ -1,0 +1,44 @@
+{
+  "kind": "vis/compare",
+  "title": "Seam of light",
+  "description": "Before and after as two quiet cards centred under the title: a beam of light crosses the old card, which cools to the look's quiet colour and stays readable, then the beam flares between them and a wave of warm light opens the new card while its serif lines rise. Lines near title size.",
+  "source": {
+    "type": "vis",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "gsap"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "compare",
+  "family": "vis-seam",
+  "lead": "type",
+  "dur": 3.4,
+  "props": {
+    "left": "required, {label, title, items or text}: the old way, before",
+    "right": "required, {label, title, items or text}: the new way, after",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "An old talk, remade",
+    "title": "One file, two lives",
+    "left": {
+      "label": "Before",
+      "items": [
+        "Words only",
+        "No motion",
+        "No notes"
+      ]
+    },
+    "right": {
+      "label": "After",
+      "items": [
+        "Editable words",
+        "A clip on every slide",
+        "Speaker notes"
+      ]
+    }
+  }
+}

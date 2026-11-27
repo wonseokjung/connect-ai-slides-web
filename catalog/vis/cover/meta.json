@@ -1,0 +1,25 @@
+{
+  "kind": "vis/cover",
+  "title": "Film title cover",
+  "description": "The first slide as a film title: gold silk light flows in a living WebGL shader (warm sunlit haze on light looks), the title rises letter by letter out of a mask while it comes into focus, a gold hairline draws, the kicker scrambles in (GSAP ScrambleText). A photo or clip sits in a tall cinematic frame on the free side and slowly pushes in; a person is only framed, never tilted or covered.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap", "ScrambleTextPlugin"]},
+  "license": "GSAP standard license",
+  "use": "title",
+  "family": "vis-cover",
+  "lead": "picture",
+  "dur": 2.8,
+  "props": {
+    "title": "required, the name of the talk, 2-8 words",
+    "sub": "one line under the title",
+    "kicker": "small caps above the title",
+    "by": "who and when, one short line",
+    "gold": "a word or words of the title to colour gold",
+    "src": "a photo or mp4 for the tall frame",
+    "poster": "still for a video",
+    "alt": "what the picture shows",
+    "face": "[x, y, w, h] of a face in the picture, 0 to 1",
+    "body": "[x, y, w, h] of the person",
+    "pos": "object-position of the picture (default: the face centre)"
+  },
+  "example": {"kicker": "CONNECT AI LAB", "title": "Motion graphics on a slide", "sub": "A real deck, made from a few lines", "by": "connect-ai-slides-web", "src": "media/person.mp4", "poster": "media/person.svg", "face": [0.39, 0.2, 0.22, 0.4], "alt": "A person talking to the camera"}
+}

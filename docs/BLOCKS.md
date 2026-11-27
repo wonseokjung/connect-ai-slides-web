@@ -55,6 +55,14 @@ The `pro/*` blocks share one layout and one motion language through `cx.pro`. Us
 - Classes: `.pro-title`, `.pro-kicker`, `.pro-num` (tabular figures), `.pro-var` (a math letter), `.pro-gold`. Sizes come from `var(--hero)`, `var(--title)`, `var(--lead)`, `var(--body)`, `var(--label)`; colours from `var(--ink)`, `var(--dim)`, `var(--gold)`, `var(--gold2)` (gold for small text), `var(--line)`, `var(--card)`, so the light looks (`white`, `ivory`, `paper`) work without changes.
 - Lines: do not combine `pathLength` with `vector-effect: non-scaling-stroke` (Chrome draws dashes). Reveal a drawn line with a `clip-path: inset(...)` tween on its own `<svg>` instead.
 
+### Picture-first helpers (`cx.vis`, since 0.6)
+The `vis/*` and `three/*` blocks keep something alive after their entrance: light that flows, a camera that circles, pulses that travel. They still follow the one rule (time comes from `seek`), through these helpers:
+- `cx.vis.ambient(tl, el, draw, {ready, dispose, fit})` returns the clip: the GSAP timeline `tl` is the entrance, `draw(t)` is called with the time, and `t` keeps running past the end (in a recording through the hold, live while the slide is on screen). Use it as the return value.
+- `cx.vis.shader(el, frag)` puts a full-frame WebGL fragment shader behind the block. Uniforms: `u_t` (seconds), `u_p` (0..1), `u_res`, `u_gold`, `u_gold2`, `u_bg`, `u_ink` (from the look), `u_light` (1 on light looks), `u_a`, `u_b` (your own vec4s); `hash`, `noise`, `fbm` are there. Call `.draw(t, p)` from `draw`. One shader per block, and only where it is the picture (a cover, a closing): a deck holds a limited number of WebGL canvases.
+- `cx.vis.three(el, spec)` runs a scene of connect-ai-three (the lessons 6-7 kit, in `runtime/three/`): the same scene spec (camera and its motions, lights, looks, objects such as `gltf`, `bars`, `wordmark`), `.render(t)`, `.ready` (a promise: models load), `.stage.camera` to project 3D points onto the slide for real-text labels. Put `"three"` in `meta.source.uses` so `build` bundles three.js with the stage into `assets/vendor/cs-three.js`. A `.glb` named in the scene goes into the page as data.
+- `cx.vis.palette(el)` gives the look as colours (`gold`, `gold2`, `bg`, `ink`, `light`), so a 3D scene sits in the same light as the slide.
+Words stay real text in the DOM (the PowerPoint export lifts them as text boxes): draw pictures in WebGL, SVG or canvas, and put numbers and labels in HTML on top.
+
 ## One block, three frames
 The same block must look right in: a 1920×1080 slide (`data-stage="deck"`), a desktop web screen (`data-stage="site" data-shape="wide"`, for example 1440×900) and a phone screen (`data-shape="tall"`, 390×844).
 

@@ -1,0 +1,19 @@
+{
+  "kind": "vis/matrix",
+  "title": "Matrix you can watch",
+  "description": "A matrix formula you can watch compute: the matrices of A = XW + B stand as grids of glowing cells, the row of X sweeps down each column of W with the cells lighting in pairs, B adds in, and each result drops into A. Afterwards one column at a time keeps breathing. Only the symbols given are written.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "diagram",
+  "family": "vis-matrix",
+  "lead": "picture",
+  "dur": 5.0,
+  "props": {
+    "eq": "required, the formula, for example A = XW + B",
+    "terms": "the vectors as {sym, text}, for example {sym: \"A\", text: \"( a1 a2 a3 )\"}",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {"kicker": "3 layer network", "title": "One layer in one line", "eq": "A = XW + B", "terms": [{"sym": "A", "text": "( a1 a2 a3 )"}, {"sym": "X", "text": "( x1 x2 )"}, {"sym": "B", "text": "( b1 b2 b3 )"}]}
+}

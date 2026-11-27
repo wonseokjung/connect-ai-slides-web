@@ -1,0 +1,19 @@
+{
+  "kind": "vis/table",
+  "title": "Table that turns into place",
+  "description": "A word table that turns into place: rows flip down out of the dark one after another, a line of light scans the table top to bottom, and the gold column glows behind its cells. The scan comes back now and then while the slide is on screen.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "vis-table",
+  "lead": "picture",
+  "dur": 2.6,
+  "props": {
+    "tables": "required, 1-2 of {title, head, rows}: head is a list of column names, rows a list of lists (up to 8 rows, 5 columns)",
+    "gold": "which column is gold, counted from 1 (0 = the last)",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {"kicker": "Three frames", "title": "What the check opens", "gold": 2, "tables": [{"head": ["Frame", "Size", "Used for"], "rows": [["Slide", "1920 x 1080", "the deck"], ["Web page", "1440 x 900", "the site"], ["Phone", "390 x 844", "the site on a phone"]]}]}
+}

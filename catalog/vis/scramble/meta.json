@@ -1,0 +1,13 @@
+{
+  "kind": "vis/scramble",
+  "title": "Scramble lines",
+  "description": "A second statement style: the sentence in two or three offset lines, each opened by a mask that wipes across with a gold edge of light while its letters scramble and settle (GSAP ScrambleText, using the line's own letters, Korean too). Hairlines draw behind, the lines sit at slightly different depths.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap", "ScrambleTextPlugin"]},
+  "license": "GSAP standard license",
+  "use": "statement",
+  "family": "vis-scramble",
+  "lead": "type",
+  "dur": 2.6,
+  "props": {"text": "required, one sentence, up to about 16 words", "gold": "a word or words: the line that holds them is set in gold serif", "kicker": "small caps above"},
+  "example": {"kicker": "One file", "text": "One story file becomes a deck and a website", "gold": "a deck and a website"}
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "vis/boundary",
+  "title": "Decision boundary",
+  "description": "A truth table as a picture: its four points sit on a plane (gold where y is 1), a decision line searches, turns and settles until the gold points are on one side, and each table row lights while the line looks at its point. Two tables share the plane: the line moves on to the second one. A bead of light keeps running along the line.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "diagram",
+  "family": "vis-boundary",
+  "lead": "picture",
+  "dur": 6.5,
+  "props": {
+    "tables": "required, 1-2 of {title, head, rows}: head is [x1, x2, y], rows are the four rows of 0 and 1",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {
+    "kicker": "Logic gates",
+    "title": "AND and NAND",
+    "tables": [
+      {"title": "AND", "head": ["x1", "x2", "y"], "rows": [["0", "0", "0"], ["1", "0", "0"], ["0", "1", "0"], ["1", "1", "1"]]},
+      {"title": "NAND", "head": ["x1", "x2", "y"], "rows": [["0", "0", "1"], ["1", "0", "1"], ["0", "1", "1"], ["1", "1", "0"]]}
+    ]
+  }
+}

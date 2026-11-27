@@ -1,0 +1,13 @@
+{
+  "kind": "vis/chapter",
+  "title": "Light-filled chapter",
+  "description": "A chapter card: a giant serif number is filled from below by a mask of gold light over its own outline, the title rises word by word, a gold line draws across the whole width, and the camera keeps pushing in slowly.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "chapter",
+  "family": "vis-chapter",
+  "lead": "type",
+  "dur": 2.2,
+  "props": {"title": "required, the chapter name, 1-6 words", "number": "the chapter number shown large, for example 02", "kicker": "small caps above the title", "sub": "one line under the title", "gold": "words of the title to colour gold"},
+  "example": {"number": "02", "kicker": "Part two", "title": "From markdown to a deck", "sub": "Every word stays editable"}
+}

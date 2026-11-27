@@ -19,6 +19,29 @@ npx github:wonseokjung/connect-ai-slides-web install-skill
 
 직접 깔아야 하는 건 [Node.js](https://nodejs.org) 18.18 이상, 크롬, 코딩 에이전트예요. ffmpeg까지 있으면 움직임이 파워포인트 안에 영상 클립으로 들어가요. 에이전트는 쓰시던 걸 그대로 쓰시면 되고, 이 도구에 넣는 유료 API 키는 따로 없어요.
 
+## 0.6: 이제 장마다 그림이랑 움직임이 먼저 나와요
+
+0.5는 깔끔했는데 글자만 보였거든요. 비주얼 바이브코딩인데 그러면 안 되잖아요. 그래서 0.6에서는 마크다운 몇 줄만 써도 장마다 그림이나 움직임이 먼저 나오게 바꿨어요.
+
+[![0.6으로 만든 발표자료 네 개, 실제로 넘어가는 화면 녹화](docs/showcase/v06/hero.webp)](docs/showcase/v06/hero.mp4)
+
+- 3D 모델이 표지에서 천천히 돌아요. `.glb` 파일 하나만 넣으시면 돼요.
+- 숫자 표는 3D 막대그래프로 솟아요. 값은 막대가 크는 만큼 같이 올라가요.
+- 배경의 금색 빛이 살아서 움직여요. 셰이더로 그린 거예요.
+- 수식, 결정 경계, 신경망은 그림으로 움직여요. 신경망에는 신호가 흘러요.
+- 제 영상 클립은 화면 크게, 아니면 기기 화면 안에 들어가요. 얼굴 위에는 글자를 안 올려요.
+- 장이 넘어갈 때도 영화처럼 넘어가요. 같은 효과는 한 덱에 한 번만 써요.
+
+글자만 있는 장이 세 장 이어지거나 절반을 넘으면 체크에서 에러로 막아요. 에이전트가 그림 블록을 먼저 골라 주거든요. 3D는 제 connect-ai-three 키트를 그대로 가져와서 썼어요.
+
+<img src="docs/showcase/v06/perceptron_vs.jpg" width="100%" alt="퍼셉트론 덱, 0.5와 0.6">
+
+왼쪽이 0.5, 오른쪽이 0.6이에요. 같은 원고예요.
+
+<img src="docs/showcase/v06/cafe_vs.jpg" width="100%" alt="빵집 소개 덱, 0.5와 0.6">
+
+빵집 소개는 예시로 만들었어요. 숫자는 다 예시고, 크루아상 3D 모델은 CC0예요.
+
 ## 0.5에서 디자인을 크게 바꿨어요
 
 표는 표나 그래프로, 수식이랑 신경망도 그림으로 나와요. 장마다 제목 자리, 바닥 줄, 움직이는 방식이 같아서 한 세트처럼 보여요. 검정에 금색이 기본이고, 밝은 테마(white, ivory, paper)도 있어요.
@@ -66,7 +89,7 @@ npx github:wonseokjung/connect-ai-slides-web install-skill
 | 장 넘김 | 부드럽게 페이드로 넘어가요 |
 | Google Slides | `--google` 을 붙이면 영상 대신 멈춘 그림을 깐 파일이 하나 더 나와요 |
 
-파일 안은 `inspect` 로 확인했고, 화면은 맥의 훑어보기(Quick Look)로 열어서 봤어요. 파워포인트 앱에서 직접 틀어 보는 건 아직이라, 발표하실 컴퓨터에서 한 번 열어 보세요. [한국어 deck.pptx](docs/demo/ko/deck.pptx) · [영어 deck.pptx](docs/demo/en/deck.pptx). 움직임 블록 89개는 [카탈로그 페이지](docs/index.html)에서 볼 수 있어요.
+파일 안은 `inspect` 로 확인했고, 화면은 맥의 훑어보기(Quick Look)로 열어서 봤어요. 파워포인트 앱에서 직접 틀어 보는 건 아직이라, 발표하실 컴퓨터에서 한 번 열어 보세요. [한국어 deck.pptx](docs/demo/ko/deck.pptx) · [영어 deck.pptx](docs/demo/en/deck.pptx). 블록 114개는 [카탈로그 페이지](docs/index.html)에서 볼 수 있어요.
 
 <!-- team:start -->
 ## CONNECT AI LAB의 AI 직원들

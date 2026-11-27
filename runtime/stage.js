@@ -269,6 +269,104 @@
   };
   CS.pro = pro;
 
+  // ---------- vis: the picture-first helpers of the v0.6 blocks (living shader light, 3D, time that keeps moving) ----------
+  // colour of a CSS custom property as [r, g, b] in 0..1 (the look decides gold, ink and background)
+  function cssRgb(el, name, fallback) {
+    var probe = D.createElement('i'); probe.style.cssText = 'position:absolute;width:0;height:0;color:var(' + name + ',' + (fallback || '#000') + ')'; el.appendChild(probe);
+    var c = parseColorFn(getComputedStyle(probe).color); probe.remove(); return [c[0] / 255, c[1] / 255, c[2] / 255];
+  }
+  function parseColorFn(s) { var m = /rgba?\(([^)]+)\)/.exec(s || ''); if (!m) { var h = /color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)/.exec(s || ''); return h ? [h[1] * 255, h[2] * 255, h[3] * 255] : [0, 0, 0]; } var p = m[1].split(/[ ,/]+/).map(parseFloat); return [p[0], p[1], p[2]]; }
+  var GL_HEAD = 'precision highp float;\nuniform float u_t; uniform float u_p; uniform vec2 u_res; uniform vec3 u_gold; uniform vec3 u_gold2; uniform vec3 u_bg; uniform vec3 u_ink; uniform float u_light; uniform vec4 u_a; uniform vec4 u_b;\n' +
+    'float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}\n' +
+    'float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}\n' +
+    'float fbm(vec2 p){float v=0.0,a=0.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.03+vec2(1.7,9.2);a*=0.5;}return v;}\n';
+  var vis = {
+    // a fragment shader that fills the block (behind everything). frag gets u_t (seconds), u_p (0..1 entrance), u_res,
+    // u_gold / u_gold2 / u_bg / u_ink (from the look), u_light (1 on light looks), u_a / u_b (your own numbers).
+    shader: function (el, frag, opt) {
+      opt = opt || {};
+      var host = opt.parent || el, c = D.createElement('canvas');
+      c.className = 'vis-gl'; c.setAttribute('aria-hidden', 'true'); c.dataset.deco = '';
+      c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none';
+      host.insertBefore(c, host.firstChild);
+      var gl = c.getContext('webgl', { preserveDrawingBuffer: true, premultipliedAlpha: false, alpha: !!opt.alpha, antialias: false });
+      var none = { canvas: c, draw: function () {}, dispose: function () {} };
+      if (!gl) return none;
+      function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error('[vis.shader] ' + gl.getShaderInfoLog(s)); return null; } return s; }
+      var vs = sh(gl.VERTEX_SHADER, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}'), fs = sh(gl.FRAGMENT_SHADER, GL_HEAD + frag);
+      if (!vs || !fs) return none;
+      var pr = gl.createProgram(); gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr); gl.useProgram(pr);
+      var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      var U = {}; ['u_t', 'u_p', 'u_res', 'u_gold', 'u_gold2', 'u_bg', 'u_ink', 'u_light', 'u_a', 'u_b'].forEach(function (n) { U[n] = gl.getUniformLocation(pr, n); });
+      var light = /look-(white|ivory|paper)/.test(D.body.className) ? 1 : 0;
+      var col = { gold: cssRgb(el, '--gold', '#D6892A'), gold2: cssRgb(el, '--gold2', '#F2B45A'), bg: cssRgb(el, '--bg', '#0B0A08'), ink: cssRgb(el, '--ink', '#F4EFE6') };
+      var scale = opt.scale || (CS.capturing ? 0.75 : 0.6);
+      function size() { var w = Math.max(2, Math.round((el.offsetWidth || 960) * scale)), h = Math.max(2, Math.round((el.offsetHeight || 540) * scale)); if (c.width !== w || c.height !== h) { c.width = w; c.height = h; gl.viewport(0, 0, w, h); } }
+      return {
+        canvas: c,
+        draw: function (t, p, a, b) {
+          if (gl.isContextLost()) return; size();
+          gl.uniform1f(U.u_t, t); gl.uniform1f(U.u_p, p == null ? 1 : p); gl.uniform2f(U.u_res, c.width, c.height);
+          gl.uniform3fv(U.u_gold, col.gold); gl.uniform3fv(U.u_gold2, col.gold2); gl.uniform3fv(U.u_bg, col.bg); gl.uniform3fv(U.u_ink, col.ink); gl.uniform1f(U.u_light, light);
+          gl.uniform4fv(U.u_a, a || [0, 0, 0, 0]); gl.uniform4fv(U.u_b, b || [0, 0, 0, 0]);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+        },
+        dispose: function () { var x = gl.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); c.remove(); }
+      };
+    },
+    // a connect-ai-three scene (the 6-7 lesson kit): spec in, render(t) out. Async (models load): use .ready.
+    three: function (el, spec, opt) {
+      opt = opt || {};
+      var host = D.createElement('div'); host.className = 'vis-3d'; host.setAttribute('aria-hidden', 'true'); host.dataset.deco = '';
+      host.style.cssText = 'position:absolute;inset:0;pointer-events:none' + (opt.style ? ';' + opt.style : '');
+      (opt.parent || el).insertBefore(host, opt.before === false ? null : (opt.parent || el).firstChild);
+      var canvas = D.createElement('canvas'); canvas.style.cssText = 'display:block;width:100%;height:100%'; host.appendChild(canvas);
+      var stage = null, want = 0, dead = false;
+      var out = { host: host, canvas: canvas, stage: null, ready: null, render: function (t) { want = t; if (stage) stage.render(t); }, dispose: function () { dead = true; if (stage) stage.dispose(); host.remove(); } };
+      if (!W.CSThree) { console.error('[vis.three] the 3D stage is not in this page (assets/vendor/cs-three.js)'); out.ready = Promise.resolve(); return out; }
+      var w = host.offsetWidth || el.offsetWidth || 1920, h = host.offsetHeight || el.offsetHeight || 1080;
+      var pr = opt.pixelRatio || (CS.capturing ? 1 : Math.min(2, W.devicePixelRatio || 1));
+      out.ready = W.CSThree.createStage(spec, { canvas: canvas, width: w, height: h, pixelRatio: pr, mode: 'video', transparent: opt.transparent !== false, assetBase: '', kitBase: 'assets/kit/' })
+        .then(function (s) { if (dead) { s.dispose(); return; } stage = out.stage = s; s.render(want); })
+        .catch(function (e) { console.error('[vis.three] ' + (e && e.message)); CS.problems.push('3D scene: ' + (e && e.message)); });
+      out.resize = function () { if (!stage) return; var w2 = host.offsetWidth, h2 = host.offsetHeight; if (w2 && h2) { stage.resize(w2, h2); stage.render(want); } };
+      return out;
+    },
+    // the clip of a picture-first block: a GSAP timeline for the entrance plus draw(t) for what keeps living (light,
+    // a 3D camera). Recording: draw(t) is exact and runs on through the hold. Live: it keeps drifting while on screen.
+    ambient: function (tl, el, draw, opt) {
+      opt = opt || {};
+      var g = A.fromGsap(tl), dur = opt.dur || g.dur;
+      var vids = [].slice.call(el.querySelectorAll('video')).map(function (v) { return A.fromVideo(v); });
+      var base = 0, t0 = 0, raf = 0, on = false, started = false, lastSeek = 0;
+      var live = !CS.capturing && !CS.reduced;
+      function loop(now) { raf = 0; if (!on) return; if (now - lastSeek > 30) draw(base + (now - t0) / 1000, false); raf = requestAnimationFrame(loop); }
+      // a 3D stage loads after the first seek: draw the last asked time again once it is there (reduce motion seeks only once)
+      if (opt.ready && opt.ready.then) opt.ready.then(function () { try { draw(base, false); } catch (e) {} }, function () {});
+      return {
+        lib: 'gsap+vis' + (vids.length ? '+video' : ''), dur: dur, steps: g.steps, free: true, ready: opt.ready || null,
+        seek: function (t, exact) {
+          g.seek(Math.min(t, g.dur)); base = t; t0 = lastSeek = performance.now();
+          var ps = [], r = draw(t, !!exact); if (r && r.then) ps.push(r);
+          vids.forEach(function (c) { var q = c.seek(t, exact); if (q && q.then) ps.push(q); });
+          if (live && t > 0) { started = true; if (on && !raf) raf = requestAnimationFrame(loop); }
+          return ps.length ? Promise.all(ps) : undefined;
+        },
+        visible: function (v) {
+          on = v; vids.forEach(function (c) { c.visible && c.visible(v); });
+          if (v && started && live && !raf) { t0 = performance.now(); raf = requestAnimationFrame(loop); }
+          if (!v && raf) { cancelAnimationFrame(raf); raf = 0; }
+        },
+        fit: opt.fit || null,
+        dispose: function () { on = false; if (raf) cancelAnimationFrame(raf); g.dispose(); vids.forEach(function (c) { c.dispose && c.dispose(); }); if (opt.dispose) opt.dispose(); }
+      };
+    },
+    // the look of the deck as connect-ai-three colours (a 3D scene sits in the same light as the slide)
+    palette: function (el) { var h = function (a) { return '#' + a.map(function (v) { return ('0' + Math.round(v * 255).toString(16)).slice(-2); }).join(''); }; return { gold: h(cssRgb(el, '--gold', '#D6892A')), gold2: h(cssRgb(el, '--gold2', '#F2B45A')), bg: h(cssRgb(el, '--bg', '#0B0A08')), ink: h(cssRgb(el, '--ink', '#F4EFE6')), light: /look-(white|ivory|paper)/.test(D.body.className) }; }
+  };
+  CS.vis = vis;
+
   CS.mount = function (frame, scene, stage, story) {
     var b = blocks[scene.kind];
     frame.innerHTML = '';
@@ -283,7 +381,7 @@
     addCss(scene.kind, b.css);
     var idx = (function () { var l = ((story && story.scenes) || []).filter(function (x) { return x.only !== (stage === 'deck' ? 'site' : 'deck'); }); var i = l.indexOf(scene); return { i: i < 0 ? 1 : i + 1, n: l.length || 1 }; })();
     var cx = Object.assign({
-      stage: stage, shape: shape, w: w, h: h, look: (story && story.look) || 'connect', story: story || {}, meta: b.meta, pro: pro,
+      stage: stage, shape: shape, w: w, h: h, look: (story && story.look) || 'connect', story: story || {}, meta: b.meta, pro: pro, vis: vis,
       index: idx.i, total: idx.n,
       gsap: W.gsap, motion: W.Motion, anime: W.anime, lottie: W.lottie,
       esc: esc, clamp: clamp, spans: spans, prog: prog, eases: eases, coverRect: coverRect,
@@ -324,6 +422,34 @@
 
   function stops(clip) { return (clip.steps || []).filter(function (s) { return s > 0.01 && s < clip.dur - 0.01; }).concat([clip.dur]); }
 
+
+  // ---------- cinematic transitions between slides (deck). a = the frame that leaves, b = the frame that comes, p = 0..1 ----------
+  // A pure function of p, so the live deck and a recording show the same in-between frames. Each kind once per deck, in this order.
+  function ez(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+  function eo(x) { return 1 - Math.pow(1 - x, 4); }
+  function edge(b, on, css) { var e = b.parentNode.querySelector('.cs-tr-edge'); if (!on) { if (e) e.remove(); return; } if (!e) { e = D.createElement('i'); e.className = 'cs-tr-edge'; e.setAttribute('aria-hidden', 'true'); b.parentNode.appendChild(e); } e.style.cssText = css; }
+  var TRANS = {
+    // camera push: the old slide flies past the lens, the new one settles from a step back
+    push: function (a, b, p) { var q = ez(p); a.style.transform = 'scale(' + (1 + 0.35 * q) + ')'; a.style.opacity = 1 - eo(Math.min(1, p * 1.6)); a.style.filter = 'blur(' + (10 * q) + 'px)'; b.style.transform = 'scale(' + (0.86 + 0.14 * eo(p)) + ')'; b.style.opacity = eo(Math.min(1, p * 1.4)); b.style.filter = 'blur(' + (8 * (1 - eo(p))) + 'px)'; },
+    // mask wipe with a gold edge of light
+    wipe: function (a, b, p) { var q = ez(p), x = 100 * (1 - q); b.style.clipPath = 'inset(0 0 0 ' + x + '%)'; a.style.transform = 'translateX(' + (-12 * q) + '%)'; a.style.filter = 'brightness(' + (1 - 0.6 * q) + ')'; edge(b, p < 1, 'left:' + x + '%;opacity:' + Math.sin(Math.PI * p)); },
+    // depth parallax: the new slide slides in on three layers (back, title, body) at different speeds
+    depth: function (a, b, p) { var q = ez(p); a.style.transform = 'translateX(' + (-38 * q) + '%) scale(' + (1 - 0.1 * q) + ')'; a.style.opacity = 1 - 0.75 * q; b.style.transform = 'translateX(' + (100 * (1 - q)) + '%)'; [].forEach.call(b.querySelectorAll('.pro-head, .vis-l1'), function (n) { n.style.transform = 'translateX(' + (30 * (1 - eo(p))) + '%)'; }); [].forEach.call(b.querySelectorAll('.pro-body, .vis-l2'), function (n) { n.style.transform = 'translateX(' + (60 * (1 - eo(p))) + '%)'; }); },
+    // iris: a circle of light opens the new slide from the middle
+    iris: function (a, b, p) { var q = ez(p); b.style.clipPath = 'circle(' + (q * 78) + '% at 50% 50%)'; a.style.transform = 'scale(' + (1 + 0.08 * q) + ')'; a.style.filter = 'brightness(' + (1 - 0.7 * q) + ')'; edge(b, p < 1, 'left:50%;top:50%;width:' + (q * 156) + 'vmax;height:' + (q * 156) + 'vmax;border-radius:50%;transform:translate(-50%,-50%);background:none;box-shadow:0 0 0 1.5px var(--gold2), 0 0 40px 6px color-mix(in srgb, var(--gold) 40%, transparent);opacity:' + Math.sin(Math.PI * p)); },
+    // rise: the new slide comes up like a sheet, the old one sinks back into the dark
+    rise: function (a, b, p) { var q = ez(p); b.style.transform = 'translateY(' + (100 * (1 - q)) + '%)'; b.style.boxShadow = '0 -40px 120px rgba(0,0,0,' + (0.5 * (1 - q)) + ')'; a.style.transform = 'translateY(' + (-14 * q) + '%) scale(' + (1 - 0.08 * q) + ')'; a.style.filter = 'brightness(' + (1 - 0.65 * q) + ')'; },
+    // through: we fly through the old slide into the new one
+    through: function (a, b, p) { var q = ez(p); a.style.transform = 'scale(' + (1 + 2.2 * q * q) + ')'; a.style.opacity = 1 - Math.min(1, p * 1.5); b.style.transform = 'scale(' + (0.55 + 0.45 * eo(p)) + ')'; b.style.opacity = eo(Math.min(1, p * 1.3)); b.style.borderRadius = (40 * (1 - eo(p))) + 'px'; },
+    // slices: the new slide arrives in three bands, one after the other
+    slice: function (a, b, p) { var s = [0, 0.15, 0.3].map(function (d) { return ez(Math.max(0, Math.min(1, (p - d) / 0.7))); }); b.style.clipPath = 'polygon(' + [[0, 0], [100 * s[0], 0], [100 * s[0], 33.4], [100 * s[1], 33.4], [100 * s[1], 66.7], [100 * s[2], 66.7], [100 * s[2], 100], [0, 100]].map(function (v) { return v[0] + '% ' + v[1] + '%'; }).join(',') + ')'; b.style.transform = 'translateX(' + (-6 * (1 - ez(p))) + '%)'; a.style.filter = 'brightness(' + (1 - 0.6 * ez(p)) + ')'; },
+    // shutter: a horizontal slit of light opens top and bottom
+    shutter: function (a, b, p) { var q = ez(p), y = 50 * (1 - q); b.style.clipPath = 'inset(' + y + '% 0 ' + y + '% 0)'; b.style.transform = 'scale(' + (1.08 - 0.08 * q) + ')'; a.style.transform = 'scale(' + (1 - 0.05 * q) + ')'; a.style.filter = 'brightness(' + (1 - 0.7 * q) + ')'; edge(b, p < 1, 'left:0;right:0;width:auto;height:1.5px;top:' + y + '%;opacity:' + Math.sin(Math.PI * p) + ';box-shadow:0 ' + (100 - 2 * y) * 10.8 + 'px 0 var(--gold2)'); }
+  };
+  var TRANS_ORDER = ['push', 'wipe', 'depth', 'iris', 'rise', 'through', 'slice', 'shutter'];
+  CS.transitions = TRANS_ORDER.slice();
+  function transReset(f) { if (!f) return; f.style.transform = f.style.opacity = f.style.filter = f.style.clipPath = f.style.boxShadow = f.style.borderRadius = ''; [].forEach.call(f.querySelectorAll('.pro-head, .pro-body, .vis-l1, .vis-l2'), function (n) { n.style.transform = ''; }); var e = f.parentNode && f.parentNode.querySelector('.cs-tr-edge'); if (e) e.remove(); }
+
   // =====================================================================
   //  DECK  (reveal.js is the engine: keys, touch, overview, speaker notes, print to PDF)
   // =====================================================================
@@ -352,9 +478,25 @@
     }
     function shown(sec) { return sec.querySelectorAll('.cs-step.visible').length; }
     var R = W.Reveal;
+    // "cinema" (default): our own transitions; any reveal.js name ("fade", "slide", "none") keeps reveal.js doing it
+    var own = !story.transition || story.transition === 'cinema' || TRANS[story.transition];
+    var TR = story.transitionTime || 1.0;
+    function transKind(i) { var s = scenes[i] || {}; if (s.transition && TRANS[s.transition]) return s.transition; if (TRANS[story.transition]) return story.transition; return TRANS_ORDER[(i - 1) % TRANS_ORDER.length]; }
+    var trRaf = 0, trPair = null;
+    function trEnd() { if (trRaf) cancelAnimationFrame(trRaf); trRaf = 0; if (trPair) { trPair[0].classList.remove('cs-leave'); transReset(trPair[0].querySelector('.cs-frame')); transReset(trPair[1].querySelector('.cs-frame')); trPair = null; } }
+    function trSet(ai, bi, p) {   // the frame of slide ai leaves, bi comes, at p (exact, for recording)
+      var a = root.children[ai], b = root.children[bi];
+      if (!trPair || trPair[0] !== a || trPair[1] !== b) { trEnd(); trPair = [a, b]; a.classList.add('cs-leave'); }
+      TRANS[transKind(Math.max(ai, bi))](a.querySelector('.cs-frame'), b.querySelector('.cs-frame'), Math.max(0, Math.min(1, p)));
+    }
+    function trPlay(ai, bi) {
+      trEnd(); if (!own || CS.reduced || CS.capturing || print || ai < 0 || ai === bi) return;
+      var t0 = performance.now();
+      (function tick(now) { var p = (now - t0) / 1000 / TR; if (p >= 1) { trEnd(); return; } trSet(ai, bi, p); trRaf = requestAnimationFrame(tick); })(t0);
+    }
     var cfg = Object.assign({
       width: 1920, height: 1080, margin: 0, center: false, hash: true, controls: !CS.capturing, progress: !CS.capturing,
-      transition: CS.capturing || CS.reduced ? 'none' : (story.transition || 'fade'), transitionSpeed: 'fast', backgroundTransition: 'none',
+      transition: CS.capturing || CS.reduced || own ? 'none' : story.transition, transitionSpeed: 'fast', backgroundTransition: 'none',
       minScale: 0.1, maxScale: 4, slideNumber: false, help: true, pdfSeparateFragments: false, pdfMaxPagesPerSlide: 1,
       plugins: W.RevealNotes ? [W.RevealNotes] : []
     }, story.reveal || {});
@@ -374,6 +516,7 @@
         var prev = e.previousSlide ? [].indexOf.call(root.children, e.previousSlide) : -1;
         if (prev >= 0 && clips[prev] && clips[prev].visible) clips[prev].visible(false);
         enter(e.indexh, prev > e.indexh && shown(e.currentSlide) > 0);
+        trPlay(prev, e.indexh);
       });
       R.on('fragmentshown', function (e) {
         var i = R.getIndices().h, clip = clips[i]; if (!clip || !e.fragment.classList.contains('cs-step')) return;
@@ -401,13 +544,15 @@
         seek: async function (t) {
           var i = 0; while (i < sched.length - 1 && t >= sched[i].at + sched[i].dur) i++;
           if (R.getIndices().h !== i) { R.slide(i, 0); await raf2(); }
-          var c = sched[i].clip; await c.seek(Math.min(t - sched[i].at, c.dur), true); await raf1();
+          var c = sched[i].clip, lt = t - sched[i].at, ps = [c.seek(c.free ? lt : Math.min(lt, c.dur), true)];
+          if (own && i > 0 && lt < TR && !story.noTransitions) { var pc = sched[i - 1].clip; ps.push(pc.seek(pc.free ? sched[i - 1].dur + lt : pc.dur, true)); trSet(i - 1, i, lt / TR); } else trEnd();
+          await Promise.all(ps); await raf1();
         },
         goto: async function (i, where) {   // where: 0..1 of the clip
-          R.slide(i, 0); await raf2(); var c = ensure(i); if (c.ready) await c.ready;
+          trEnd(); R.slide(i, 0); await raf2(); var c = ensure(i); if (c.ready) await c.ready;
           await c.seek(c.dur * (where == null ? 1 : where), true); await raf2(); return c.dur;
         },
-        visit: async function (i) { R.slide(i, 0); await raf2(); var c = ensure(i); if (c.ready) await c.ready; await raf2(); return c.t; },   // like a person arriving, no seek
+        visit: async function (i) { trEnd(); R.slide(i, 0); await raf2(); var c = ensure(i); if (c.ready) await c.ready; await raf2(); return c.t; },   // like a person arriving, no seek
         clip: function (i) { return ensure(i); }
       };
       W.__cs_ready = true;
@@ -473,7 +618,7 @@
           if (x.startT == null && seen >= 0.45) x.startT = now;
           if (!exact && x.startT != null && seen <= 0 && r.top > 0) x.startT = null;     // scrolled back above it: it will play again
           t = x.startT == null ? 0 : Math.min(c.dur, (now - x.startT) / 1000);
-          if (c.lib && c.lib.indexOf('video') >= 0 && x.startT != null) t = (now - x.startT) / 1000;
+          if ((c.free || (c.lib && c.lib.indexOf('video') >= 0)) && x.startT != null) t = (now - x.startT) / 1000;
         }
         // recording only moves what is on screen (a screen is always seeked when it comes into view)
         if (vis || (!exact && Math.abs(t - c.t) > 0.001)) { var pr = c.seek(t, exact); if (pr && pr.then) ps.push(pr); c.t = t; }
@@ -538,7 +683,7 @@
   //  measuring (used by `check`): what is really on screen
   // =====================================================================
   function lum(c) { var a = [c[0], c[1], c[2]].map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2]; }
-  function parseColor(s) { var m = /rgba?\(([^)]+)\)/.exec(s); if (!m) return [255, 255, 255, 1]; var p = m[1].split(/[ ,/]+/).map(parseFloat); return [p[0], p[1], p[2], p[3] == null || isNaN(p[3]) ? 1 : p[3]]; }
+  function parseColor(s) { var m = /rgba?\(([^)]+)\)/.exec(s); if (!m) { var h = /color\(srgb ([\d.e-]+) ([\d.e-]+) ([\d.e-]+)(?: \/ ([\d.]+))?/.exec(s || ''); return h ? [h[1] * 255, h[2] * 255, h[3] * 255, h[4] == null ? 1 : +h[4]] : [255, 255, 255, 1]; } var p = m[1].split(/[ ,/]+/).map(parseFloat); return [p[0], p[1], p[2], p[3] == null || isNaN(p[3]) ? 1 : p[3]]; }
   function frames() { return [].slice.call(D.querySelectorAll('.cs-frame')); }
   // same-origin documents inside a frame (HyperFrames blocks live in an iframe): [{doc, ox, oy, sc, host}]
   function innerDocs(root) {

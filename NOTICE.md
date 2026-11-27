@@ -11,6 +11,10 @@ connect-ai-slides-web is CONNECT AI LAB's code (MIT, see [LICENSE](LICENSE)). It
 > | Remotion, `@remotion/player`, `@remotion/renderer` | Remotion License. **Not MIT.** Free for individuals, for-profit organisations with up to 3 employees and non-profits. Other companies need a Company License. https://github.com/remotion-dev/remotion/blob/main/LICENSE.md |
 > | Everything else that is installed | MIT, Apache-2.0, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD |
 >
+> | three.js (`three` on npm) | MIT, Three.js Authors |
+> | The 3D stage in `runtime/three/` (from connect-ai-three 0.2.0, lessons 6-7) | MIT, CONNECT AI LAB |
+> | CAL Sans / CAL Serif typeface data in `runtime/three/fonts/` (subsets of Pretendard and Cormorant Garamond) | SIL Open Font License 1.1, `licenses/fonts-OFL.txt` |
+>
 > The deck engine, the website engine and the check run without GSAP and without Remotion. GSAP is loaded only by `gsap/*` and `hyperframes/*` blocks. Remotion is loaded only by `remotion/*` blocks.
 
 ## No third-party source code in this repository
@@ -20,6 +24,8 @@ No file in this repository is copied from another project. Every library below i
 - The blocks in `catalog/hyperframes/` are written by us in the HyperFrames block format (HTML + CSS + a paused GSAP timeline). They are not taken from the HyperFrames registry. MIT.
 - The Lottie files in `catalog/lottie/` are plain shape layers written by our own generator (`tools/make-lottie.mjs`). CC0.
 - The Remotion compositions in `catalog/remotion/` are our own components. MIT. They need Remotion to run.
+- `runtime/three/` is the scene runtime of our own connect-ai-three 0.2.0 (CONNECT AI LAB, MIT; the lessons 6-7 kit): `createStage(spec).render(t)`, objects, materials, looks, camera motions, and its glTF, 3D text and brand adapters. It imports three.js from `node_modules`; three.js itself is not in this repository. Its six typeface files are glyph subsets of Pretendard (Kil Hyung-jin) and Cormorant Garamond (The Cormorant Project Authors) under the SIL Open Font License 1.1, as in connect-ai-three.
+- The blocks in `catalog/vis/` and `catalog/three/` are written by us (MIT). The fragment shaders, the 3D charts, the neural network and the transitions are our own code.
 
 ## Dependencies
 
@@ -36,7 +42,8 @@ No file in this repository is copied from another project. Every library below i
 | remotion | 4.0.529 | Remotion License | `remotion/*` blocks | Yes, only if used, inside `assets/remotion.js` |
 | @remotion/player | 4.0.529 | Remotion License | Plays a Remotion composition inside a slide or a page | Yes, only if used, inside `assets/remotion.js` |
 | react, react-dom (and scheduler) | 19.1.0 (0.26.0) | MIT | Needed by `@remotion/player` | Yes, only if used, inside `assets/remotion.js` |
-| esbuild | 0.28.1 | MIT | Bundles Remotion compositions into `assets/remotion.js` at build time | No |
+| three | 0.170.0 | MIT | `three/*` blocks: 3D models, 3D charts, the 3D network (with the connect-ai-three stage in `runtime/three/`) | Yes, only if used, bundled with the stage into `assets/vendor/cs-three.js` (its licence goes into `assets/vendor/licenses/`) |
+| esbuild | 0.28.1 | MIT | Bundles Remotion compositions into `assets/remotion.js`, and three.js with the 3D stage into `assets/vendor/cs-three.js`, at build time | No |
 | @remotion/renderer | 4.0.529 | Remotion License | Only as a place to find an ffmpeg binary when no system ffmpeg is installed | No |
 | puppeteer-core | 24.43.1 | Apache-2.0 | Drives the Chrome already on your computer for `check`, `record` and `export` | No |
 | pptxgenjs | 4.0.1 | MIT | Writes `deck.pptx` | No |
@@ -57,6 +64,7 @@ Your `out/deck` and `out/site` folders contain copies of the libraries your stor
 ## Sample material
 
 - `examples/media/person.svg` and `examples/media/person.mp4` are a drawn stand-in for a person on camera, made by us. CC0. No real person is in the npm package.
+- `examples/media/croissant.glb` is the Poly Haven croissant model (croissant, 2k textures packed at 1024 px into one glTF binary). CC0 (polyhaven.com/license).
 - `examples/media/photo-croissant.jpg`, `photo-cake.jpg`, `photo-tea.jpg` and `photo-table.jpg` are our own Blender Cycles renders of Poly Haven models (croissant, carrot_cake, tea_set_01, coffee_table_round_01) lit by the Poly Haven HDRI brown_photostudio_02. Models and HDRI are CC0 (polyhaven.com/license); the renders are CC0 too.
 - The demo videos and pictures in `docs/` (repository only) show the author. They are there with his permission, to show the kit working. They are not licensed for reuse.
 

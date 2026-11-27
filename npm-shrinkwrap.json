@@ -1,12 +1,12 @@
 {
   "name": "connect-ai-slides-web",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "connect-ai-slides-web",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "license": "MIT",
       "dependencies": {
         "animejs": "4.5.0",
@@ -17,7 +17,8 @@
         "motion": "14.14.0",
         "pptxgenjs": "4.0.1",
         "puppeteer-core": "24.43.1",
-        "reveal.js": "6.0.2"
+        "reveal.js": "6.0.2",
+        "three": "0.170.0"
       },
       "bin": {
         "connect-ai-slides-web": "bin/cli.mjs"
@@ -1730,6 +1731,12 @@
       "dependencies": {
         "b4a": "^1.6.4"
       }
+    },
+    "node_modules/three": {
+      "version": "0.170.0",
+      "resolved": "https://registry.npmjs.org/three/-/three-0.170.0.tgz",
+      "integrity": "sha512-FQK+LEpYc0fBD+J8g6oSEyyNzjp+Q7Ks1C568WWaoMRLW+TkNNWmenWeGgJjV105Gd+p/2ql1ZcjYvNiPZBhuQ==",
+      "license": "MIT"
     },
     "node_modules/tslib": {
       "version": "2.9.1",

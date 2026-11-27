@@ -1,0 +1,20 @@
+{
+  "kind": "vis/line",
+  "title": "Line chart, filmed",
+  "description": "Numbers over time as a shot: the camera starts close on the first point and pulls back while a glowing head draws the line, the value riding on the head counts up, a soft gold area fills behind it and the labels arrive as it passes. The value parks on the highest point and a thin light keeps travelling along the line.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "vis-line",
+  "lead": "picture",
+  "dur": 4.0,
+  "props": {
+    "points": "required, 3-12 of {label, value} in order",
+    "unit": "short unit after the value",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line, for example the source",
+    "decimals": "digits after the point"
+  },
+  "example": {"kicker": "One story, three frames", "title": "The width of each frame the check opens", "unit": "px", "points": [{"label": "Phone", "value": 390}, {"label": "Tablet", "value": 768}, {"label": "Web page", "value": 1440}, {"label": "Slide", "value": 1920}]}
+}

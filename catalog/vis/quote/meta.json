@@ -1,0 +1,13 @@
+{
+  "kind": "vis/quote",
+  "title": "Spoken quote",
+  "description": "Someone's own words. With their clip the person stands full height on one side (only framed, slowly pushed in), the quote sits on the free side, a gold quotation mark draws itself and a warm highlight passes over the words as if a voice reads them. Without a picture the quote is centred in serif with a slow light behind.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "quote",
+  "family": "vis-spoken-quote",
+  "lead": "picture",
+  "dur": 3.0,
+  "props": {"text": "required, the person's own words, word for word", "gold": "a word or words to colour gold", "by": "who said it", "role": "where or who, short", "src": "their photo or clip", "poster": "still for a video", "face": "[x, y, w, h] of the face, 0 to 1", "body": "[x, y, w, h] of the person", "alt": "what the picture shows", "kicker": "small caps above", "pos": "object-position"},
+  "example": {"text": "A slide carries one message.", "gold": "one message", "by": "connect-ai-slides-web", "role": "the rule behind every block", "src": "media/person.mp4", "poster": "media/person.svg", "face": [0.39, 0.2, 0.22, 0.4], "alt": "A person talking to the camera"}
+}

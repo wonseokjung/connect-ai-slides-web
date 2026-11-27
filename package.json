@@ -1,7 +1,7 @@
 {
   "name": "connect-ai-slides-web",
-  "version": "0.5.0",
-  "description": "Your AI agent becomes a presentation employee: a few lines of markdown, Marp or Slidev, or your old PowerPoint file, become a real PowerPoint file. Every word is an editable text box, each slide's motion plays as a clip, the words fade in on time, and your speaker notes come along. The same story is also a deck in the browser and a one-page website, in a premium design set (charts, tables, formulas, diagrams, photo layouts, dark gold or light looks) from 89 motion blocks (GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion), checked on the real screen with a design self-check.",
+  "version": "0.6.0",
+  "description": "Your AI agent becomes a presentation employee: a few lines of markdown become a deck where every slide is a picture or motion first. 3D models and 3D charts on the slide (three.js), living gold light (shaders), kinetic type, charts and formulas that move, neural networks with signals flowing, your clips in frames and devices, and cinematic transitions between slides. The same story is also a one-page website and a real PowerPoint file (editable text boxes, motion clips, speaker notes), checked on the real screen. 114 blocks (three.js, GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion).",
   "type": "module",
   "bin": {
     "connect-ai-slides-web": "bin/cli.mjs"
@@ -60,7 +60,12 @@
     "ai-employee",
     "marp",
     "slidev",
-    "pptx-import"
+    "pptx-import",
+    "three.js",
+    "threejs",
+    "3d",
+    "webgl",
+    "shader"
   ],
   "files": [
     "bin/",
@@ -91,7 +96,8 @@
     "motion": "14.14.0",
     "pptxgenjs": "4.0.1",
     "puppeteer-core": "24.43.1",
-    "reveal.js": "6.0.2"
+    "reveal.js": "6.0.2",
+    "three": "0.170.0"
   },
   "optionalDependencies": {
     "@remotion/player": "4.0.529",

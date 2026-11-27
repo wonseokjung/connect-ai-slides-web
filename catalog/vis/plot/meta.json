@@ -1,0 +1,21 @@
+{
+  "kind": "vis/plot",
+  "title": "Functions, traced",
+  "description": "Function curves drawn by a tracer: each curve draws itself behind a glowing point with dashed drops to both axes, so you see x turn into y; the curve being drawn glows and its name lands at its end. Afterwards the tracer keeps riding the curves one after another. Built-in functions only (no eval).",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "chart",
+  "family": "vis-trace",
+  "lead": "picture",
+  "dur": 4.8,
+  "props": {
+    "curves": "required, 1-3 of {fn, label}: fn is one of step, sigmoid, relu, tanh, linear, parabola",
+    "range": "[min, max] of x, default [-5, 5]",
+    "xlabel": "name of the x axis",
+    "ylabel": "name of the y axis",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {"kicker": "Activation functions", "title": "Step, sigmoid and ReLU", "curves": [{"fn": "step", "label": "Step"}, {"fn": "sigmoid", "label": "Sigmoid"}, {"fn": "relu", "label": "ReLU"}]}
+}

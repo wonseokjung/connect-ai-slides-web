@@ -278,7 +278,7 @@ await test('markdown: every part becomes one slide, every word is kept, no block
 
 await test('markdown, pro design: tables become charts or tables, formulas, plots, flows, networks, pictures and numbers get their own layouts, no word lost', () => {
   const md = '# Launch\n![cover](media/c.jpg)\nA small shop\n## Sales\n| Month | Cups |\n|---|---|\n| Jan | 120 |\n| Feb | 180 |\n| Mar | 260 |\n## Menu\n| Item | Price |\n|---|---|\n| Tea | four |\n| Cake | five |\n## Formula\n$$ A = XW + B $$\n- A: output\n- X: input\n## Gate\n$$\ny = 0 if w1x1 <= theta\n1 if w1x1 > theta\n$$\n## Curves\nplot: step, relu\n## Path\nOrder -> Bake -> Serve\n## Net\nIn [x1 x2] -> Out [y]\n## Numbers\n**3** shops\n**12** people\n## Shop\n![one](a.jpg)\n![two](b.jpg)\n## Then and now\nBefore: paper, phone\nAfter: one page, one link\n## Why\nWe bake **every morning** for you.\n## Part two\n## End\n- [Map](https://a.b)';
-  const story = talkToStory(parseTalk(md));
+  const story = talkToStory(parseTalk(md), {design: 'pro'});
   const kinds = story.scenes.map((x) => x.kind);
   assert.equal(validateStory(story, cat).length, 0, validateStory(story, cat).join('\n'));
   for (const k of ['pro/cover', 'pro/line', 'pro/table', 'pro/equation', 'pro/plot', 'pro/flow', 'pro/network', 'pro/stats', 'pro/gallery', 'pro/compare', 'pro/statement', 'pro/chapter', 'pro/closing']) assert.ok(kinds.includes(k), 'missing ' + k + ' in ' + kinds.join(', '));
@@ -289,9 +289,9 @@ await test('markdown, pro design: tables become charts or tables, formulas, plot
   assert.ok(story.scenes.every((x) => x.notes), 'every slide has notes');
   const all = JSON.stringify(story);
   for (const w of ['A small shop', 'Tea', 'five', 'output', 'Bake', 'shops', 'paper', 'one link', 'Part two', 'Map']) assert.ok(all.includes(w), 'lost ' + w);
-  assert.equal(talkToStory(parseTalk(SAMPLE.ko)).scenes.every((x) => x.kind.startsWith('pro/')), true, 'the sample is pro by default');
+  assert.equal(talkToStory(parseTalk(SAMPLE.ko), {design: 'pro'}).scenes.every((x) => x.kind.startsWith('pro/')), true, 'the sample is all pro with --pro');
   // a quote with its speaker on the next line, clock times in a flow, lesson labels as a timeline
-  const q = talkToStory(parseTalk('# T\n## Said\n> Good bread.\n- A guest\n## Day\n06:00 dough -> 07:00 open -> 12:00 lunch\n## Map\n1. Lesson 2: video\n2. Lessons 4–5: slides\n3. Lesson 10: library\n')).scenes;
+  const q = talkToStory(parseTalk('# T\n## Said\n> Good bread.\n- A guest\n## Day\n06:00 dough -> 07:00 open -> 12:00 lunch\n## Map\n1. Lesson 2: video\n2. Lessons 4–5: slides\n3. Lesson 10: library\n'), {design: 'pro'}).scenes;
   assert.equal(q.find((x) => x.kind === 'pro/quote').by, 'A guest', 'the line under a quote says who');
   assert.deepEqual(q.find((x) => x.kind === 'pro/flow').steps[0], {title: '06:00', text: 'dough'}, 'a clock time stays whole');
   assert.equal(q.find((x) => x.kind === 'pro/timeline').items.length, 3, 'lesson labels make a timeline');
@@ -362,6 +362,33 @@ async function oldDeck(dir) {
   fs.writeFileSync(file, await zip.generateAsync({type: 'nodebuffer'}));
   return {file, n};
 }
+
+await test('markdown, visual design (default): pictures and motion first, each block once, words-only at most half, pro only as a fallback', () => {
+  const md = '# Launch\n![cover](media/c.glb)\nA small shop\n## Sales\n| Item | Guests |\n|---|---|\n| Tea | 82 |\n| Cake | 76 |\n| Bread | 91 |\n## Gate\n$$\ny = 0 if w1x1 + w2x2 <= theta\n1 if w1x1 + w2x2 > theta\n$$\n## Gate with bias\n$$\ny = 0 if b + w1x1 + w2x2 <= 0\n1 if b + w1x1 + w2x2 > 0\n$$\n## AND\n| x1 | x2 | y |\n|---|---|---|\n| 0 | 0 | 0 |\n| 1 | 1 | 1 |\n| 0 | 1 | 0 |\n| 1 | 0 | 0 |\n## Layers\n$$ A = XW + B $$\n- A: ( a1 a2 a3 )\n- X: ( x1 x2 )\n## Net\nIn [x1 x2] -> Hidden [a1 a2 a3] -> Out [y]\n## Day\n06:00 dough -> 07:00 open -> 12:00 lunch\n## Why\nWe bake **every morning** for you.\n## How\nAnd one more thing to say.\n## Shop\n![one](a.jpg)\n![two](b.jpg)\n## Numbers\n**3** shops\n**12** seats\n## End\n- [Map](https://a.b)';
+  const story = talkToStory(parseTalk(md), {kinds: new Set(cat.filter((m) => m.status === 'ok').map((m) => m.kind))});
+  const kinds = story.scenes.map((x) => x.kind), K = Object.fromEntries(cat.map((m) => [m.kind, m]));
+  assert.equal(validateStory(story, cat).length, 0, validateStory(story, cat).join('\n'));
+  assert.equal(story.design, 'visual');
+  for (const k of ['three/model', 'three/bars', 'vis/equation', 'vis/neuron', 'vis/boundary', 'vis/matrix', 'vis/flow', 'vis/statement', 'vis/scramble', 'vis/gallery', 'vis/stats', 'vis/closing']) assert.ok(kinds.includes(k), 'missing ' + k + ' in ' + kinds.join(', '));
+  if (K['three/network']) assert.ok(kinds.includes('three/network'), 'the network is 3D');
+  const vis = kinds.filter((k) => /^(vis|three)\//.test(k)); assert.equal(new Set(vis).size, vis.length, 'a visual block twice: ' + vis.join(', '));
+  assert.ok(kinds.filter((k) => K[k].lead === 'type').length * 2 <= kinds.length, 'words-only slides are at most half: ' + kinds.join(', '));
+  assert.equal(story.scenes[0].model, 'media/c.glb', 'a .glb under the title is a 3D cover');
+  const n = story.scenes.find((x) => x.kind === 'vis/neuron'); assert.deepEqual(n.inputs, ['x1', 'x2']); assert.deepEqual(n.weights, ['w1', 'w2']); assert.equal(n.bias, 'b');
+  assert.ok(story.scenes.every((x) => x.notes), 'every slide has notes');
+  const all = JSON.stringify(story);
+  for (const w of ['A small shop', 'Guests', 'dough', 'every morning', 'one more thing', 'shops', 'seats', 'Map', 'a1 a2 a3']) assert.ok(all.includes(w), 'lost ' + w);
+  // without the optional blocks (an older kit), the same talk falls back to pro, never to an unknown kind
+  const bare = talkToStory(parseTalk(md), {kinds: new Set(cat.filter((m) => m.kind.startsWith('pro/')).map((m) => m.kind))});
+  assert.equal(validateStory(bare, cat).length, 0); assert.ok(bare.scenes.every((x) => x.kind.startsWith('pro/')));
+  // the picker itself never makes three words-only slides in a row: a talk of only sentences and lists still gets a picture
+  const L = new Map(cat.map((m) => [m.kind, m.lead])), words = talkToStory(parseTalk('# Words\n## One\nJust one line here.\n## Two\nAnother single line.\n## Three\n- tea\n- cake\n- bread\n## Four\nBefore: by hand\nAfter: one file\n## Five\nThe last line said.'), {kinds: new Set(cat.filter((m) => m.status === 'ok').map((m) => m.kind)), leads: L});
+  assert.equal(validateStory(words, cat).length, 0);
+  const wk = words.scenes.map((x) => x.kind);
+  for (let i = 2; i < wk.length; i++) assert.ok(!(L.get(wk[i]) === 'type' && L.get(wk[i - 1]) === 'type' && L.get(wk[i - 2]) === 'type'), 'three words-only in a row: ' + wk.join(', '));
+  assert.ok(JSON.stringify(words).includes('bread') && JSON.stringify(words).includes('one file'), 'no word lost when the picker swaps a block');
+  return kinds.length + ' slides, ' + vis.length + ' visual; words-only talk: ' + wk.join(' ');
+});
 
 await test('import: an old PowerPoint becomes talk.md with its words, pictures and notes, and says what it left behind', async () => {
   const dir = tmp('imp');
@@ -489,13 +516,45 @@ else {
       for (const w of ['repeat', 'notes', 'face', 'poster']) assert.ok(r.advice.some((a) => a.what === w), 'no advice about ' + w);
     });
 
-    await test('advice: three screens of words in a row ask for a picture, and a picture between them clears it', async () => {
+    await test('words only: three in a row is an ERROR, two in a row is advice, more than half is an ERROR, a picture between them clears it', async () => {
       const words = (n) => ({id: 'w' + n, kind: ['gsap/split-title', 'css/type-stack', 'gsap/counter', 'motion/blur-words'][n % 4], title: 'Words number ' + n, text: 'Words number ' + n + ' here.', lines: ['One.', 'Two.', 'Three.'], value: 10, unit: 'things', notes: 'n'});
-      const pic = {id: 'pic', kind: 'kit/photo-frame', src: 'media/screen.svg', alt: 'a screen', caption: 'A picture', notes: 'n'};
-      const a = await check(project([words(0), words(1), words(2), pic]), {browser, frames: ['deck'], reduced: false});
-      const adv = a.advice.find((x) => x.what === 'pictures'); assert.ok(adv && /Scenes 1, 2, 3/.test(adv.msg), 'three in a row: ' + a.advice.map((x) => x.what).join(','));
-      const b2 = await check(project([words(0), words(1), pic, words(2)]), {browser, frames: ['deck'], reduced: false});
-      assert.ok(!b2.advice.some((x) => x.what === 'pictures'), 'two, a picture, one: no advice');
+      const pic = (n) => ({id: 'pic' + n, kind: ['kit/photo-frame', 'pro/photo', 'pro/bars'][n % 3], src: 'media/screen.svg', alt: 'a screen', caption: 'A picture', items: [{label: 'a', value: 1}, {label: 'b', value: 2}], notes: 'n'});
+      const a = await check(project([words(0), words(1), words(2), pic(0), pic(1), pic(2)]), {browser, frames: ['deck'], reduced: false});
+      const err = a.errors.find((x) => x.what === 'pictures'); assert.ok(err && /Scenes 1, 2, 3/.test(err.msg), 'three in a row is an error: ' + a.errors.map((x) => x.what).join(','));
+      assert.ok(!a.ok, 'the check fails');
+      const b2 = await check(project([words(0), words(1), pic(0), words(2), pic(1), pic(2)]), {browser, frames: ['deck'], reduced: false});
+      assert.ok(!b2.errors.some((x) => x.what === 'pictures'), 'two, a picture, one: no error');
+      assert.ok(b2.advice.some((x) => x.what === 'pictures' && /Scenes 1 and 2/.test(x.msg)), 'two in a row: advice');
+      const c = await check(project([words(0), pic(0), words(1), pic(1), words(2)]), {browser, frames: ['deck'], reduced: false});
+      assert.ok(c.errors.some((x) => x.what === 'pictures' && /3 of the 5/.test(x.msg)), 'more than half words only: ' + c.errors.map((x) => x.msg).join(' | '));
+    });
+
+    await test('3D and transitions: a three/* block bundles the 3D stage, the .glb goes into the page as data, the 3D canvas draws, and the deck plays a transition between slides in a recording', async () => {
+      const dir = project([
+        {id: 'm', kind: 'three/model', model: 'media/croissant.glb', title: 'A real 3D object', notes: 'n'},
+        {id: 'b', kind: 'three/bars', title: 'Columns', items: [{label: 'a', value: 1}, {label: 'b', value: 3}], notes: 'n'},
+      ]);
+      const b = await build(dir, {stages: ['deck']});
+      assert.ok(fs.existsSync(path.join(b.out, 'deck/assets/vendor/cs-three.js')), 'the 3D stage is in the folder');
+      assert.ok(fs.existsSync(path.join(b.out, 'deck/assets/vendor/licenses/three.txt')), 'three.js travels with its licence');
+      const html = fs.readFileSync(path.join(b.out, 'deck/index.html'), 'utf8');
+      assert.ok(/data:model\/gltf-binary;base64,/.test(html) && !fs.existsSync(path.join(b.out, 'deck/media/croissant.glb')), 'the model is inlined (opens by double click)');
+      const page = await browser.newPage(); await page.setViewport({width: 1920, height: 1080});
+      const errs = []; page.on('pageerror', (e) => errs.push(String(e.message)));
+      await page.goto('file://' + path.join(b.out, 'deck/index.html') + '?capture=1', {waitUntil: 'load'});
+      await page.waitForFunction(() => window.__cs_ready, {timeout: 30000});
+      const plan = await page.evaluate(() => CS.capture.prepare());
+      await page.evaluate((t) => CS.capture.seek(t), plan.schedule[0].dur * 0.8);
+      const lit = await page.evaluate(() => { const c = document.querySelector('.vis-3d canvas'); const g = c.getContext('webgl2') || c.getContext('webgl'); const px = new Uint8Array(4 * 64); g.readPixels(c.width / 2 - 16, c.height / 2, 16, 4, g.RGBA, g.UNSIGNED_BYTE, px); let s = 0; for (const v of px) s += v; return s; });
+      assert.ok(lit > 0, 'the 3D canvas has pixels');
+      await page.evaluate((t) => CS.capture.seek(t), plan.schedule[1].at + 0.4);
+      const mid = await page.evaluate(() => ({leave: document.querySelectorAll('section.cs-leave').length, tf: document.querySelector('section.present .cs-frame').style.transform}));
+      assert.equal(mid.leave, 1, 'the slide that leaves is still on screen during the transition'); assert.ok(mid.tf, 'the slide that comes moves');
+      await page.evaluate((t) => CS.capture.seek(t), plan.schedule[1].at + 1.5);
+      assert.equal(await page.evaluate(() => document.querySelectorAll('section.cs-leave').length), 0, 'the transition ends clean');
+      await page.close();
+      assert.equal(errs.length, 0, errs.join(' | '));
+      return Math.round(fs.statSync(path.join(b.out, 'deck/assets/vendor/cs-three.js')).size / 1024) + ' KB 3D stage';
     });
 
     await test('people: the check says in a sentence whether it could look at the eyes; body boxes are guarded like faces', async () => {

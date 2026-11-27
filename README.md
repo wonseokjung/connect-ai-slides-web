@@ -19,6 +19,29 @@ Paste that line into your agent's chat (Claude Code, Codex, Antigravity, Cursor)
 
 You need [Node.js](https://nodejs.org) 18.18 or newer, Chrome and a coding agent. With ffmpeg, the motion goes into PowerPoint as video clips. Use the agent you already have; this tool itself needs no paid API key.
 
+## 0.6: every slide leads with a picture or motion
+
+0.5 was clean, but it looked like text. That's not visual vibe coding. So in 0.6 a few lines of markdown give you a picture or motion first on every slide.
+
+[![Four decks made with 0.6, recorded as they play](docs/showcase/v06/hero.webp)](docs/showcase/v06/hero.mp4)
+
+- A 3D model turns slowly on the cover. Just drop in one `.glb` file.
+- A table of numbers rises as a 3D bar chart, and the values count up with the bars.
+- Gold light moves behind the slide. It's drawn with a shader.
+- Formulas, decision boundaries and neural networks move as pictures. Signals flow through the network.
+- Your clips go full frame or inside a device. No words go over a face.
+- Slides change like a film cut. Each effect is used once per deck.
+
+Three words-only slides in a row, or more than half of the deck, is an error in the check. The agent picks a picture block first. The 3D comes from my own connect-ai-three kit.
+
+<img src="docs/showcase/v06/perceptron_vs.jpg" width="100%" alt="Perceptron deck, 0.5 and 0.6">
+
+Left is 0.5, right is 0.6. Same script.
+
+<img src="docs/showcase/v06/course_vs.jpg" width="100%" alt="Course intro deck, 0.5 and 0.6">
+
+The course intro is a sample in English.
+
 ## 0.5: a big design update
 
 Tables become tables or charts, and formulas and a neural network come out as drawings. Every slide puts the title, the footer and the motion in the same place, so a deck reads as one piece. Black and gold by default, with light looks too (white, ivory, paper).
@@ -66,7 +89,7 @@ This is a Perceptron deck I made in 2017 and put on GitHub. I gave it all 14 sli
 | Slide change | A soft fade |
 | Google Slides | `--google` adds a copy with still pictures instead of clips |
 
-I checked what's inside the files with `inspect` and looked at them in Quick Look on a Mac. I haven't played them in the PowerPoint app yet, so open yours once on the computer you will present from. Try them: [Korean deck.pptx](docs/demo/ko/deck.pptx) · [English deck.pptx](docs/demo/en/deck.pptx). All 89 motion blocks are on the [catalog page](docs/index.html).
+I checked what's inside the files with `inspect` and looked at them in Quick Look on a Mac. I haven't played them in the PowerPoint app yet, so open yours once on the computer you will present from. Try them: [Korean deck.pptx](docs/demo/ko/deck.pptx) · [English deck.pptx](docs/demo/en/deck.pptx). All 114 blocks are on the [catalog page](docs/index.html).
 
 <!-- team:start -->
 ## CONNECT AI LAB's AI employees

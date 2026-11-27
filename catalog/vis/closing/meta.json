@@ -1,0 +1,13 @@
+{
+  "kind": "vis/closing",
+  "title": "Eclipse closing",
+  "description": "The last slide: an eclipse of gold light turns slowly behind the title (a WebGL ring with a corona and a travelling highlight; a warm halo on light looks), the title rises letter by letter in big serif, the links are real buttons.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "cta",
+  "family": "vis-eclipse",
+  "lead": "picture",
+  "dur": 2.6,
+  "props": {"title": "required, the last line, 1-6 words", "sub": "one line under it", "links": "up to 3 of {label, href}: buttons", "kicker": "small caps above", "contact": "one small line at the bottom"},
+  "example": {"kicker": "CONNECT AI LAB", "title": "Thank you", "sub": "Open source, made to be used", "links": [{"label": "Catalog", "href": "https://example.com"}, {"label": "Contact", "href": "mailto:hello@example.com"}]}
+}

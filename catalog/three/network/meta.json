@@ -1,0 +1,18 @@
+{
+  "kind": "three/network",
+  "title": "3D neural network",
+  "description": "A neural network as a real 3D object in WebGL: layers of glossy spheres stand in depth, every neighbouring pair is joined by a thin fibre, and light travels the fibres layer to layer (the fibre warms while it carries light, the sphere glows when it arrives) while the camera slowly circles and pushes in. Node and layer names are real text that ride their spheres.",
+  "source": {"type": "three", "package": "three", "version": "0.170.0", "uses": ["three", "gsap"]},
+  "license": "MIT",
+  "use": "diagram",
+  "family": "three-network",
+  "lead": "picture",
+  "dur": 3.4,
+  "props": {
+    "layers": "required, 2-5 of {label, nodes}: nodes is a number (1-7) or a list of short names like [\"x1\", \"x2\"]",
+    "title": "heading",
+    "kicker": "small caps above",
+    "note": "one small line under"
+  },
+  "example": {"kicker": "3 layer Neural Network", "title": "Input to output", "layers": [{"label": "Input layer", "nodes": ["x1", "x2"]}, {"label": "Hidden layer", "nodes": ["a1", "a2", "a3"]}, {"label": "Output layer", "nodes": ["y1", "y2"]}]}
+}

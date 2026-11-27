@@ -1,0 +1,59 @@
+{
+  "kind": "vis/map",
+  "title": "Route map",
+  "description": "A course map or an agenda as a route of light: the camera starts close on the first station and travels the route while each station lights up and its picture (if it has one) pops in, then pulls back to the whole map. The current station keeps a slow gold pulse.",
+  "source": {
+    "type": "vis",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "gsap"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "timeline",
+  "family": "vis-route",
+  "lead": "picture",
+  "dur": 5.0,
+  "props": {
+    "stops": "required, 3-8 of {when, title, tool, src, alt}: when is a short label (a date, a lesson), src an optional picture, tool a small line under the title (shown on a slide with 4 stops or fewer, and on a phone)",
+    "now": "which stop glows as the current one, counted from 1",
+    "title": "heading",
+    "kicker": "small caps above"
+  },
+  "example": {
+    "kicker": "Visual Vibe Coding",
+    "title": "The lesson map",
+    "now": 3,
+    "stops": [
+      {
+        "when": "Lesson 2",
+        "title": "Motion on your video",
+        "src": "media/photo-croissant.jpg",
+        "alt": "A photo"
+      },
+      {
+        "when": "Lesson 3",
+        "title": "Motion, no footage",
+        "src": "media/photo-cake.jpg",
+        "alt": "A photo"
+      },
+      {
+        "when": "Lessons 4-5",
+        "title": "Slides and websites",
+        "src": "media/photo-tea.jpg",
+        "alt": "A photo"
+      },
+      {
+        "when": "Lessons 6-7",
+        "title": "three.js",
+        "src": "media/photo-table.jpg",
+        "alt": "A photo"
+      },
+      {
+        "when": "Lessons 8-9",
+        "title": "Blender"
+      }
+    ]
+  }
+}

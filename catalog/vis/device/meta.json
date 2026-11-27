@@ -1,0 +1,36 @@
+{
+  "kind": "vis/device",
+  "title": "3D laptop or phone",
+  "description": "A laptop (or a phone) built in CSS 3D turns from a steep angle to face you while its lid opens and the camera pushes in; the clip or screenshot lights up on its screen with a glare and a soft shadow, then the device keeps turning slowly. A caption sits beside.",
+  "source": {
+    "type": "vis",
+    "package": "gsap",
+    "version": "3.15.0",
+    "uses": [
+      "gsap"
+    ]
+  },
+  "license": "GSAP standard license",
+  "use": "media",
+  "family": "vis-device-3d",
+  "lead": "picture",
+  "dur": 2.6,
+  "props": {
+    "src": "required, a screen recording (mp4) or a screenshot",
+    "poster": "still for a video",
+    "alt": "what the screen shows",
+    "title": "heading beside the device",
+    "caption": "one line beside it",
+    "kicker": "small caps above",
+    "device": "laptop (default) or phone",
+    "pos": "object-position of the screen picture (default top)",
+    "zoom": "1 to 2: crop into the screen picture (from pos), to leave out an edge of the clip"
+  },
+  "example": {
+    "src": "media/reel-1.mp4",
+    "alt": "A deck playing",
+    "kicker": "Lessons 4 and 5",
+    "title": "The same story, a website",
+    "caption": "One story file, a deck and a site"
+  }
+}

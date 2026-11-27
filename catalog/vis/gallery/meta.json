@@ -1,0 +1,13 @@
+{
+  "kind": "vis/gallery",
+  "title": "Depth gallery",
+  "description": "Two to six pictures float at different depths and the camera flies forward through the space (CSS 3D) until they settle in an asymmetric editorial layout; inside each frame the picture keeps drifting slowly, so the depth stays alive. Captions are real text with gold numbers.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "media",
+  "family": "vis-depth-gallery",
+  "lead": "picture",
+  "dur": 3.2,
+  "props": {"items": "required, 2-6 of {src, alt, caption, pos (object-position, to keep a part of the picture in the frame)}: the user's own photos or clips (4 on a phone)", "title": "heading", "kicker": "small caps above"},
+  "example": {"kicker": "A day at the shop", "title": "What we bake", "items": [{"src": "media/photo-croissant.jpg", "alt": "A croissant on a wooden table", "caption": "Croissant"}, {"src": "media/photo-cake.jpg", "alt": "A carrot cake", "caption": "Carrot cake"}, {"src": "media/photo-tea.jpg", "alt": "A tea set on a marble table", "caption": "Tea"}, {"src": "media/photo-table.jpg", "alt": "A table by the window", "caption": "Window seat"}]}
+}

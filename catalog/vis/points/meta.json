@@ -1,0 +1,13 @@
+{
+  "kind": "vis/points",
+  "title": "Kinetic list",
+  "description": "A kinetic list: each point arrives huge in the middle of the frame and comes into focus, holds a beat, then flies to its place in the list (FLIP) while its serif number counts; the newest point is gold.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "list",
+  "family": "vis-kinetic-list",
+  "lead": "type",
+  "dur": 3.4,
+  "props": {"items": "required, 2-4 points: \"Title: one line\" or {title, text}", "title": "heading", "kicker": "small caps above the heading"},
+  "example": {"kicker": "What you bring", "title": "Three things", "items": [{"title": "Your own words"}, {"title": "Your own photos and clips"}, {"title": "A computer and an AI agent"}]}
+}

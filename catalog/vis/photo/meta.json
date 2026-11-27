@@ -1,0 +1,13 @@
+{
+  "kind": "vis/photo",
+  "title": "Dolly photo",
+  "description": "One picture fills the frame: it opens with a diagonal mask led by a gold edge of light, the camera dollies in from wide and keeps drifting slowly; the title and one line slide in on a soft band of shade, on the side away from a face.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "media",
+  "family": "vis-dolly-photo",
+  "lead": "picture",
+  "dur": 2.4,
+  "props": {"src": "required, a photo or an mp4 of the user's own", "alt": "required, what the picture shows", "title": "a large line on the picture, 1-8 words", "text": "one line under the title", "kicker": "small caps above the title", "side": "left, right or bottom: where the words go (default: away from the face, else bottom)", "face": "[x, y, w, h] of a face, 0 to 1", "body": "[x, y, w, h] of the person", "poster": "still for a video", "pos": "object-position", "gold": "words of the title to colour gold"},
+  "example": {"src": "media/photo-table.jpg", "alt": "A round table by the window", "kicker": "The shop", "title": "A seat by the window", "text": "Open from seven every morning"}
+}

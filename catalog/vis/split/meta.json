@@ -1,0 +1,13 @@
+{
+  "kind": "vis/split",
+  "title": "3D card and list",
+  "description": "A picture and a short list. A photo or clip sits in a 3D card that swings in from a steep angle to a gentle one, with a floor reflection, a light that glides across it and a slow drift; the list arrives with big gold serif numbers that count. A person (face given) is never tilted: a tall frame opens with a vertical mask and slowly pushes in, words on the free side.",
+  "source": {"type": "vis", "package": "gsap", "version": "3.15.0", "uses": ["gsap"]},
+  "license": "GSAP standard license",
+  "use": "list",
+  "family": "vis-card-list",
+  "lead": "picture",
+  "dur": 2.6,
+  "props": {"src": "required, a photo or an mp4", "alt": "what the picture shows", "title": "required, heading", "items": "up to 4 short lines or {title, text}", "text": "one line instead of a list", "side": "left or right: where the picture goes", "face": "[x, y, w, h] of a face, 0 to 1", "body": "[x, y, w, h] of the person", "poster": "still for a video", "pos": "object-position", "kicker": "small caps above", "gold": "words of the title to colour gold"},
+  "example": {"kicker": "Every morning", "title": "Today's bread", "src": "media/photo-croissant.jpg", "alt": "A croissant on a wooden table", "items": ["Butter croissant", "Carrot cake", "Warm tea"]}
+}

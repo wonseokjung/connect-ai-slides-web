@@ -1,0 +1,23 @@
+{
+  "kind": "three/model",
+  "title": "3D product hero",
+  "description": "Your own 3D model (.glb) on the slide, lit like a product shot by the connect-ai-three stage (lessons 6-7): the camera pushes in and slowly circles while the object turns, the title rises letter by letter beside it. Keeps moving while the slide is on screen.",
+  "source": {"type": "three", "package": "three", "version": "0.170.0", "uses": ["three", "gsap"]},
+  "license": "MIT",
+  "use": "media",
+  "family": "three-model",
+  "lead": "picture",
+  "dur": 2.6,
+  "site": {"mode": "scrub", "len": 1.2},
+  "props": {
+    "model": "required, a .glb file in media/",
+    "title": "heading, 1-6 words",
+    "kicker": "small caps above",
+    "sub": "one short line under the title",
+    "items": "up to 4 short lines (a list beside the object)",
+    "side": "left (words left, default) or right",
+    "fit": "size of the object (default 1.5)",
+    "spin": "turn speed in degrees per second (default 7)"
+  },
+  "example": {"kicker": "CC0 model", "title": "A real 3D object", "sub": "Any .glb from your folder, lit and turning", "model": "media/croissant.glb"}
+}
