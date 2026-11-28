@@ -1,7 +1,7 @@
 {
   "name": "connect-ai-slides-web",
   "version": "0.6.0",
-  "description": "Your AI agent becomes a presentation employee: a few lines of markdown become a deck where every slide is a picture or motion first. 3D models and 3D charts on the slide (three.js), living gold light (shaders), kinetic type, charts and formulas that move, neural networks with signals flowing, your clips in frames and devices, and cinematic transitions between slides. The same story is also a one-page website and a real PowerPoint file (editable text boxes, motion clips, speaker notes), checked on the real screen. 114 blocks (three.js, GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion).",
+  "description": "Your AI agent becomes an AI presentation automation agent: a few lines of markdown become a deck where every slide is a picture or motion first. 3D models and 3D charts on the slide (three.js), living gold light (shaders), kinetic type, charts and formulas that move, neural networks with signals flowing, your clips in frames and devices, and cinematic transitions between slides. The same story is also a one-page website and a real PowerPoint file (editable text boxes, motion clips, speaker notes), checked on the real screen. 114 blocks (three.js, GSAP, Motion, anime.js, Lottie, CSS, HyperFrames, Remotion).",
   "type": "module",
   "bin": {
     "connect-ai-slides-web": "bin/cli.mjs"
@@ -57,7 +57,7 @@
     "codex",
     "antigravity",
     "cursor",
-    "ai-employee",
+    "ai-agent",
     "marp",
     "slidev",
     "pptx-import",
@@ -65,7 +65,8 @@
     "threejs",
     "3d",
     "webgl",
-    "shader"
+    "shader",
+    "automation-agent"
   ],
   "files": [
     "bin/",

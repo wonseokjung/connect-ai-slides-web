@@ -108,7 +108,7 @@ const STARTER = (name) => ({
 const BANNER_CMDS = new Set(['', 'help', 'demo', 'ppt', 'pptx', 'deck', 'doctor', 'install-skill', 'catalog', 'new']);
 function hello() {
   say(banner());
-  say('  ' + 'Your slides, made by your AI employee. ' + gold('Words you can edit, motion that plays, a check on the real screen.') + dimmed('  내 발표자료, AI 직원이 만들어요'));
+  say('  ' + 'Your slides, made by your AI agent. ' + gold('Words you can edit, motion that plays, a check on the real screen.') + dimmed('  내 발표자료, AI 에이전트가 만들어요'));
   say('');
 }
 

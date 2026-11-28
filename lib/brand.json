@@ -1,8 +1,8 @@
 {
   "kit": "connect-ai-slides-web",
   "employee": {
-    "ko": "AI 발표 자료 직원",
-    "en": "AI presentation designer"
+    "ko": "AI 발표 자료 에이전트",
+    "en": "AI Presentation Agent"
   },
   "by": "AI Mentor Jay",
   "brand": "CONNECT AI LAB",
